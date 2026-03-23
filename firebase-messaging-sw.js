@@ -21,17 +21,14 @@ messaging.onBackgroundMessage(function(payload) {
   var title = notification.title || 'Casarico';
   var body = notification.body || '';
 
-  var options = {
+  return self.registration.showNotification(title, {
     body: body,
     icon: '/casarico/icon-192.png',
-    badge: '/casarico/icon-192.png',
-    tag: 'casarico-notif',
-    renotify: true,
+    tag: 'casarico-' + Date.now(),
     requireInteraction: false,
-    silent: false
-  };
-
-  return self.registration.showNotification(title, options);
+    silent: false,
+    vibrate: [200, 100, 200]
+  });
 });
 
 // Click on notification — open the app
