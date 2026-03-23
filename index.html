@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_14.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_15.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -1476,7 +1476,7 @@ function loadFCMScript(){
           .then(function(token){
             if(token){
               S.fcmToken=token;LS.set('fcmToken',token);
-              registerToken(token,S.notifRole);
+              registerTokenV2(token,S.notifRole);
             }
           })
           .catch(function(e){console.warn('FCM token error:',e);});
