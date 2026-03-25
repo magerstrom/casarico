@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_17.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_18.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -388,13 +388,6 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
 .cal-service-cards{margin-top:14px}
 
 
-/* ── Bottom Nav Bar ── */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:calc(56px + env(safe-area-inset-bottom,0px));background:var(--basil-deep);display:flex;align-items:stretch;z-index:100;box-shadow:0 -1px 0 rgba(246,244,220,.1);padding-bottom:env(safe-area-inset-bottom,0px)}
-.bottom-nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;color:rgba(246,244,220,.5);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;transition:color .15s}
-.bottom-nav-btn.active{color:var(--lemon)}
-.bottom-nav-btn svg{opacity:.6}
-.bottom-nav-btn.active svg{opacity:1}
-.screen-with-nav{padding-bottom:calc(130px + env(safe-area-inset-bottom,0px))}
 
 .hist-row{background:var(--paper-card);border:1px solid var(--border-soft);border-radius:var(--r);padding:12px 14px;margin-bottom:7px;cursor:pointer;transition:border-color .2s}
 .hist-row:active{border-color:var(--sage)}
@@ -518,7 +511,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
 .day-detail.open{display:block}
 
 /* Bottom action bar */
-.action-bar{position:fixed;bottom:calc(56px + env(safe-area-inset-bottom,0px));left:0;right:0;background:var(--basil-deep);border-top:1px solid rgba(246,244,220,.1);padding:10px 14px 10px;display:flex;gap:8px;z-index:99}
+.action-bar{position:fixed;bottom:0;left:0;right:0;background:var(--basil-deep);border-top:1px solid rgba(246,244,220,.1);padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;z-index:99}
 </style>
 <script src="./index_files/firebase-app-compat.js"></script><script src="./index_files/firebase-database-compat.js"></script></head>
 <body>
@@ -585,12 +578,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
     <div class="tb-left"><div class="tb-name" onclick="show(&#39;s-role&#39;)" style="cursor:pointer">Casarico</div><div class="tb-role" id="tb-role-kitchen">Kitchen</div></div>
     <div class="tb-right"></div>
   </div>
-  <div class="content screen-with-nav" id="kitchen-list"></div>
-  <nav class="bottom-nav" id="nav-kitchen" style="display: none;">
-    <button class="bottom-nav-btn active" onclick="showView(&#39;kitchen&#39;)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"></path><line x1="6" y1="17" x2="18" y2="17"></line></svg>Cucina</button>
-    <button class="bottom-nav-btn" onclick="showView(&#39;foh&#39;)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Sala</button>
-    <button class="bottom-nav-btn" onclick="showView(&#39;admin&#39;)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>Admin</button>
-  </nav>
+  <div class="content" id="kitchen-list"></div>
   <div class="action-bar">
     <button class="btn btn-gold" onclick="endService()">End Service &amp; Save</button>
   </div>
@@ -695,11 +683,6 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
 <!-- ═══════════════════════════════
      ADMIN
 ═══════════════════════════════ -->
-  <nav class="bottom-nav" id="nav-foh" style="display: none;">
-    <button class="bottom-nav-btn" onclick="showView(&#39;kitchen&#39;)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"></path><line x1="6" y1="17" x2="18" y2="17"></line></svg>Cucina</button>
-    <button class="bottom-nav-btn active" onclick="showView(&#39;foh&#39;)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Sala</button>
-    <button class="bottom-nav-btn" onclick="showView(&#39;admin&#39;)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>Admin</button>
-  </nav>
 
 
 <div class="screen" id="s-admin">
@@ -1637,8 +1620,6 @@ function show(id){
   if(id!=='s-pin'&&id!=='s-role') LS.set('lastScreen',id);
   if(id==='s-role'){renderRoleScreen();updateLangToggle();}
   // Hide bottom nav on home and pin screens
-  var onHome=id==='s-role'||id==='s-pin';
-  document.querySelectorAll('.bottom-nav').forEach(function(n){n.style.display=onHome?'none':'flex';});
 }
 
 function updateTopbarRoles(){
@@ -1651,20 +1632,9 @@ function updateTopbarRoles(){
 }
 
 function showView(view){
-  // Update bottom nav active state on all navs
-  document.querySelectorAll('.bottom-nav-btn').forEach(function(btn){
-    btn.classList.remove('active');
-  });
-  if(view==='kitchen'){
-    document.querySelectorAll('#nav-kitchen .bottom-nav-btn:nth-child(1), #nav-foh .bottom-nav-btn:nth-child(1), #nav-admin .bottom-nav-btn:nth-child(1)').forEach(function(b){b.classList.add('active');});
-    show('s-kitchen');updateLangToggle();renderKitchen();
-  } else if(view==='foh'){
-    document.querySelectorAll('#nav-kitchen .bottom-nav-btn:nth-child(2), #nav-foh .bottom-nav-btn:nth-child(2), #nav-admin .bottom-nav-btn:nth-child(2)').forEach(function(b){b.classList.add('active');});
-    show('s-foh');updateLangToggle();fTab('new');buildTableGrid();buildCourseTabs();renderItems();renderOrdersList();renderCollectList();updateFOHBadges();
-  } else if(view==='admin'){
-    document.querySelectorAll('#nav-kitchen .bottom-nav-btn:nth-child(3), #nav-foh .bottom-nav-btn:nth-child(3), #nav-admin .bottom-nav-btn:nth-child(3)').forEach(function(b){b.classList.add('active');});
-    pEntry='';updateDots();if(document.getElementById('pin-err'))document.getElementById('pin-err').textContent='';renderPinScreen();show('s-pin');
-  }
+  if(view==='kitchen'){show('s-kitchen');updateLangToggle();renderKitchen();}
+  else if(view==='foh'){show('s-foh');updateLangToggle();fTab('new');buildTableGrid();buildCourseTabs();renderItems();renderOrdersList();renderCollectList();updateFOHBadges();}
+  else if(view==='admin'){pEntry='';updateDots();if(document.getElementById('pin-err'))document.getElementById('pin-err').textContent='';renderPinScreen();show('s-pin');}
 }
 
 function goRole(role){
