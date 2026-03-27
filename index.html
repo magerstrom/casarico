@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_19.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_20.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -1442,16 +1442,26 @@ function sendPushNotification(role,title,body){
   if(_lastPush[role]&&now-_lastPush[role]<4000) return;
   _lastPush[role]=now;
   var channel=role==='kitchen'?NTFY_KITCHEN:NTFY_FOH;
-  fetch('https://ntfy.sh/'+channel,{
+  // Route through Cloud Function — avoids iOS PWA cross-origin restrictions
+  fetch('https://us-central1-casarico-1e057.cloudfunctions.net/sendPush',{
     method:'POST',
-    headers:{
-      'Content-Type':'text/plain',
-      'Title':title,
-      'Priority':role==='kitchen'?'urgent':'default',
-      'Tags':role==='kitchen'?'bell':'fork_and_knife'
-    },
-    body:body||''
-  }).catch(function(e){console.warn('ntfy error:',e);});
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({channel:channel,title:title,body:body||'',role:role})
+  }).then(function(r){
+    if(!r.ok) toast('Push error: '+r.status,'tr',3000);
+  }).catch(function(e){
+    // Fallback: try ntfy directly
+    fetch('https://ntfy.sh/'+channel,{
+      method:'POST',
+      headers:{
+        'Content-Type':'text/plain',
+        'Title':title,
+        'Priority':role==='kitchen'?'urgent':'default',
+        'Tags':role==='kitchen'?'bell':'fork_and_knife'
+      },
+      body:body||''
+    }).catch(function(e2){console.warn('ntfy fallback error:',e2);});
+  });
 }
 
 function loadScript(src,cb){
