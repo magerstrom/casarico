@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_23.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_26.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -994,7 +994,7 @@ var STRINGS={
     busiest_day:'Busiest Day of Week',avg_covers_day:'avg covers',
     month_covers:'Monthly Covers',last_year:'Last year',
     svc_comparison:'Service Comparison',services:'services',
-    per_service:'per service',load_more:'Load more',date_tab:'Date',no_service_day:'No service on this day.',select_day:'Tap a highlighted day to view services.',notif_role:'Notification Role',notif_foh:'FOH',notif_kitchen:'Kitchen',notif_allow:'Allow Notifications',notif_granted:'Notifications enabled',notif_denied:'Notifications blocked — check iPhone Settings → Safari',notif_setup:'This device receives',
+    per_service:'per service',load_more:'Load more',date_tab:'Date',no_service_day:'No service on this day.',select_day:'Tap a highlighted day to view services.',notif_role:'Notification Role',notif_foh:'FOH',notif_kitchen:'Kitchen',notif_allow:'Allow Notifications',notif_granted:'Notifications enabled',notif_denied:'Notifications blocked — check iPhone Settings → Safari',notif_setup:'This device receives',new_order_notif:'New order',wave_ready_notif:'Ready at pass',
     menu_8w:'Course Mix — 8 weeks',dishes_8w:'Top Dishes — 8 weeks',
     course_mix:'Course Mix',plates_by_course:'Plates by course — this year',
     top_dishes:'Top Dishes',most_ordered:'Most ordered this year',
@@ -1120,7 +1120,7 @@ var STRINGS={
     busiest_day:'Giorno pi\u00f9 affollato',avg_covers_day:'media coperti',
     month_covers:'Coperti mensili',last_year:'Anno scorso',
     svc_comparison:'Confronto servizi',services:'servizi',
-    per_service:'per servizio',load_more:'Carica altri',date_tab:'Data',no_service_day:'Nessun servizio in questo giorno.',select_day:'Tocca un giorno evidenziato per vedere i servizi.',notif_role:'Ruolo notifiche',notif_foh:'Sala',notif_kitchen:'Cucina',notif_allow:'Attiva notifiche',notif_granted:'Notifiche attivate',notif_denied:'Notifiche bloccate — controlla Impostazioni → Safari',notif_setup:'Questo dispositivo riceve',
+    per_service:'per servizio',load_more:'Carica altri',date_tab:'Data',no_service_day:'Nessun servizio in questo giorno.',select_day:'Tocca un giorno evidenziato per vedere i servizi.',notif_role:'Ruolo notifiche',notif_foh:'Sala',notif_kitchen:'Cucina',notif_allow:'Attiva notifiche',notif_granted:'Notifiche attivate',notif_denied:'Notifiche bloccate — controlla Impostazioni → Safari',notif_setup:'Questo dispositivo riceve',new_order_notif:'Nuovo ordine',wave_ready_notif:'Pronto al pass',
     menu_8w:'Mix portate — 8 settimane',dishes_8w:'Piatti top — 8 settimane',
     course_mix:'Mix per portata',plates_by_course:'Piatti per portata — quest\'anno',
     top_dishes:'Piatti più ordinati',most_ordered:'Più ordinati quest\'anno',
@@ -1808,8 +1808,8 @@ function sendOrder(){
     fTab('orders');
     // Push notification to Kitchen
     sendPushNotification('kitchen',
-      T('new_order_notif')+' - '+T('table_label')+' '+selTable,
-      guests+' '+T('covers_label')
+      'Ordine / Order - Tavolo '+selTable,
+      guests+' coperti / covers'
     );
   });
 }
@@ -1834,8 +1834,8 @@ function sendAperitivoOrder(){
     updateFOHBadges();
     fTab('orders');
     sendPushNotification('kitchen',
-      T('new_order_notif')+' - '+T('table_label')+' '+selTable,
-      guests+' '+T('covers_label')
+      'Ordine / Order - Tavolo '+selTable,
+      guests+' coperti / covers'
     );
   });
 }
@@ -2045,8 +2045,8 @@ function releaseWave(key,wave){
   else{S.orders[key].waves[wave]=newWave;save();renderOrdersList();}
   toast(T('wave_label')+' '+wave+' '+T('wave_released'),'tb');
   sendPushNotification('kitchen',
-    T('new_order_notif')+' - '+T('table_label')+' '+o.table,
-    T('wave_label')+' '+wave
+    'Uscita / Wave '+wave+' - Tavolo '+o.table,
+    ''
   );
 }
 
@@ -2335,7 +2335,7 @@ function confirmAperitivoRound(key){
   if(fbDB){fbDB.ref('orders/'+key+'/waves/'+nextWave).set(newWave);}
   else{if(!S.orders[key].waves)S.orders[key].waves={};S.orders[key].waves[nextWave]=newWave;save();renderKitchen();renderOrdersList();}
   toast(T('round_sent'),'tg');
-  sendPushNotification('kitchen','Casarico - '+T('table_label')+' '+o.table,T('round_label')+' '+nextWave);
+  sendPushNotification('kitchen','Altro giro / Another round - Tavolo '+o.table,'');
   closeAddToOrder();
 }
 
@@ -2432,7 +2432,7 @@ function confirmAddToOrder(){
   var hasSentWave=writes.some(function(w){return w.val&&w.val.status==='sent';});
   if(hasSentWave){
     var o3=S.orders[atoKey];
-    sendPushNotification('kitchen','Casarico - '+T('table_label')+' '+(o3?o3.table:''),T('new_order_notif'));
+    sendPushNotification('kitchen','Aggiunta / Add - Tavolo '+(o3?o3.table:''),'');
   }
   closeAddToOrder();
 }
@@ -2615,8 +2615,8 @@ function sendWaveReady(key,wave){
   // Push notification to FOH
   var o2=S.orders[key];
   sendPushNotification('foh',
-    T('wave_ready_notif')+' - '+T('table_label')+' '+(o2?o2.table:''),
-    T('wave_label')+' '+wave
+    'Pronto / Ready - Tavolo '+(o2?o2.table:''),
+    'Uscita / Wave '+wave
   );
 }
 
