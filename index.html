@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_18.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_19.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -765,7 +765,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
     <hr class="sep">
     <div class="add-form" id="notif-setup-section">
       <span class="lbl" id="setup-notif-lbl">Notification Role</span>
-      <p style="font-size:12px;color:var(--ink-muted);margin-bottom:10px;line-height:1.5" id="notif-desc">This device receives FOH notifications by default. Switch to Kitchen to receive order alerts.</p>
+      <p style="font-size:12px;color:var(--ink-muted);margin-bottom:10px;line-height:1.5" id="notif-desc">Install the free <strong>ntfy</strong> app, subscribe to the channel below. Kitchen gets urgent alerts, Sala gets standard.</p>
       <div style="display:flex;gap:8px;margin-bottom:10px">
         <button class="btn btn-sm" id="notif-btn-foh" onclick="setNotifRole(&#39;foh&#39;)" style="flex:1">FOH</button>
         <button class="btn btn-sm" id="notif-btn-kitchen" onclick="setNotifRole(&#39;kitchen&#39;)" style="flex:1">Kitchen</button>
@@ -888,8 +888,6 @@ var S={
   history:   LS.get('history')||[],
   historicalData: LS.get('historicalData')||{},  // {year:{dateStr:covers,...}}
   notifRole: LS.get('notifRole')||'foh',  // 'foh' or 'kitchen'
-  fcmToken: LS.get('fcmToken')||null,
-  fcmServerKey: LS.get('fcmServerKey')||'',
   fbConfig:  LS.get('fbConfig')||{apiKey:'AIzaSyCkBhMmFVblDVLIwAfBDE_RQ6_FO-TH5vA',projectId:'casarico-1e057',appId:'1:56749328502:web:d879238d19ceef05333757'},
   orders:    LS.get('orders')||{}
 };
@@ -1355,7 +1353,7 @@ function save(){
   LS.set('pin',S.pin); LS.set('courses',S.courses); LS.set('menu',S.menu);
   LS.set('tables',S.tables); LS.set('history',S.history);
   LS.set('fbConfig',S.fbConfig); LS.set('orders',S.orders); LS.set('historicalData',S.historicalData);
-  LS.set('notifRole',S.notifRole); LS.set('fcmToken',S.fcmToken); LS.set('fcmServerKey',S.fcmServerKey);
+  LS.set('notifRole',S.notifRole);
 }
 
 function defaultMenu(){
@@ -1400,9 +1398,8 @@ function defaultTables(){
 //  FIREBASE + FCM
 // ════════════════════════════════════════════
 var fbDB=null;
-var FCM_VAPID_KEY='BBlShurtJkyN6LhrGQ9p-4g7p2lpq7Ut0zF2o8OgWBB3kK4HwhDVvcOppLFCS7soIzfQE-ucdN7Trc4AvwM49Uw';
-var FCM_SERVER_KEY='';  // Set via FCM v1 API using project credentials
-var FCM_PROJECT_ID='casarico-1e057';
+var NTFY_KITCHEN='Notify-Casarico-Cucina';
+var NTFY_FOH='Notify-Casarico-Sala';
 
 function initFirebase(){
   if(!S.fbConfig||!S.fbConfig.apiKey){setSyncUI(false,'Setup Firebase in Admin → Setup');return;}
@@ -1426,112 +1423,35 @@ function initFirebase(){
           onFbUpdate(prev);
         });
         setSyncUI(true,'Live · Firebase');
-        // Init FCM for push notifications
-        setTimeout(initFCM,1000);
       }catch(e){console.error(e);setSyncUI(false,'Firebase error — check config');}
     });
   });
 }
 
-function initFCM(){
-  if(!('serviceWorker' in navigator)||!('PushManager' in window)) return;
-  if(Notification.permission==='denied') return;
-  if(Notification.permission!=='granted') return; // Only init if permission already granted
-  navigator.serviceWorker.register('/casarico/firebase-messaging-sw.js')
-    .then(function(reg){
-      // Wait for SW to be ready
-      return navigator.serviceWorker.ready.then(function(readyReg){
-        return loadFCMScriptWithReg(readyReg);
-      });
-    })
-    .catch(function(e){console.warn('SW register error:',e);});
-}
 
-function loadFCMScript(){
-  return initFCM();
-}
 
-function loadFCMScriptWithReg(swReg){
-  return new Promise(function(resolve){
-    loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js',function(){
-      try{
-        var messaging=firebase.messaging();
-        messaging.onMessage(function(payload){
-          var n=payload.notification||{};
-          toast((n.title||'')+(n.body?' — '+n.body:''),'ty',6000);
-        });
-        // Pass the actual SW registration — critical for iOS
-        messaging.getToken({vapidKey:FCM_VAPID_KEY,serviceWorkerRegistration:swReg})
-          .then(function(token){
-            if(token){
-              console.log('FCM token obtained');
-              S.fcmToken=token;LS.set('fcmToken',token);
-              registerTokenV2(token,S.notifRole);
-              updateNotifUI();
-            } else {
-              console.warn('FCM: no token returned');
-            }
-          })
-          .catch(function(e){console.warn('FCM token error:',e.message);});
-      }catch(e){console.warn('FCM init error:',e);}
-      resolve();
-    });
-  });
-}
 
-function registerToken(token,role){
-  if(!fbDB||!token) return;
-  // Remove from both roles first, then add to correct one
-  fbDB.ref('devices/kitchen/'+token.replace(/[.$#\[\]/]/g,'_')).remove();
-  fbDB.ref('devices/foh/'+token.replace(/[.$#\[\]/]/g,'_')).remove();
-  fbDB.ref('devices/'+role+'/'+token.replace(/[.$#\[\]/]/g,'_')).set(true);
-}
 
-function requestNotifPermission(cb){
-  if(!('Notification' in window)){if(cb) cb(false);return;}
-  if(Notification.permission==='granted'){if(cb) cb(true);return;}
-  Notification.requestPermission().then(function(p){
-    if(cb) cb(p==='granted');
-  });
-}
 
-function sendPushToRole(role,title,body){
-  if(!fbDB) return;
-  // Read tokens for role, send FCM via HTTP v1
-  fbDB.ref('devices/'+role).once('value',function(snap){
-    var tokens=[];
-    var data=snap.val()||{};
-    Object.keys(data).forEach(function(k){
-      // Decode token key back (we stored with _ replacing special chars)
-      // Just collect all keys — they are the token safe keys, we stored true as value
-      // We need the actual token. Store token as value instead.
-    });
-  });
-}
 
 // Better approach: store token as value under a uuid key
-function registerTokenV2(token,role){
-  if(!fbDB||!token) return;
-  var deviceId=LS.get('deviceId');
-  if(!deviceId){deviceId='d'+Date.now()+Math.random().toString(36).slice(2,7);LS.set('deviceId',deviceId);}
-  // Remove from both roles
-  fbDB.ref('devices/kitchen/'+deviceId).remove();
-  fbDB.ref('devices/foh/'+deviceId).remove();
-  // Register under correct role with token as value
-  fbDB.ref('devices/'+role+'/'+deviceId).set(token);
-}
 
 var _lastPush={};
 function sendPushNotification(role,title,body){
-  // Deduplicate — don't send same role push twice within 4 seconds
   var now=Date.now();
   if(_lastPush[role]&&now-_lastPush[role]<4000) return;
   _lastPush[role]=now;
-  fetch('https://us-central1-casarico-1e057.cloudfunctions.net/sendPush',{
+  var channel=role==='kitchen'?NTFY_KITCHEN:NTFY_FOH;
+  fetch('https://ntfy.sh/'+channel,{
     method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({role:role,title:title,body:body||''})
-  }).catch(function(e){console.warn('Push error:',e);});
+    headers:{
+      'Content-Type':'text/plain',
+      'Title':title,
+      'Priority':role==='kitchen'?'urgent':'default',
+      'Tags':role==='kitchen'?'bell':'fork_and_knife'
+    },
+    body:body||''
+  }).catch(function(e){console.warn('ntfy error:',e);});
 }
 
 function loadScript(src,cb){
@@ -4224,20 +4144,13 @@ function fallbackShare(csv,fileName){
 function setNotifRole(role){
   S.notifRole=role;
   LS.set('notifRole',role);
-  if(S.fcmToken) registerTokenV2(S.fcmToken,role);
   updateNotifUI();
   toast(role==='kitchen'?T('notif_kitchen'):T('notif_foh'),'tg');
 }
 
 function enableNotifications(){
-  requestNotifPermission(function(granted){
-    if(granted){
-      initFCM();
-      updateNotifUI();
-    } else {
-      toast(T('notif_denied'),'tr',6000);
-    }
-  });
+  updateNotifUI();
+  toast(T('notif_granted'),'tg');
 }
 
 function updateNotifUI(){
@@ -4252,17 +4165,9 @@ function updateNotifUI(){
   fohBtn.style.color=!isKitchen?'var(--cream)':'var(--ink)';
   kitBtn.style.background=isKitchen?'var(--basil)':'var(--paper-warm)';
   kitBtn.style.color=isKitchen?'var(--cream)':'var(--ink)';
-  var perm=typeof Notification!=='undefined'?Notification.permission:'default';
-  if(perm==='granted'){
-    if(allowBtn) allowBtn.style.display='none';
-    if(statusLbl) statusLbl.textContent='✓ '+T('notif_granted')+' · '+(isKitchen?T('notif_kitchen'):T('notif_foh'));
-  } else if(perm==='denied'){
-    if(allowBtn) allowBtn.style.display='none';
-    if(statusLbl) statusLbl.textContent='⚠️ '+T('notif_denied');
-  } else {
-    if(allowBtn) allowBtn.style.display='';
-    if(statusLbl) statusLbl.textContent=T('notif_setup')+': '+(isKitchen?T('notif_kitchen'):T('notif_foh'));
-  }
+  var channel=isKitchen?NTFY_KITCHEN:NTFY_FOH;
+  if(allowBtn) allowBtn.style.display='none';
+  if(statusLbl) statusLbl.innerHTML='Install <strong>ntfy</strong> app → subscribe to: <strong>'+channel+'</strong>';
 }
 
 function clearHistory(){S.history=[];save();statsTab('seasonal');}
