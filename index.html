@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_21.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_22.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -1808,7 +1808,7 @@ function sendOrder(){
     fTab('orders');
     // Push notification to Kitchen
     sendPushNotification('kitchen',
-      T('new_order_notif')+' — '+T('table_label')+' '+selTable,
+      T('new_order_notif')+' - '+T('table_label')+' '+selTable,
       guests+' '+T('covers_label')
     );
   });
@@ -1834,7 +1834,7 @@ function sendAperitivoOrder(){
     updateFOHBadges();
     fTab('orders');
     sendPushNotification('kitchen',
-      T('new_order_notif')+' — '+T('table_label')+' '+selTable,
+      T('new_order_notif')+' - '+T('table_label')+' '+selTable,
       guests+' '+T('covers_label')
     );
   });
@@ -2044,6 +2044,10 @@ function releaseWave(key,wave){
   if(fbDB){fbDB.ref('orders/'+key+'/waves/'+wave).set(newWave);}
   else{S.orders[key].waves[wave]=newWave;save();renderOrdersList();}
   toast(T('wave_label')+' '+wave+' '+T('wave_released'),'tb');
+  sendPushNotification('kitchen',
+    T('new_order_notif')+' - '+T('table_label')+' '+o.table,
+    T('wave_label')+' '+wave
+  );
 }
 
 function closeOrder(key){
@@ -2604,7 +2608,7 @@ function sendWaveReady(key,wave){
   // Push notification to FOH
   var o2=S.orders[key];
   sendPushNotification('foh',
-    T('wave_ready_notif')+' — '+T('table_label')+' '+(o2?o2.table:''),
+    T('wave_ready_notif')+' - '+T('table_label')+' '+(o2?o2.table:''),
     T('wave_label')+' '+wave
   );
 }
