@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_22.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_23.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -2335,6 +2335,7 @@ function confirmAperitivoRound(key){
   if(fbDB){fbDB.ref('orders/'+key+'/waves/'+nextWave).set(newWave);}
   else{if(!S.orders[key].waves)S.orders[key].waves={};S.orders[key].waves[nextWave]=newWave;save();renderKitchen();renderOrdersList();}
   toast(T('round_sent'),'tg');
+  sendPushNotification('kitchen','Casarico - '+T('table_label')+' '+o.table,T('round_label')+' '+nextWave);
   closeAddToOrder();
 }
 
@@ -2427,6 +2428,12 @@ function confirmAddToOrder(){
   }
   toast(T('added_to_order'),'tg');
   flashScreen('rgba(184,148,58,.3)');
+  // Push to kitchen if any sent waves included
+  var hasSentWave=writes.some(function(w){return w.val&&w.val.status==='sent';});
+  if(hasSentWave){
+    var o3=S.orders[atoKey];
+    sendPushNotification('kitchen','Casarico - '+T('table_label')+' '+(o3?o3.table:''),T('new_order_notif'));
+  }
   closeAddToOrder();
 }
 
