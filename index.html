@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_28.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_29.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -1429,38 +1429,18 @@ function initFirebase(){
           onFbUpdate(prev);
         });
         // Sync menu, tables, courses across devices
-        fbDB.ref('config/menu').on('value',function(snap){
-          var val=snap.val();
-          if(val){
-            S.menu=val;LS.set('menu',val);
-            try{reRenderAdmin();buildCourseTabs();renderItems();}catch(e){}
+        fbDB.ref('config').on('value',function(snap){
+          var val=snap.val();if(!val) return;
+          var changed=false;
+          if(val.menu){S.menu=val.menu;LS.set('menu',val.menu);changed=true;}
+          if(val.tables){S.tables=val.tables;LS.set('tables',val.tables);changed=true;}
+          if(val.courses){S.courses=val.courses;LS.set('courses',val.courses);changed=true;}
+          if(changed){
+            try{buildCourseTabs();renderItems();buildTableGrid();buildAperTableGrid();reRenderAdmin();}catch(e){}
           }
         });
-        fbDB.ref('config/tables').on('value',function(snap){
-          var val=snap.val();
-          if(val){
-            S.tables=val;LS.set('tables',val);
-            try{buildTableGrid();buildAperTableGrid();reRenderAdmin();}catch(e){}
-          }
-        });
-        fbDB.ref('config/courses').on('value',function(snap){
-          var val=snap.val();
-          if(val){
-            S.courses=val;LS.set('courses',val);
-            try{buildCourseTabs();renderItems();reRenderAdmin();}catch(e){}
-          }
-        });
+
         setSyncUI(true,'Live · Firebase');
-        // Push current config to Firebase so all devices sync
-        fbDB.ref('config/menu').once('value',function(snap){
-          if(!snap.val()){fbDB.ref('config/menu').set(S.menu);}
-        });
-        fbDB.ref('config/tables').once('value',function(snap){
-          if(!snap.val()){fbDB.ref('config/tables').set(S.tables);}
-        });
-        fbDB.ref('config/courses').once('value',function(snap){
-          if(!snap.val()){fbDB.ref('config/courses').set(S.courses);}
-        });
       }catch(e){console.error(e);setSyncUI(false,'Firebase error — check config');}
     });
   });
