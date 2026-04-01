@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_56.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_58.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -11,6 +11,8 @@
 <meta name="apple-mobile-web-app-title" content="Cucina">
 <meta name="theme-color" content="#1A4422">
 <title>Cucina</title>
+<script src="./index_files/firebase-app-compat.js"></script>
+<script src="./index_files/firebase-database-compat.js"></script>
 <link href="./index_files/css2" rel="stylesheet">
 <style>
 :root {
@@ -1661,55 +1663,59 @@ var NTFY_FOH='Notify-Casarico-Sala';
 function initFirebase(){
   if(!S.fbConfig||!S.fbConfig.apiKey){setSyncUI(false,'Setup Firebase in Admin → Setup');return;}
   setSyncUI(false,'Connecting…');
-  loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js',function(){
-    loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js',function(){
-      try{
-        if(window.firebase&&firebase.apps.length) firebase.apps.forEach(function(a){try{a.delete();}catch(e){}});
-        firebase.initializeApp({
-          apiKey:S.fbConfig.apiKey,
-          authDomain:S.fbConfig.projectId+'.firebaseapp.com',
-          databaseURL:'https://'+S.fbConfig.projectId+'-default-rtdb.europe-west1.firebasedatabase.app',
-          projectId:S.fbConfig.projectId,
-          appId:S.fbConfig.appId
-        });
-        fbDB=firebase.database();
-        fbDB.ref('orders_v2').on('value',function(snap){
-          var prev=JSON.parse(JSON.stringify(S.orders));
-          S.orders=snap.val()||{};
-          save();
-          onFbUpdate(prev);
-        });
-        // Sync menu, tables, courses across devices
-        fbDB.ref('config').on('value',function(snap){
-          var val=snap.val();if(!val) return;
-          var localTs=LS.get('configTs')||0;
-          var localTablesTs=LS.get('tablesTs')||0;
-          var fbMenuTs=val.menuTs||0;
-          var fbTablesTs=val.tablesTs||0;
-          var changed=false;
-          // Only accept Firebase menu/courses if Firebase timestamp is newer
-          if(val.menu&&val.menu.length&&fbMenuTs>=localTs){
-            S.menu=val.menu;LS.set('menu',val.menu);
-            if(val.courses&&val.courses.length){S.courses=val.courses;LS.set('courses',val.courses);}
-            if(val.menuCourses){S.menuCourses=Object.assign({breakfast:[],aperitivo:[],lunch:[],dinner:[],drinks:[]},val.menuCourses);LS.set('menuCourses',S.menuCourses);}
-            LS.set('configTs',fbMenuTs);
-            changed=true;
-          }
-          // Only accept Firebase tables if Firebase timestamp is newer
-          if(val.tables&&val.tables.length&&fbTablesTs>=localTablesTs){
-            S.tables=val.tables;LS.set('tables',val.tables);
-            LS.set('tablesTs',fbTablesTs);
-            changed=true;
-          }
-          if(changed){
-            try{buildCourseTabs();renderItems();buildTableGrid();buildAperTableGrid();reRenderAdmin();}catch(e){}
-          }
-        });
-
-        setSyncUI(true,'Live · Firebase');
-      }catch(e){console.error(e);setSyncUI(false,'Firebase error — check config');}
+  if(window.firebase){
+    _initFirebaseApp();
+  } else {
+    loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js',function(){
+      loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js',function(){
+        _initFirebaseApp();
+      });
     });
-  });
+  }
+}
+
+function _initFirebaseApp(){
+  try{
+    if(firebase.apps&&firebase.apps.length) firebase.apps.forEach(function(a){try{a.delete();}catch(e){}});
+    firebase.initializeApp({
+      apiKey:S.fbConfig.apiKey,
+      authDomain:S.fbConfig.projectId+'.firebaseapp.com',
+      databaseURL:'https://'+S.fbConfig.projectId+'-default-rtdb.europe-west1.firebasedatabase.app',
+      projectId:S.fbConfig.projectId,
+      appId:S.fbConfig.appId
+    });
+    fbDB=firebase.database();
+    fbDB.ref('orders_v2').on('value',function(snap){
+      var prev=JSON.parse(JSON.stringify(S.orders));
+      S.orders=snap.val()||{};
+      save();
+      onFbUpdate(prev);
+    });
+    fbDB.ref('config').on('value',function(snap){
+      var val=snap.val();if(!val) return;
+      var localTs=LS.get('configTs')||0;
+      var localTablesTs=LS.get('tablesTs')||0;
+      var fbMenuTs=val.menuTs||0;
+      var fbTablesTs=val.tablesTs||0;
+      var changed=false;
+      if(val.menu&&val.menu.length&&fbMenuTs>=localTs){
+        S.menu=val.menu;LS.set('menu',val.menu);
+        if(val.courses&&val.courses.length){S.courses=val.courses;LS.set('courses',val.courses);}
+        if(val.menuCourses){S.menuCourses=Object.assign({breakfast:[],aperitivo:[],lunch:[],dinner:[],drinks:[]},val.menuCourses);LS.set('menuCourses',S.menuCourses);}
+        LS.set('configTs',fbMenuTs);
+        changed=true;
+      }
+      if(val.tables&&val.tables.length&&fbTablesTs>=localTablesTs){
+        S.tables=val.tables;LS.set('tables',val.tables);
+        LS.set('tablesTs',fbTablesTs);
+        changed=true;
+      }
+      if(changed){
+        try{buildCourseTabs();renderItems();buildTableGrid();buildAperTableGrid();reRenderAdmin();}catch(e){}
+      }
+    });
+    setSyncUI(true,'Live · Firebase');
+  }catch(e){console.error(e);setSyncUI(false,'Firebase error — check config');}
 }
 
 
@@ -5798,7 +5804,8 @@ function fmtTime(ts){if(!ts)return'';return new Date(ts).toLocaleTimeString([],{
 // ════════════════════════════════════════════
 //  INIT
 // ════════════════════════════════════════════
-initFirebase();
+// Wait for page fully loaded before connecting to Firebase
+window.addEventListener('load', function(){ initFirebase(); });
 // Open last screen or kitchen by default — skip role screen
 (function(){
   // Always open on home/role screen — navigate from there
