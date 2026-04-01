@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_66.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_67.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -11,8 +11,6 @@
 <meta name="apple-mobile-web-app-title" content="Cucina">
 <meta name="theme-color" content="#1A4422">
 <title>Cucina</title>
-<script src="./index_files/firebase-app-compat.js"></script>
-<script src="./index_files/firebase-database-compat.js"></script>
 <link href="./index_files/css2" rel="stylesheet">
 <style>
 :root {
@@ -573,7 +571,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
 /* Bottom action bar */
 .action-bar{position:fixed;bottom:0;left:0;right:0;background:var(--basil-deep);border-top:1px solid rgba(246,244,220,.1);padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;z-index:99}
 </style>
-</head>
+<script src="./index_files/firebase-app-compat.js"></script><script src="./index_files/firebase-database-compat.js"></script></head>
 <body>
 <div id="toast"></div>
 
@@ -1668,8 +1666,8 @@ function initFirebase(){
     _initFirebaseApp();
   } else {
     console.warn('Firebase SDK not in window, loading dynamically');
-    loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js',function(){
-      loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js',function(){
+    loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js',function(){
+      loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js',function(){
         _initFirebaseApp();
       });
     });
