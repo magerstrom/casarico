@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_67.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_68.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -1659,81 +1659,71 @@ var NTFY_KITCHEN='Notify-Casarico-Cucina';
 var NTFY_FOH='Notify-Casarico-Sala';
 
 function initFirebase(){
-  console.log('initFirebase called, firebase available:', !!window.firebase, 'config:', S.fbConfig&&S.fbConfig.projectId);
   if(!S.fbConfig||!S.fbConfig.apiKey){setSyncUI(false,'Setup Firebase in Admin → Setup');return;}
   setSyncUI(false,'Connecting…');
-  if(window.firebase){
-    _initFirebaseApp();
-  } else {
-    console.warn('Firebase SDK not in window, loading dynamically');
-    loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js',function(){
-      loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js',function(){
-        _initFirebaseApp();
-      });
+  loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js',function(){
+    loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js',function(){
+      try{
+        if(window.firebase&&firebase.apps.length) firebase.apps.forEach(function(a){try{a.delete();}catch(e){}});
+        firebase.initializeApp({
+          apiKey:S.fbConfig.apiKey,
+          authDomain:S.fbConfig.projectId+'.firebaseapp.com',
+          databaseURL:'https://'+S.fbConfig.projectId+'-default-rtdb.europe-west1.firebasedatabase.app',
+          projectId:S.fbConfig.projectId,
+          appId:S.fbConfig.appId
+        });
+        fbDB=firebase.database();
+        fbDB.ref('orders_v2').on('value',function(snap){
+          var prev=JSON.parse(JSON.stringify(S.orders));
+          S.orders=snap.val()||{};
+          save();
+          onFbUpdate(prev);
+        });
+        fbDB.ref('config').on('value',function(snap){
+          var val=snap.val();if(!val) return;
+          var localTs=LS.get('configTs')||0;
+          var localTablesTs=LS.get('tablesTs')||0;
+          var fbMenuTs=val.menuTs||0;
+          var fbTablesTs=val.tablesTs||0;
+          var changed=false;
+          if(val.menu&&val.menu.length&&fbMenuTs>=localTs){
+            S.menu=val.menu;LS.set('menu',val.menu);
+            if(val.courses&&val.courses.length){S.courses=val.courses;LS.set('courses',val.courses);}
+            if(val.menuCourses){S.menuCourses=Object.assign({breakfast:[],aperitivo:[],lunch:[],dinner:[],drinks:[]},val.menuCourses);LS.set('menuCourses',S.menuCourses);}
+            LS.set('configTs',fbMenuTs);
+            changed=true;
+          }
+          if(val.tables&&val.tables.length&&fbTablesTs>=localTablesTs){
+            S.tables=val.tables;LS.set('tables',val.tables);
+            LS.set('tablesTs',fbTablesTs);
+            changed=true;
+          }
+          if(val.history&&val.history.length){
+            var fbHistory=val.history;
+            var localKeys=new Set(S.history.map(function(h){return h.date+'|'+(h.sessionNum||1);}));
+            var merged=false;
+            fbHistory.forEach(function(h){
+              var k=h.date+'|'+(h.sessionNum||1);
+              if(!localKeys.has(k)){S.history.push(h);merged=true;}
+            });
+            if(merged){
+              S.history.sort(function(a,b){return new Date(b.endedAt||0)-new Date(a.endedAt||0);});
+              LS.set('history',S.history);
+              changed=true;
+            }
+          }
+          if(changed){
+            try{buildCourseTabs();renderItems();buildTableGrid();buildAperTableGrid();reRenderAdmin();}catch(e){}
+          }
+        });
+        setSyncUI(true,'Live · Firebase');
+        console.log('Firebase connected');
+      }catch(e){console.error('Firebase error:',e);setSyncUI(false,'Firebase error — check config');}
     });
-  }
+  });
 }
 
-function _initFirebaseApp(){
-  console.log('_initFirebaseApp called, apps:', firebase.apps&&firebase.apps.length);
-  try{
-    if(firebase.apps&&firebase.apps.length) firebase.apps.forEach(function(a){try{a.delete();}catch(e){}});
-    firebase.initializeApp({
-      apiKey:S.fbConfig.apiKey,
-      authDomain:S.fbConfig.projectId+'.firebaseapp.com',
-      databaseURL:'https://'+S.fbConfig.projectId+'-default-rtdb.europe-west1.firebasedatabase.app',
-      projectId:S.fbConfig.projectId,
-      appId:S.fbConfig.appId
-    });
-    fbDB=firebase.database();
-    fbDB.ref('orders_v2').on('value',function(snap){
-      var prev=JSON.parse(JSON.stringify(S.orders));
-      S.orders=snap.val()||{};
-      save();
-      onFbUpdate(prev);
-    });
-    fbDB.ref('config').on('value',function(snap){
-      var val=snap.val();if(!val) return;
-      var localTs=LS.get('configTs')||0;
-      var localTablesTs=LS.get('tablesTs')||0;
-      var fbMenuTs=val.menuTs||0;
-      var fbTablesTs=val.tablesTs||0;
-      var changed=false;
-      if(val.menu&&val.menu.length&&fbMenuTs>=localTs){
-        S.menu=val.menu;LS.set('menu',val.menu);
-        if(val.courses&&val.courses.length){S.courses=val.courses;LS.set('courses',val.courses);}
-        if(val.menuCourses){S.menuCourses=Object.assign({breakfast:[],aperitivo:[],lunch:[],dinner:[],drinks:[]},val.menuCourses);LS.set('menuCourses',S.menuCourses);}
-        LS.set('configTs',fbMenuTs);
-        changed=true;
-      }
-      if(val.tables&&val.tables.length&&fbTablesTs>=localTablesTs){
-        S.tables=val.tables;LS.set('tables',val.tables);
-        LS.set('tablesTs',fbTablesTs);
-        changed=true;
-      }
-      // Merge V1 history from Firebase into local history
-      if(val.history&&val.history.length){
-        var fbHistory=val.history;
-        var localKeys=new Set(S.history.map(function(h){return h.date+'|'+(h.sessionNum||1);}));
-        var merged=false;
-        fbHistory.forEach(function(h){
-          var k=h.date+'|'+(h.sessionNum||1);
-          if(!localKeys.has(k)){S.history.push(h);merged=true;}
-        });
-        if(merged){
-          S.history.sort(function(a,b){return new Date(b.endedAt||0)-new Date(a.endedAt||0);});
-          LS.set('history',S.history);
-          changed=true;
-        }
-      }
-      if(changed){
-        try{buildCourseTabs();renderItems();buildTableGrid();buildAperTableGrid();reRenderAdmin();}catch(e){}
-      }
-    });
-    setSyncUI(true,'Live · Firebase');
-    console.log('Firebase connected successfully');
-  }catch(e){console.error('_initFirebaseApp error:',e);setSyncUI(false,'Firebase error — check config');}
-}
+
 
 
 
@@ -4407,11 +4397,8 @@ function renderSeasonal(){
   var wSub=document.createElement('div');wSub.className='dash-section-sub';wSub.textContent=T('covers_per_day');
   weekSec.appendChild(wTitle);weekSec.appendChild(wSub);
 
-  // Build Mon→today (or Mon→Sun if today is Sun)
   var days=[];
-  var todayDow=today.getDay()||7; // 1=Mon, 7=Sun
-  var mondayOffset=todayDow-1; // days since Monday
-  for(var di=mondayOffset;di>=0;di--){var d=new Date(today);d.setDate(today.getDate()-di);days.push(d);}
+  for(var di=6;di>=0;di--){var d=new Date(today);d.setDate(today.getDate()-di);days.push(d);}
 
   var dateCovers={};var dateSvcBreak={};
   scope.forEach(function(h){
@@ -5831,19 +5818,7 @@ function fmtTime(ts){if(!ts)return'';return new Date(ts).toLocaleTimeString([],{
 // Wait for page fully loaded before connecting to Firebase
 window.addEventListener('load', function(){ initFirebase(); });
 
-// Auto-reconnect when app comes back to foreground (iPhone screen unlock)
-document.addEventListener('visibilitychange', function(){
-  if(document.visibilityState==='visible'){
-    if(!fbDB||!firebase||!firebase.apps||!firebase.apps.length){
-      initFirebase();
-    } else {
-      // Firebase SDK loaded but may have lost connection — ping to verify
-      fbDB.ref('.info/connected').once('value',function(snap){
-        if(!snap.val()) initFirebase();
-      });
-    }
-  }
-});
+
 // Open last screen or kitchen by default — skip role screen
 (function(){
   // Always open on home/role screen — navigate from there
