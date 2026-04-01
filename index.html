@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_33.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_56.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -299,9 +299,9 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
 .wst-ready{background:var(--lemon-pale);color:var(--basil)}
 .wst-collected{background:var(--fresh-pale);color:var(--basil)}
 
-.oc-dish{display:flex;align-items:center;gap:8px;padding:9px 16px;background:var(--paper-warm);margin:0 10px 5px;border-radius:10px}
-.oc-dish-name{flex:1;font-size:13px}
-.oc-dish-qty{font-size:12px;color:var(--ink-muted)}
+.oc-dish{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--paper-warm);margin:0 10px 5px;border-radius:10px}
+.oc-dish-name{flex:1;font-size:14px;font-weight:500;color:var(--ink)}
+.oc-dish-qty{font-size:16px;color:var(--ink);font-weight:700;min-width:28px;text-align:right}
 .oc-dish-status{font-size:18px}
 
 .oc-actions{padding:12px 14px 16px;display:flex;gap:8px;flex-wrap:wrap}
@@ -330,7 +330,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
 .kc-time.late{color:var(--passata);background:rgba(241,104,56,.1);font-weight:700;letter-spacing:.2px}
 
 .kc-wave{border-top:1px solid var(--border-soft)}
-.kc-wave-body{overflow:hidden;transition:max-height .25s ease,opacity .2s ease}
+.kc-wave-body{overflow:hidden;transition:max-height .25s ease,opacity .2s ease;padding-bottom:4px}
 .kc-wave.collapsed .kc-wave-body{max-height:0!important;opacity:0}
 .kc-wave.collapsed .kc-wave-hdr{opacity:.5}
 .kc-wave-hdr{cursor:pointer;user-select:none}
@@ -345,9 +345,9 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
 .kc-cb{width:24px;height:24px;border-radius:8px;border:2px solid var(--border);background:white;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .18s}
 .kc-cb.chk{background:var(--ready);border-color:var(--ready)}
 .kc-cb.chk::after{content:'';width:5px;height:9px;border:2.5px solid white;border-top:none;border-left:none;transform:rotate(45deg) translateY(-1px);display:block}
-.kc-dish-name{flex:1;font-size:14px}
+.kc-dish-name{flex:1;font-size:14px;font-weight:500;color:var(--ink)}
 .kc-dish-name.done{text-decoration:line-through;color:var(--ink-muted)}
-.kc-dish-qty{font-size:13px;color:var(--ink-muted)}
+.kc-dish-qty{font-size:16px;color:var(--ink);font-weight:700;min-width:28px;text-align:right}
 
 .kc-send-btn{margin:8px 12px 12px;width:calc(100% - 24px);padding:13px;border:none;border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
 .kc-send-btn:active{transform:scale(.97)}
@@ -380,11 +380,11 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
 .cal-nav-btn:active{background:var(--paper-warm)}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:4px}
 .cal-dow{font-size:9px;text-align:center;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.5px;padding-bottom:4px}
-.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:12px;font-weight:500;color:var(--ink-muted);position:relative;cursor:default}
-.cal-day.has-service{cursor:pointer;font-weight:700}
+.cal-day{width:100%;padding-bottom:100%;position:relative;border-radius:8px;cursor:default}.cal-day-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:var(--ink-muted)}
+.cal-day.has-service{cursor:pointer}.cal-day.has-service .cal-day-inner{font-weight:700}
 .cal-day.has-service:active{opacity:.8}
-.cal-day.selected{box-shadow:0 0 0 2px var(--lemon);background:var(--basil-deep);color:var(--lemon)}
-.cal-day.today{box-shadow:0 0 0 1.5px var(--ink-muted)}
+.cal-day.selected .cal-day-inner{box-shadow:0 0 0 2px var(--lemon);background:var(--basil-deep);color:var(--lemon);border-radius:8px}
+.cal-day.today .cal-day-inner{box-shadow:0 0 0 1.5px var(--ink-muted);border-radius:8px}
 .cal-day.empty{opacity:0}
 .cal-service-cards{margin-top:14px}
 
@@ -511,10 +511,67 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
 .day-detail{background:var(--paper-card);border:1px solid var(--border-soft);border-radius:var(--r);padding:12px 14px;margin-top:8px;box-shadow:0 1px 4px rgba(28,43,30,.06);display:none}
 .day-detail.open{display:block}
 
+
+/* ══════ V2 NEW STYLES ══════ */
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}.svc-grid .svc-card{padding:12px 14px}
+.svc-btn{padding:11px 8px;border-radius:var(--r);border:1.5px solid var(--border-soft);background:var(--paper-card);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--ink-muted);cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:6px;width:100%}
+.svc-btn:active{transform:scale(.96)}
+.svc-btn.sel{background:rgba(38,101,51,.1);border-color:var(--basil);border-width:2px;color:var(--basil);font-weight:600}
+.svc-btn.svc-dim,.svc-grid .svc-card.svc-dim{opacity:.38;pointer-events:none;cursor:default}
+.drinks-btn{width:100%;padding:13px 18px;border-radius:var(--r);border:1.5px solid rgba(184,122,42,.3);background:rgba(184,122,42,.06);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:var(--wave2);cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.drinks-btn.open{background:rgba(184,122,42,.12);border-width:2px}
+.drinks-btn:active{transform:scale(.98)}
+.drinks-builder{display:none;background:var(--paper-warm);border:1px solid var(--border-soft);border-radius:var(--r);padding:14px;margin-bottom:12px}.drinks-cart-row{display:flex;align-items:center;padding:7px 0;border-bottom:1px solid var(--border-soft)}.drinks-cart-row:last-child{border-bottom:none}.drinks-cart-name{flex:1;font-size:14px;font-weight:500;color:var(--ink)}.drinks-cart-qty{font-size:14px;font-weight:700;color:var(--ink)}
+.drinks-builder.open{display:block}
+.table-chip.has-order{border-color:var(--passata);border-width:2px;color:var(--passata);position:relative}
+.table-chip.has-order .chip-dot{width:6px;height:6px;background:var(--passata);border-radius:50%;position:absolute;top:4px;right:4px}
+.covers-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.covers-row .lbl{margin-bottom:0;flex-shrink:0}
+.covers-num{font-size:22px;font-weight:700;font-family:'Cormorant Garamond',serif;min-width:32px;text-align:center}
+.covers-adj{width:34px;height:34px;border-radius:9px;border:1.5px solid var(--border);background:var(--paper-card);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink);transition:all .15s;line-height:1}
+.covers-adj:active{background:var(--paper-warm)}
+.order-builder{display:none}
+.order-builder.open{display:block}
+.wave-row{display:flex;gap:5px;margin-bottom:12px;flex-wrap:wrap}
+.wave-btn{flex:1;min-width:60px;padding:8px 4px;border-radius:9px;border:1.5px solid var(--border-soft);background:var(--paper-card);font-size:11px;font-weight:600;cursor:pointer;text-align:center;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:4px;color:var(--ink-muted);letter-spacing:.3px;position:relative}
+.wave-btn.sel-w1{background:rgba(38,101,51,.15);border-color:var(--wave1);border-width:2px;color:var(--wave1)}
+.wave-btn.sel-w2{background:rgba(184,122,42,.15);border-color:var(--wave2);border-width:2px;color:var(--wave2)}
+.wave-btn.sel-w3{background:rgba(241,104,56,.15);border-color:var(--wave3);border-width:2px;color:var(--wave3)}
+.wave-btn.sel-w4{background:rgba(123,94,167,.15);border-color:var(--wave4);border-width:2px;color:var(--wave4)}
+.wave-btn .wdot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.drinks-block{border-top:1px solid var(--border-soft)}
+.drinks-block-hdr{padding:10px 18px 7px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.drinks-block-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--wave2);display:flex;align-items:center;gap:6px}
+.drinks-block-label::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--wave2);flex-shrink:0}
+.drinks-block-body{overflow:hidden;transition:max-height .25s ease,opacity .2s ease;max-height:0;opacity:0}
+.drinks-block.open .drinks-block-body{max-height:800px;opacity:1}
+.drinks-entry{padding:4px 14px 8px}
+.drinks-entry-time{font-size:10px;color:var(--ink-muted);margin-bottom:3px;font-style:italic}
+.drinks-item{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--paper-warm);border-radius:10px;margin:0 10px 5px}
+.drinks-item-name{flex:1;font-size:14px;font-weight:500;color:var(--ink)}
+.drinks-item-qty{font-size:14px;color:var(--ink);font-weight:700}
+.drink-card{background:var(--paper-card);border:1.5px solid var(--border-soft);border-radius:var(--r);padding:10px 12px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.dc-name{font-size:13px;font-weight:500;color:var(--ink);flex:1}
+.dc-row{display:flex;align-items:center;gap:4px}
+.dc-unit-label{font-size:9px;color:var(--ink-muted);letter-spacing:.3px;margin-right:1px}
+.dc-label{font-size:11px;color:var(--ink-muted)}
+.dc-controls{display:flex;align-items:center;gap:6px}
+.svc-type-picks{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:11px}
+.svc-pick{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--paper-card);font-size:12px;cursor:pointer;transition:all .18s;color:var(--ink-muted)}
+.svc-pick.on{background:var(--sage-pale);border-color:var(--sage);color:var(--sage);font-weight:500}
+.svc-tab-row{display:flex;gap:4px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;scrollbar-width:none}
+.svc-tab-row::-webkit-scrollbar{display:none}
+.svc-tab{flex-shrink:0;padding:7px 14px;border-radius:20px;border:1.5px solid var(--border-soft);background:var(--paper-card);font-size:12px;font-weight:500;color:var(--ink-muted);cursor:pointer;transition:all .18s}
+.svc-tab.active{background:var(--basil);border-color:var(--basil);color:var(--cream)}
+.wave-svc-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px;padding:0 14px}
+.wave-svc-tag{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:2px 7px;border-radius:8px;background:var(--paper-warm);color:var(--ink-muted)}
+.btn-drinks{background:rgba(184,122,42,.12);border:1px solid rgba(184,122,42,.3);color:var(--wave2);font-weight:600}
+.btn-drinks:active{background:rgba(184,122,42,.2)}
+
 /* Bottom action bar */
 .action-bar{position:fixed;bottom:0;left:0;right:0;background:var(--basil-deep);border-top:1px solid rgba(246,244,220,.1);padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;z-index:99}
 </style>
-<script src="./index_files/firebase-app-compat.js"></script><script src="./index_files/firebase-database-compat.js"></script></head>
+</head>
 <body>
 <div id="toast"></div>
 
@@ -542,9 +599,9 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
       <div class="role-text"><h3 id="role-admin-h3">Admin</h3></div>
     </div>
   </div>
-  <div class="sync-row"><span class="sdot on" id="sdot"></span><span id="slbl">Live · Firebase</span></div>
+  <div class="sync-row"><span class="sdot" id="sdot"></span><span id="slbl">Not connected</span></div>
   <div style="display:flex;justify-content:center;gap:8px;padding-bottom:8px">
-    <button class="lang-toggle-btn" data-lang="en" onclick="setLang(&#39;en&#39;)" style="border: 1px solid rgba(246, 244, 220, 0.2); border-radius: 8px; padding: 5px 16px; font-family: &quot;DM Sans&quot;, sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.18s; color: var(--basil); background: var(--lemon); letter-spacing: 0.5px;">EN</button>
+    <button class="lang-toggle-btn" data-lang="en" onclick="setLang(&#39;en&#39;)" style="border:1px solid rgba(246,244,220,.2);border-radius:8px;padding:5px 16px;font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px;font-weight:400;cursor:pointer;transition:all .18s;color:var(--cream-soft);background:transparent;letter-spacing:.5px">EN</button>
     <button class="lang-toggle-btn" data-lang="it" onclick="setLang(&#39;it&#39;)" style="border:1px solid rgba(246,244,220,.2);border-radius:8px;padding:5px 16px;font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px;font-weight:400;cursor:pointer;transition:all .18s;color:var(--cream-soft);background:transparent;letter-spacing:.5px">IT</button>
   </div>
 </div>
@@ -595,77 +652,99 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
   </div>
   <div class="tabbar">
     <button class="tab active" id="foh-t-new" onclick="fTab(&#39;new&#39;)"><span class="tab-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></span>Order</button>
-    <button class="tab" id="foh-t-orders" onclick="fTab(&#39;orders&#39;)"><span class="tab-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg></span>Tables<span class="nbadge" id="b-orders" style="display:none">0</span></button>
+    <button class="tab" id="foh-t-orders" onclick="fTab(&#39;orders&#39;)"><span class="tab-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg></span><span id="foh-t-orders-lbl">Tables</span><span class="nbadge" id="b-orders" style="display:none">0</span></button>
     <button class="tab" id="foh-t-collect" onclick="fTab(&#39;collect&#39;)"><span class="tab-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17h18"></path><path d="M5 17a7 7 0 0 1 14 0"></path><line x1="12" y1="3" x2="12" y2="10"></line></svg></span>Pass<span class="nbadge" id="b-collect" style="display:none">0</span></button>
   </div>
 
-  <!-- NEW ORDER PANE -->
+  <!-- ORDER TAB — v2 unified order builder -->
   <div id="foh-p-new" class="content">
 
-    <!-- Step 1: Service type -->
-    <span class="lbl" id="lbl-service-type">Service Type</span>
-    <div class="svc-selector">
-      <div class="svc-card" id="svc-breakfast" onclick="setServiceType(&#39;breakfast&#39;)">
-        <div class="svc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></div>
-        <div><div class="svc-name" id="svc-name-breakfast">Breakfast</div></div>
-      </div>
-      <div class="svc-card" id="svc-lunch" onclick="setServiceType(&#39;lunch&#39;)">
-        <div class="svc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17h18"></path><path d="M5 17a7 7 0 0 1 14 0"></path><line x1="12" y1="3" x2="12" y2="10"></line></svg></div>
-        <div><div class="svc-name" id="svc-name-lunch">Lunch</div></div>
-      </div>
-      <div class="svc-card" id="svc-aperitivo" onclick="setServiceType(&#39;aperitivo&#39;)">
-        <div class="svc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"></path><path d="M12 11v11"></path><path d="M20 2H4l4 9a4 4 0 0 0 8 0l4-9Z"></path></svg></div>
-        <div><div class="svc-name" id="svc-name-aperitivo">Aperitivo</div></div>
-      </div>
-      <div class="svc-card" id="svc-dinner" onclick="setServiceType(&#39;dinner&#39;)">
-        <div class="svc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg></div>
-        <div><div class="svc-name" id="svc-name-dinner">Dinner</div></div>
-      </div>
-    </div>
+    <!-- Existing order summary (shown when adding to order) -->
+    <div id="ato-summary" style="display:none;margin-bottom:12px"></div>
+    <!-- Step 1: Table selector -->
+    <span class="lbl" id="lbl-order-table">Table</span>
+    <div class="table-grid" id="order-table-grid"></div>
 
-    <!-- Aperitivo pane — simple: table + guests + note -->
-    <div id="aperitivo-pane">
-      <div class="svc-separator"></div>
-      <span class="lbl" id="lbl-aper-table">Table</span>
-      <div class="table-grid" id="aper-table-grid"><div class="table-chip" onclick="selTableFn(&#39;1 dentro&#39;)">1 dentro</div><div class="table-chip" onclick="selTableFn(&#39;2 dentro&#39;)">2 dentro</div><div class="table-chip" onclick="selTableFn(&#39;3 dentro&#39;)">3 dentro</div><div class="table-chip" onclick="selTableFn(&#39;4 dentro&#39;)">4 dentro</div><div class="table-chip" onclick="selTableFn(&#39;1 piazza&#39;)">1 piazza</div><div class="table-chip" onclick="selTableFn(&#39;2 piazza&#39;)">2 piazza</div><div class="table-chip" onclick="selTableFn(&#39;3 piazza&#39;)">3 piazza</div><div class="table-chip" onclick="selTableFn(&#39;4 piazza&#39;)">4 piazza</div><div class="table-chip" onclick="selTableFn(&#39;1 arco&#39;)">1 arco</div><div class="table-chip" onclick="selTableFn(&#39;2 arco&#39;)">2 arco</div></div>
-      <div style="height:12px"></div>
-      <span class="lbl" id="lbl-aper-guests">Guests</span>
-      <input class="inp" id="aper-guests" placeholder="Number of guests" type="number" min="1" max="40">
-      <span class="lbl" id="lbl-aper-notes">Notes (optional)</span>
-      <input class="inp" id="aper-notes" placeholder="e.g. no olives, extra focaccia…">
-      <button class="btn btn-sage" id="aper-send-btn" onclick="sendAperitivoOrder()" style="margin-bottom:8px">Send to Kitchen</button>
-      <button class="btn btn-outline btn-sm" onclick="clearNewOrder()">Clear</button>
-      <div style="height:20px"></div>
-    </div>
+    <!-- Step 2: Covers + order builder (appears after table selected) -->
+    <div id="covers-section" style="display:none">
+      <div style="height:10px"></div>
 
-    <!-- Standard order pane — lunch / breakfast / dinner -->
-    <div id="standard-order-pane">
-      <div class="svc-separator"></div>
-      <span class="lbl" id="lbl-table">Table</span>
-      <div class="table-grid" id="order-table-grid"><div class="table-chip" onclick="selTableFn(&#39;1 dentro&#39;)">1 dentro</div><div class="table-chip" onclick="selTableFn(&#39;2 dentro&#39;)">2 dentro</div><div class="table-chip" onclick="selTableFn(&#39;3 dentro&#39;)">3 dentro</div><div class="table-chip" onclick="selTableFn(&#39;4 dentro&#39;)">4 dentro</div><div class="table-chip" onclick="selTableFn(&#39;1 piazza&#39;)">1 piazza</div><div class="table-chip" onclick="selTableFn(&#39;2 piazza&#39;)">2 piazza</div><div class="table-chip" onclick="selTableFn(&#39;3 piazza&#39;)">3 piazza</div><div class="table-chip" onclick="selTableFn(&#39;4 piazza&#39;)">4 piazza</div><div class="table-chip" onclick="selTableFn(&#39;1 arco&#39;)">1 arco</div><div class="table-chip" onclick="selTableFn(&#39;2 arco&#39;)">2 arco</div></div>
-      <div style="height:12px"></div>
-      <span class="lbl" id="lbl-guests">Guests</span>
-      <input class="inp" id="f-guests" placeholder="Number of guests" type="number" min="1" max="40">
-      <div class="svc-separator" style="margin:18px 0 16px"></div>
-      <span class="lbl" id="lbl-wave">Wave for selected items</span>
-      <div class="wave-picker" id="wave-picker">
-        <button class="wave-pick-btn sel-w1" id="wp-1" onclick="setWave(1)"><svg width="8" height="8" viewBox="0 0 8 8" style="flex-shrink:0"><circle cx="4" cy="4" r="4" fill="#266533"></circle></svg> Wave 1</button>
-        <button class="wave-pick-btn" id="wp-2" onclick="setWave(2)"><svg width="8" height="8" viewBox="0 0 8 8" style="flex-shrink:0"><circle cx="4" cy="4" r="4" fill="#B87A2A"></circle></svg> Wave 2</button>
-        <button class="wave-pick-btn" id="wp-3" onclick="setWave(3)"><svg width="8" height="8" viewBox="0 0 8 8" style="flex-shrink:0"><circle cx="4" cy="4" r="4" fill="#F16838"></circle></svg> Wave 3</button>
-        <button class="wave-pick-btn" id="wp-4" onclick="setWave(4)"><svg width="8" height="8" viewBox="0 0 8 8" style="flex-shrink:0"><circle cx="4" cy="4" r="4" fill="#7B5EA7"></circle></svg> Wave 4</button>
+      <!-- Covers row -->
+      <div class="covers-row">
+        <span class="lbl" id="lbl-covers">Covers</span>
+        <button class="covers-adj" onclick="adjCovers(-1)" id="covers-minus" style="opacity:.3;pointer-events:none">−</button>
+        <span class="covers-num" id="covers-display" style="color:var(--passata)">0</span>
+        <button class="covers-adj" onclick="adjCovers(1)">+</button>
       </div>
-      <div style="height:14px"></div>
-      <span class="lbl" id="lbl-dietary-wave">Dietary / Notes</span>
-      <input class="inp" id="f-wave-notes" placeholder="Dietary note for this wave (optional)" style="font-size:13px">
-      <div style="height:14px"></div>
-      <span class="lbl" id="lbl-menu">Menu</span>
-      <div class="course-tabs" id="course-tabs"><div class="ctab active" onclick="setCourseFn(&#39;antipasti&#39;)">Antipasti</div><div class="ctab" onclick="setCourseFn(&#39;primi&#39;)">Primi</div><div class="ctab" onclick="setCourseFn(&#39;secondi&#39;)">Secondi</div><div class="ctab" onclick="setCourseFn(&#39;insalata&#39;)">Insalata</div><div class="ctab" onclick="setCourseFn(&#39;dolci&#39;)">Dolci</div></div>
-      <div class="items-grid" id="items-grid"><div class="item-card" onclick="tapItem(&#39;m1&#39;,&#39;Vitello tonnato&#39;,&#39;antipasti&#39;)"><span class="item-name">Vitello tonnato</span></div><div class="item-card" onclick="tapItem(&#39;m2&#39;,&#39;Battuta&#39;,&#39;antipasti&#39;)"><span class="item-name">Battuta</span></div><div class="item-card" onclick="tapItem(&#39;m3&#39;,&#39;Insalata russa&#39;,&#39;antipasti&#39;)"><span class="item-name">Insalata russa</span></div><div class="item-card" onclick="tapItem(&#39;m4&#39;,&#39;Flan&#39;,&#39;antipasti&#39;)"><span class="item-name">Flan</span></div><div class="item-card" onclick="tapItem(&#39;m5&#39;,&#39;Misto&#39;,&#39;antipasti&#39;)"><span class="item-name">Misto</span></div></div>
-      <div id="cart-area"></div>
-      <div style="height:14px"></div>
-      <button class="btn btn-sage" id="order-send-btn" onclick="sendOrder()" style="margin-bottom:8px">Send to Kitchen</button>
-      <button class="btn btn-outline btn-sm" onclick="clearNewOrder()">Clear</button>
-      <div style="height:20px"></div>
+
+      <!-- Waiter name -->
+      <div id="waiter-name-row" style="margin-bottom:10px">
+        <input class="inp" id="waiter-name-inp" placeholder="Your name" style="font-size:13px" oninput="S.waiterName=this.value;save()">
+      </div>
+      <!-- DRINKS card — same style as food cards, full width -->
+      <div class="svc-card" id="drinks-toggle-btn" onclick="toggleDrinksBuilder()" style="margin-bottom:8px;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div class="svc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"></path><line x1="12" y1="11" x2="12" y2="22"></line><path d="M5 3h14l-1.5 8.5A5 5 0 0 1 7.5 11.5L5 3z"></path></svg></div>
+          <div class="svc-name" id="lbl-drinks-btn">Drinks</div>
+        </div>
+        <span id="drinks-toggle-arrow" style="color:var(--ink-muted);font-size:14px">▸</span>
+      </div>
+
+      <!-- Drinks builder — expands below drinks button -->
+      <div class="drinks-builder" id="drinks-builder">
+        <!-- Category tabs to pick drinks -->
+        <div class="course-tabs" id="drink-cat-tabs"></div>
+        <div id="drink-items-list"></div>
+        <!-- Running order summary — shows all selected drinks across categories -->
+        <div id="drinks-cart" style="display:none;margin-top:12px;border-top:1px solid var(--border-soft);padding-top:10px"></div>
+        <input class="inp" id="drinks-notes" placeholder="Dietary note for drinks…" style="font-size:13px;margin-top:8px">
+      </div>
+
+      <!-- SERVICE TYPE cards 2x2 — v1 style -->
+      <div class="svc-grid" id="svc-grid">
+        <div class="svc-card" id="svc-btn-breakfast" onclick="selectSvcType(&#39;breakfast&#39;)">
+          <div class="svc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></div>
+          <div><div class="svc-name" id="svc-name-breakfast">Breakfast</div></div>
+        </div>
+        <div class="svc-card" id="svc-btn-aperitivo" onclick="selectSvcType(&#39;aperitivo&#39;)">
+          <div class="svc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"></path><path d="M12 11v11"></path><path d="M20 2H4l4 9a4 4 0 0 0 8 0l4-9Z"></path></svg></div>
+          <div><div class="svc-name" id="svc-name-aperitivo">Aperitivo</div></div>
+        </div>
+        <div class="svc-card" id="svc-btn-lunch" onclick="selectSvcType(&#39;lunch&#39;)">
+          <div class="svc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17h18"></path><path d="M5 17a7 7 0 0 1 14 0"></path><line x1="12" y1="3" x2="12" y2="10"></line></svg></div>
+          <div><div class="svc-name" id="svc-name-lunch">Lunch</div></div>
+        </div>
+        <div class="svc-card" id="svc-btn-dinner" onclick="selectSvcType(&#39;dinner&#39;)">
+          <div class="svc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg></div>
+          <div><div class="svc-name" id="svc-name-dinner">Dinner</div></div>
+        </div>
+      </div>
+
+      <!-- Order builder — appears after service type selected -->
+      <div class="order-builder" id="order-builder">
+        <div class="svc-separator" style="margin:8px 0 14px"></div>
+        <!-- Wave selector -->
+        <span class="lbl" id="lbl-wave-select">Wave for selected items</span>
+        <div class="wave-row" id="wave-row-btns"></div>
+        <!-- Course tabs — identical to v1 -->
+        <div class="course-tabs" id="course-tabs"></div>
+        <!-- Items grid — identical to v1 -->
+        <div class="items-grid" id="items-grid"></div>
+        <!-- Cart -->
+        <div id="cart-area"></div>
+        <!-- Dietary note at bottom -->
+        <div style="height:8px"></div>
+        <span class="lbl" id="lbl-dietary-food">Dietary / Notes</span>
+        <input class="inp" id="f-wave-notes" placeholder="Allergies, special requests…" style="font-size:13px">
+        <div style="height:8px"></div>
+      </div>
+
+      <!-- Single send button — always visible once table selected -->
+      <div id="send-bar" style="margin-top:12px;display:none">
+        <button class="btn btn-sage" id="order-send-btn" onclick="sendOrder()" style="width:100%;margin-bottom:8px">Confirm Order</button>
+        <button class="btn btn-outline btn-sm" id="btn-clear-order" onclick="clearNewOrder()" style="width:100%">Clear</button>
+        <div style="height:20px"></div>
+      </div>
     </div>
 
   </div>
@@ -693,45 +772,66 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
   </div>
   <div class="tabbar">
     <button class="tab active" id="adm-t-menu" onclick="aTab(&#39;menu&#39;)"><span class="tab-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>Menu</button>
-    <button class="tab" id="adm-t-tables" onclick="aTab(&#39;tables&#39;)"><span class="tab-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg></span>Tables</button>
+    <button class="tab" id="adm-t-tables" onclick="aTab(&#39;tables&#39;)"><span class="tab-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg></span><span id="adm-t-tables-lbl">Tables</span></button>
     <button class="tab" id="adm-t-stats" onclick="aTab(&#39;stats&#39;)"><span class="tab-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></span>Stats</button>
     <button class="tab" id="adm-t-setup" onclick="aTab(&#39;setup&#39;)"><span class="tab-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span>Setup</button>
   </div>
 
   <!-- MENU PANE -->
-  <div id="adm-p-menu" class="content" style="display: block;">
-    <!-- Add dish form -->
+  <div id="adm-p-menu" class="content">
+
+    <!-- Service type selector -->
+    <span class="lbl" id="adm-lbl-svc-menu">Service Menu</span>
+    <div class="svc-tab-row" id="adm-svc-tabs">
+      <button class="svc-tab active" id="adm-st-breakfast" onclick="setAdminSvcType(&#39;breakfast&#39;)">Breakfast</button>
+      <button class="svc-tab" id="adm-st-aperitivo" onclick="setAdminSvcType(&#39;aperitivo&#39;)">Aperitivo</button>
+      <button class="svc-tab" id="adm-st-lunch" onclick="setAdminSvcType(&#39;lunch&#39;)">Lunch</button>
+      <button class="svc-tab" id="adm-st-dinner" onclick="setAdminSvcType(&#39;dinner&#39;)">Dinner</button>
+      <button class="svc-tab" id="adm-st-drinks" onclick="setAdminSvcType(&#39;drinks&#39;)">Drinks</button>
+    </div>
+
+    <!-- Add dish/drink form — same for all, bottle toggle only for drinks -->
     <div class="add-form">
       <span class="lbl" id="adm-lbl-add-dish">Add New Dish</span>
       <input class="inp" id="a-dname" placeholder="Dish name" type="text">
       <span class="lbl" id="adm-lbl-course-type">Course Type</span>
-      <div class="type-chips" id="course-type-picker"><div class="type-chip">Antipasti</div><div class="type-chip">Primi</div><div class="type-chip">Secondi</div><div class="type-chip">Insalata</div><div class="type-chip">Dolci</div><div class="type-chip">Breakfast</div></div>
-      <button class="btn btn-sage btn-sm" id="adm-btn-add-dish" onclick="addDish()">+ Add New Dish</button>
+      <div class="type-chips" id="course-type-picker"></div>
+      <!-- Serving style — only shown for Drinks -->
+      <div id="adm-bottle-row" style="display:none;margin-bottom:10px">
+        <span class="lbl" id="adm-lbl-serving-style" style="font-size:10px;margin-bottom:6px">Serving Style</span>
+        <div class="type-chips" id="serving-style-picker">
+          <div class="type-chip sel" data-val="glass" onclick="selectServingStyle(&#39;glass&#39;)">Glass only</div>
+          <div class="type-chip" data-val="both" onclick="selectServingStyle(&#39;both&#39;)">Glass &amp; Bottle</div>
+          <div class="type-chip" data-val="bottle" onclick="selectServingStyle(&#39;bottle&#39;)">Bottle only</div>
+        </div>
+      </div>
+      <button class="btn btn-sage btn-sm" id="adm-btn-add-dish" onclick="addDish()">+ Add Dish</button>
     </div>
 
-    <!-- Course type manager -->
+    <!-- Course type manager — same for all -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
       <span class="lbl" id="adm-lbl-manage-ct" style="margin-bottom:0">Manage Course Types</span>
       <button class="btn btn-outline btn-xs btn-auto" id="adm-btn-add-type" onclick="showAddCourseType()">+ Add Type</button>
     </div>
-    <div class="type-chips" id="course-type-list" style="margin-bottom:14px"><div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; background: var(--paper-card); border: 1px solid var(--border-soft); border-radius: var(--r); padding: 8px 10px;"><span style="flex: 1 1 0%; font-size: 14px; font-weight: 500;">Antipasti</span><button type="button" class="icon-btn" style="opacity: 0.3;">↑</button><button type="button" class="icon-btn" style="opacity: 1;">↓</button><button type="button" class="icon-btn danger">×</button></div><div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; background: var(--paper-card); border: 1px solid var(--border-soft); border-radius: var(--r); padding: 8px 10px;"><span style="flex: 1 1 0%; font-size: 14px; font-weight: 500;">Primi</span><button type="button" class="icon-btn" style="opacity: 1;">↑</button><button type="button" class="icon-btn" style="opacity: 1;">↓</button><button type="button" class="icon-btn danger">×</button></div><div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; background: var(--paper-card); border: 1px solid var(--border-soft); border-radius: var(--r); padding: 8px 10px;"><span style="flex: 1 1 0%; font-size: 14px; font-weight: 500;">Secondi</span><button type="button" class="icon-btn" style="opacity: 1;">↑</button><button type="button" class="icon-btn" style="opacity: 1;">↓</button><button type="button" class="icon-btn danger">×</button></div><div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; background: var(--paper-card); border: 1px solid var(--border-soft); border-radius: var(--r); padding: 8px 10px;"><span style="flex: 1 1 0%; font-size: 14px; font-weight: 500;">Insalata</span><button type="button" class="icon-btn" style="opacity: 1;">↑</button><button type="button" class="icon-btn" style="opacity: 1;">↓</button><button type="button" class="icon-btn danger">×</button></div><div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; background: var(--paper-card); border: 1px solid var(--border-soft); border-radius: var(--r); padding: 8px 10px;"><span style="flex: 1 1 0%; font-size: 14px; font-weight: 500;">Dolci</span><button type="button" class="icon-btn" style="opacity: 1;">↑</button><button type="button" class="icon-btn" style="opacity: 1;">↓</button><button type="button" class="icon-btn danger">×</button></div><div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; background: var(--paper-card); border: 1px solid var(--border-soft); border-radius: var(--r); padding: 8px 10px;"><span style="flex: 1 1 0%; font-size: 14px; font-weight: 500;">Breakfast</span><button type="button" class="icon-btn" style="opacity: 1;">↑</button><button type="button" class="icon-btn" style="opacity: 0.3;">↓</button><button type="button" class="icon-btn danger">×</button></div></div>
+    <div class="type-chips" id="course-type-list" style="margin-bottom:14px"></div>
 
     <hr class="sep">
     <span class="lbl" id="adm-lbl-all-dishes">All Dishes</span>
-    <div id="admin-dish-list"><div style="margin-bottom: 16px;"><div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 18px; font-weight: 600; margin-bottom: 7px; color: var(--ink);">Antipasti</div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Vitello tonnato</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Battuta</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Insalata russa</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Flan</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Misto</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div></div><div style="margin-bottom: 16px;"><div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 18px; font-weight: 600; margin-bottom: 7px; color: var(--ink);">Primi</div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Agnolotti</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Ravioli</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Tajarin al ragù</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Lasagna Rossa</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Lasagna Verde</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div></div><div style="margin-bottom: 16px;"><div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 18px; font-weight: 600; margin-bottom: 7px; color: var(--ink);">Secondi</div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Guancia di manzo</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Spezzatino</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Pollo al curry</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Trota</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div></div><div style="margin-bottom: 16px;"><div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 18px; font-weight: 600; margin-bottom: 7px; color: var(--ink);">Insalata</div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Caesar salad</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div></div><div style="margin-bottom: 16px;"><div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 18px; font-weight: 600; margin-bottom: 7px; color: var(--ink);">Dolci</div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Torta di mele</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Torta di arance</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Tiramisù</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Panna cotta</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Gelato Torrone</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Gelato Cannella</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Sorbetto Pesca</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Sorbetto Ananas</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div></div></div></div></div>
-    <button class="btn btn-sage btn-sm" style="width:100%;margin-top:14px" onclick="saveAndSyncMenu()">Save &amp; Sync Menu →</button>
+    <div id="admin-dish-list"></div>
+
+    <button class="btn btn-sage btn-sm" id="adm-btn-save-menu" style="width:100%;margin-top:14px" onclick="saveAndSyncMenu()">Save &amp; Sync Menu →</button>
   </div>
 
   <!-- TABLES PANE -->
   <div id="adm-p-tables" class="content" style="display:none">
     <div class="add-form">
       <span class="lbl" id="adm-lbl-add-table">Add Table</span>
-      <input class="inp" id="a-tname" placeholder="Table name e.g. 1 piazza" type="text">
+      <input class="inp" id="a-tname" placeholder="Table name e.g. 1, 2A, Window, Terrace" type="text">
       <button class="btn btn-sage btn-sm" id="adm-btn-add-table" onclick="addTable()">+ Add Table</button>
     </div>
     <span class="lbl" id="adm-lbl-tables">Tables</span>
     <div class="table-admin-list" id="admin-table-list"></div>
-    <button class="btn btn-sage btn-sm" style="width:100%;margin-top:14px" onclick="saveAndSyncTables()">Save &amp; Sync Tables →</button>
+    <button class="btn btn-sage btn-sm" id="adm-btn-save-tables" style="width:100%;margin-top:14px" onclick="saveAndSyncTables()">Save &amp; Sync Tables →</button>
   </div>
 
   <!-- STATS PANE -->
@@ -770,11 +870,11 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
       <span class="lbl" id="setup-notif-lbl">Notification Role</span>
       <p style="font-size:12px;color:var(--ink-muted);margin-bottom:10px;line-height:1.5" id="notif-desc">Install the free <strong>ntfy</strong> app, subscribe to the channel below. Kitchen gets urgent alerts, Sala gets standard.</p>
       <div style="display:flex;gap:8px;margin-bottom:10px">
-        <button class="btn btn-sm" id="notif-btn-foh" onclick="setNotifRole(&#39;foh&#39;)" style="flex: 1 1 0%; background: var(--basil); color: var(--cream);">FOH</button>
-        <button class="btn btn-sm" id="notif-btn-kitchen" onclick="setNotifRole(&#39;kitchen&#39;)" style="flex: 1 1 0%; background: var(--paper-warm); color: var(--ink);">Kitchen</button>
+        <button class="btn btn-sm" id="notif-btn-foh" onclick="setNotifRole(&#39;foh&#39;)" style="flex:1">FOH</button>
+        <button class="btn btn-sm" id="notif-btn-kitchen" onclick="setNotifRole(&#39;kitchen&#39;)" style="flex:1">Kitchen</button>
       </div>
-      <button class="btn btn-outline btn-sm" id="notif-allow-btn" onclick="enableNotifications()" style="display: none;">Allow Notifications</button>
-      <p style="font-size:11px;color:var(--ink-muted);margin-top:6px" id="notif-status-lbl">Install <strong>ntfy</strong> app → subscribe to: <strong>Notify-Casarico-Sala</strong></p>
+      <button class="btn btn-outline btn-sm" id="notif-allow-btn" onclick="enableNotifications()">Allow Notifications</button>
+      <p style="font-size:11px;color:var(--ink-muted);margin-top:6px" id="notif-status-lbl"></p>
     </div>
     <hr class="sep">
     <div class="add-form">
@@ -793,7 +893,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
     <div class="sheet-title" id="edit-dish-title">Edit Dish</div>
     <span class="lbl" id="edit-dish-name-lbl">Name</span>
     <input class="inp" id="ed-name" type="text">
-    <span class="lbl">Course Type</span>
+    <span class="lbl" id="edit-dish-course-lbl">Course Type</span>
     <div class="type-chips" id="ed-course-picker"></div>
     <div style="display:flex;gap:8px;margin-top:8px">
       <button class="btn btn-sage" onclick="saveEditDish()">Save Changes</button>
@@ -885,14 +985,22 @@ var LS={
 
 var S={
   pin:       LS.get('pin')||'1234',
-  courses:   LS.get('courses')||['antipasti','primi','secondi','insalata','dolci','breakfast'],
+  courses:   LS.get('courses')||['antipasti','primi','secondi','insalata','dolci'],
+  menuCourses: LS.get('menuCourses')||{
+    breakfast:[],
+    aperitivo:[],
+    lunch:['antipasti','primi','secondi','insalata','dolci'],
+    dinner:['antipasti','primi','secondi','insalata','dolci'],
+    drinks:[]
+  },
   menu:      LS.get('menu')||defaultMenu(),
   tables:    LS.get('tables')||defaultTables(),
   history:   LS.get('history')||[],
   historicalData: LS.get('historicalData')||{},  // {year:{dateStr:covers,...}}
   notifRole: LS.get('notifRole')||'foh',  // 'foh' or 'kitchen'
   fbConfig:  LS.get('fbConfig')||{apiKey:'AIzaSyCkBhMmFVblDVLIwAfBDE_RQ6_FO-TH5vA',projectId:'casarico-1e057',appId:'1:56749328502:web:d879238d19ceef05333757'},
-  orders:    LS.get('orders')||{}
+  orders:    LS.get('orders')||{},
+
 };
 
 
@@ -924,7 +1032,7 @@ var STRINGS={
     wave_note_placeholder:'Dietary note for this wave (optional)',
     wave1:'Wave 1',wave2:'Wave 2',wave3:'Wave 3',wave4:'Wave 4',
     first_out:'First out',second:'Second',third:'Third',
-    send_to_kitchen:'Send to Kitchen',clear:'Clear',
+    send_to_kitchen:'Confirm Order',new_order_tab:'New Order',clear:'Clear',
     add_to_order:'New Order',add_to_existing:'+ Add to Order',adding_to_order:'Adding to existing order',wave_hint:'Select wave and dishes. A new wave will be created if needed.',
     adding:'Adding:',send_another_round:'Send Another Round',
     another_round_title:'Another round for Table',
@@ -1027,6 +1135,48 @@ var STRINGS={
     adding_to:'Add to Table',wave_existing:'(existing)',wave_new:'(new)',
     service_num:'Service',session_label:'Service',
     swipe_delete:'Delete',
+    drinks:'Drinks',bevande:'Drinks',confirm_drinks:'Confirm Drinks',
+    drinks_note_ph:'Drinks note (allergies, preferences…)',
+    glass:'gls',bottle:'btl',qty:'Qty',drinks_btn:'Drinks',times_glass:'× gls',times_bottle:'× btl',
+    wave_for_items:'Wave for selected items',
+    dietary_food:'Dietary / Notes',
+    dietary_drinks:'Dietary note for drinks…',
+    send_to_kitchen:'Confirm Order',new_order_tab:'New Order',
+    confirm_drinks:'Confirm Drinks',
+    clear:'Clear',
+    order_summary:'Order Summary',
+    all_dishes:'All Dishes',
+    manage_course_types:'Manage Course Types',
+    save_sync_menu:'Save & Sync Menu →',
+    save_sync_tables:'Save & Sync Tables →',
+    service_menu_label:'Service Menu',
+    add_new_dish:'Add New Dish',
+    course_type_label:'Course Type',
+    manage_drink_cats:'Manage Drink Categories',
+    serving_style:'Serving Style',
+    available_by_bottle:'Available by bottle',
+    add_new_drink:'Add New Drink',
+    add_drink:'+ Add Drink',
+    add_dish:'+ Add Dish',
+    add_type:'+ Add Type',
+    your_name_ph:'Your name',
+    wave_label_lc:'Wave',
+    glass_only:'Glass only',
+    bottle_only:'Bottle only',
+    glass_and_bottle:'Glass & Bottle',
+    no_drinks:'No drinks yet',
+    add_to_table:'Add to table — no kitchen',
+    primary_svc:'Primary service type (for stats)',
+    service_menu:'Service Menu',
+    select_svc_type:'Select service type to edit',
+    available_in:'Available in',
+    bottle_available:'Available by bottle',
+    drink_categories:'Drink Categories',
+    add_drink_cat:'+ Add Category',
+    drink_added:'Drink added',
+    drinks_confirmed:'Drinks added to table',
+    svc_breakfast:'Breakfast',svc_aperitivo:'Aperitivo',svc_lunch:'Lunch',svc_dinner:'Dinner',svc_drinks:'Drinks',
+    cover_adj:'Covers',
   },
   it:{
     // Ruoli
@@ -1050,7 +1200,7 @@ var STRINGS={
     wave_note_placeholder:'Note dietetiche per questa uscita (opzionale)',
     wave1:'Uscita 1',wave2:'Uscita 2',wave3:'Uscita 3',wave4:'Uscita 4',
     first_out:'Prima uscita',second:'Seconda',third:'Terza',
-    send_to_kitchen:'Manda in cucina',clear:'Cancella',
+    send_to_kitchen:'Conferma ordine',new_order_tab:'Nuovo ordine',clear:'Cancella',
     add_to_order:'Nuovo ordine',add_to_existing:'+ Aggiungi all\'ordine',adding_to_order:'Aggiunta a ordine esistente',wave_hint:'Seleziona uscita e piatti. Una nuova uscita sar\u00e0 creata se necessario.',
     adding:'Aggiungendo:',send_another_round:'Altro giro',
     another_round_title:'Altro giro per Tavolo',
@@ -1153,6 +1303,69 @@ var STRINGS={
     adding_to:'Aggiungi al Tavolo',wave_existing:'(esistente)',wave_new:'(nuova)',
     service_num:'Servizio',session_label:'Servizio',
     swipe_delete:'Elimina',
+    drinks:'Bevande',bevande:'Bevande',confirm_drinks:'Conferma bevande',
+    drinks_note_ph:'Note bevande (allergie, preferenze…)',
+    glass:'cal',bottle:'btg',qty:'Qt',drinks_btn:'Bevande',times_glass:'× cal',times_bottle:'× btg',
+    wave_for_items:'Uscita per i piatti selezionati',
+    dietary_food:'Note alimentari / Intolleranze',
+    dietary_drinks:'Note bevande…',
+    send_to_kitchen:'Conferma ordine',new_order_tab:'Nuovo ordine',
+    confirm_drinks:'Conferma bevande',
+    clear:'Cancella',
+    order_summary:'Riepilogo ordine',
+    all_dishes:'Tutti i piatti',
+    manage_course_types:'Gestisci tipi portata',
+    save_sync_menu:'Salva e sincronizza menu →',
+    save_sync_tables:'Salva e sincronizza tavoli →',
+    service_menu_label:'Menu servizio',
+    add_new_dish:'Aggiungi piatto',
+    course_type_label:'Tipo portata',
+    manage_drink_cats:'Gestisci categorie bevande',
+    serving_style:'Tipo di servizio',
+    available_by_bottle:'Disponibile in bottiglia',
+    add_new_drink:'Aggiungi bevanda',
+    add_drink:'+ Aggiungi bevanda',
+    add_dish:'+ Aggiungi piatto',
+    add_type:'+ Aggiungi tipo',
+    your_name_ph:'Il tuo nome',
+    wave_label_lc:'Uscita',
+    glass_only:'Solo calice',
+    bottle_only:'Solo bottiglia',
+    glass_and_bottle:'Calice e bottiglia',
+    covers:'Coperti',
+    new_order:'Nuovo ordine',
+    tables:'Tavoli',
+    add_to_order:'Nuovo ordine',
+    pass_tab:'Il pass',
+    no_drinks:'Nessuna bevanda',
+    add_to_table:'Aggiungi al tavolo — senza cucina',
+    primary_svc:'Servizio principale (per le statistiche)',
+    service_menu:'Menu di servizio',
+    select_svc_type:'Seleziona tipo di servizio da modificare',
+    available_in:'Disponibile in',
+    bottle_available:'Disponibile in bottiglia',
+    drink_categories:'Categorie bevande',
+    add_drink_cat:'+ Aggiungi categoria',
+    drink_added:'Bevanda aggiunta',
+    drinks_confirmed:'Bevande aggiunte al tavolo',
+    svc_breakfast:'Colazione',svc_aperitivo:'Aperitivo',svc_lunch:'Pranzo',svc_dinner:'Cena',svc_drinks:'Bevande',
+    wave_for_items:'Uscita per i piatti selezionati',
+    clear:'Cancella',
+    send_to_kitchen:'Conferma ordine',new_order_tab:'Nuovo ordine',
+    confirm_drinks:'Conferma bevande',
+    dietary_food:'Note alimentari / Intolleranze',
+    add_table:'Aggiungi tavolo',
+    save_sync_tables:'Salva e sincronizza tavoli →',
+    save_sync_menu:'Salva e sincronizza menu →',
+    all_dishes:'Tutti i piatti',
+    manage_course_types:'Gestisci tipi portata',
+    serving_style:'Tipo di servizio',
+    course_type_label:'Tipo portata',
+    add_new_dish:'Aggiungi piatto',
+    service_menu_label:'Menu servizio',
+    your_name:'Il tuo nome',
+    dietary:'Note alimentari',
+    cover_adj:'Coperti',
   }
 };
 
@@ -1176,6 +1389,43 @@ function setLang(l){
 }
 
 function updateLangToggle(){
+  var dBtn=document.getElementById('lbl-drinks-btn');
+  if(dBtn) dBtn.textContent=T('drinks_btn')||'Drinks';
+  // Update all translatable labels
+  var labels={
+    'lbl-covers': T('covers')||'Covers',
+    'lbl-wave-select': T('wave_for_items')||'Wave for selected items',
+    'lbl-dietary-food': T('dietary_food')||'Dietary / Notes',
+    'order-send-btn': T('send_to_kitchen')||'Send to Kitchen',
+    'btn-clear-order': T('clear')||'Clear',
+    'lbl-order-table': T('table_label')||'Table',
+    'svc-name-breakfast': T('breakfast')||'Breakfast',
+    'svc-name-aperitivo': T('aperitivo')||'Aperitivo',
+    'svc-name-lunch': T('lunch')||'Lunch',
+    'svc-name-dinner': T('dinner')||'Dinner',
+    // Admin labels
+    'adm-lbl-svc-menu': T('service_menu_label')||'Service Menu',
+    'adm-lbl-add-dish': T('add_new_dish')||'Add New Dish',
+    'adm-lbl-course-type': T('course_type_label')||'Course Type',
+    'adm-lbl-serving-style': T('serving_style')||'Serving Style',
+    'adm-lbl-manage-ct': T('manage_course_types')||'Manage Course Types',
+    'adm-lbl-all-dishes': T('all_dishes')||'All Dishes',
+    'adm-btn-save-menu': T('save_sync_menu')||'Save & Sync Menu →',
+    'adm-lbl-tables': T('tables')||'Tables',
+    'adm-btn-save-tables': T('save_sync_tables')||'Save & Sync Tables →',
+    'adm-t-tables-lbl': T('tables')||'Tables',
+    'foh-t-orders-lbl': T('tables')||'Tables',
+    // Edit overlay
+    'edit-dish-course-lbl': T('course_type_label')||'Course Type',
+  };
+  Object.keys(labels).forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.textContent=labels[id];
+  });
+  // Placeholders
+  var wni=document.getElementById('waiter-name-inp');if(wni) wni.placeholder=T('your_name_ph')||'Your name';
+  var dn=document.getElementById('drinks-notes');if(dn) dn.placeholder=T('dietary_drinks')||'Dietary note for drinks…';
+  var fn=document.getElementById('f-wave-notes');if(fn) fn.placeholder=T('dietary_food')||'Allergies, special requests…';
   document.querySelectorAll('.lang-toggle-btn').forEach(function(btn){
     var isActive=btn.dataset.lang===lang;
     btn.style.background=isActive?'var(--lemon)':'transparent';
@@ -1357,6 +1607,8 @@ function save(){
   LS.set('tables',S.tables); LS.set('history',S.history);
   LS.set('fbConfig',S.fbConfig); LS.set('orders',S.orders); LS.set('historicalData',S.historicalData);
   LS.set('notifRole',S.notifRole);
+  LS.set('waiterName',S.waiterName||'');
+  LS.set('menuCourses',S.menuCourses);
   // Orders always sync to Firebase in real time
   // Menu/tables only sync when Save & Sync button is tapped
 }
@@ -1421,7 +1673,7 @@ function initFirebase(){
           appId:S.fbConfig.appId
         });
         fbDB=firebase.database();
-        fbDB.ref('orders').on('value',function(snap){
+        fbDB.ref('orders_v2').on('value',function(snap){
           var prev=JSON.parse(JSON.stringify(S.orders));
           S.orders=snap.val()||{};
           save();
@@ -1439,6 +1691,7 @@ function initFirebase(){
           if(val.menu&&val.menu.length&&fbMenuTs>=localTs){
             S.menu=val.menu;LS.set('menu',val.menu);
             if(val.courses&&val.courses.length){S.courses=val.courses;LS.set('courses',val.courses);}
+            if(val.menuCourses){S.menuCourses=Object.assign({breakfast:[],aperitivo:[],lunch:[],dinner:[],drinks:[]},val.menuCourses);LS.set('menuCourses',S.menuCourses);}
             LS.set('configTs',fbMenuTs);
             changed=true;
           }
@@ -1546,8 +1799,9 @@ function fbUpdate(path,val){
   }
 }
 function fbPush(path,val,cb){
-  if(fbDB){var r=fbDB.ref(path).push(val);if(cb)cb(r.key);}
-  else{var k='loc_'+Date.now();S.orders[k]=val;save();if(cb)cb(k);if(currentScreen==='s-kitchen')renderKitchen();}
+  var fbPath=path==='orders'?'orders_v2':path;
+  if(fbDB){var r=fbDB.ref(fbPath).push(val);if(cb)cb(r.key);}
+  else{var k='loc_v2_'+Date.now();S.orders[k]=val;save();if(cb)cb(k);if(currentScreen==='s-kitchen')renderKitchen();}
 }
 function fbRemove(path){
   if(fbDB){fbDB.ref(path).remove();}
@@ -1588,7 +1842,7 @@ function updateTopbarRoles(){
 
 function showView(view){
   if(view==='kitchen'){show('s-kitchen');updateLangToggle();renderKitchen();}
-  else if(view==='foh'){show('s-foh');updateLangToggle();fTab('new');buildTableGrid();buildCourseTabs();renderItems();renderOrdersList();renderCollectList();updateFOHBadges();}
+  else if(view==='foh'){show('s-foh');updateLangToggle();fTab('new');renderOrdersList();renderCollectList();updateFOHBadges();}
   else if(view==='admin'){pEntry='';updateDots();if(document.getElementById('pin-err'))document.getElementById('pin-err').textContent='';renderPinScreen();show('s-pin');}
 }
 
@@ -1596,7 +1850,7 @@ function goRole(role){
   updateTopbarRoles();
   if(role==='admin'){pEntry='';updateDots();document.getElementById('pin-err').textContent='';renderPinScreen();show('s-pin');}
   else if(role==='kitchen'){show('s-kitchen');updateLangToggle();renderKitchen();}
-  else if(role==='foh'){show('s-foh');updateLangToggle();fTab('new');buildTableGrid();buildCourseTabs();renderItems();renderOrdersList();renderCollectList();updateFOHBadges();}
+  else if(role==='foh'){show('s-foh');updateLangToggle();fTab('new');renderOrdersList();renderCollectList();updateFOHBadges();}
 }
 
 // ════════════════════════════════════════════
@@ -1614,27 +1868,528 @@ function checkPin(){
 // ════════════════════════════════════════════
 //  FOH — NEW ORDER
 // ════════════════════════════════════════════
-var selTable=null, selCourse=null, selWave=1, selServiceType=null;
-var cart=[]; // [{id,name,course,qty,wave}]
+// V1 vars replaced by v2 order state — declared in v2 order logic block
 
-function setServiceType(type){
-  selServiceType=type;
-  selCourse=null; // Reset course selection when switching service type
-  // Highlight selected card
-  ['lunch','breakfast','aperitivo','dinner'].forEach(function(t){
-    var el=document.getElementById('svc-'+t);
-    if(el) el.classList.toggle('sel',t===type);
-  });
-  // Show correct sub-pane
-  var isAper=type==='aperitivo';
-  document.getElementById('aperitivo-pane').style.display=isAper?'block':'none';
-  document.getElementById('standard-order-pane').style.display=isAper?'none':'block';
-  if(isAper){
-    buildAperTableGrid();
+// ════════════════════════════════════════════
+//  V2 ORDER BUILDER
+// ════════════════════════════════════════════
+var selOrderTable='';
+var selCovers=0;
+var selSvcType='';
+var selPrimarySvc='';
+var selWave=1;
+var selCourse=null;
+var cart={};
+var drinksCart=[];
+var selDrinkCat='';
+var editingOrderKey='';
+
+function initOrderTab(){
+  selOrderTable='';selCovers=0;selWave=1;selSvcType='';selPrimarySvc='';
+  selCourse=null;cart={};drinksCart=[];editingOrderKey='';
+  buildTableGrid();
+  var cs=document.getElementById('covers-section');
+  if(cs) cs.style.display='none';
+  var cd=document.getElementById('covers-display');
+  if(cd){cd.textContent='0';cd.style.color='var(--passata)';}
+  var mn=document.getElementById('covers-minus');
+  if(mn){mn.style.opacity='0.3';mn.style.pointerEvents='none';}
+  var wni=document.getElementById('waiter-name-inp');
+  if(wni) wni.value=S.waiterName||'';
+  var ob=document.getElementById('order-builder');
+  if(ob) ob.classList.remove('open');
+  // Clear ATO summary — must not persist between sessions
+  var as=document.getElementById('ato-summary');
+  if(as){as.style.display='none';as.innerHTML='';}
+  closeDrinksBuilder();
+  updateSvcButtons();
+}
+
+function closeDrinksBuilder(){
+  var db=document.getElementById('drinks-builder');if(db)db.classList.remove('open');
+  var dtb=document.getElementById('drinks-toggle-btn');if(dtb)dtb.classList.remove('sel');
+  var arr=document.getElementById('drinks-toggle-arrow');if(arr)arr.textContent='\u25b8';
+  var dc=document.getElementById('drinks-cart');if(dc){dc.style.display='none';dc.innerHTML='';};
+}
+
+function adjCovers(delta){
+  if(selCovers===0&&delta<0) return;
+  selCovers=Math.max(0,Math.min(40,(selCovers||0)+delta));
+  var cd=document.getElementById('covers-display');
+  if(cd){cd.textContent=selCovers;cd.style.color=selCovers===0?'var(--passata)':'';}
+  var minus=document.getElementById('covers-minus');
+  if(minus){
+    minus.style.opacity=selCovers===0?'0.3':'1';
+    minus.style.pointerEvents=selCovers===0?'none':'';
+  }
+  if(editingOrderKey&&S.orders[editingOrderKey]){
+    S.orders[editingOrderKey].guests=selCovers;
+    if(fbDB) fbDB.ref('orders_v2/'+editingOrderKey+'/guests').set(selCovers);
+    else save();
+    renderOrdersList();renderKitchen();
+  }
+}
+
+function toggleDrinksBuilder(){
+  var builder=document.getElementById('drinks-builder');
+  var btn=document.getElementById('drinks-toggle-btn');
+  var arrow=document.getElementById('drinks-toggle-arrow');
+  if(!builder) return;
+  var isOpen=builder.classList.contains('open');
+  if(isOpen){
+    builder.classList.remove('open');if(btn)btn.classList.remove('sel');if(arrow)arrow.textContent='\u25b8';
   } else {
-    buildTableGrid();
-    buildCourseTabs();
-    renderItems();
+    builder.classList.add('open');if(btn)btn.classList.add('sel');if(arrow)arrow.textContent='\u25be';
+    buildDrinkCatTabs();renderDrinkItems();
+  }
+}
+
+
+function renderDrinksCart(){
+  var el=document.getElementById('drinks-cart');
+  if(!el) return;
+  var items=drinksCart.filter(function(i){return i.qtyGlass>0||(i.qtyBottle||0)>0;});
+  if(!items.length){el.style.display='none';el.innerHTML='';return;}
+  el.style.display='';
+  el.innerHTML='';
+  // Header
+  var hdr=document.createElement('div');
+  hdr.style.cssText='font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-muted);margin-bottom:6px';
+  hdr.textContent='Order Summary';
+  el.appendChild(hdr);
+  items.forEach(function(item){
+    var row=document.createElement('div');
+    row.className='drinks-cart-row';
+    var name=document.createElement('span');
+    name.className='drinks-cart-name';
+    name.textContent=item.name;
+    var qStr='';
+    var srv2=item.serving||'glass';
+    if(item.qtyGlass>0) qStr+=item.qtyGlass+'× '+T('glass');
+    if((item.qtyBottle||0)>0) qStr+=(qStr?' · ':'')+item.qtyBottle+'× '+T('bottle');
+    var qty=document.createElement('span');
+    qty.className='drinks-cart-qty';
+    qty.textContent=qStr;
+    // Tap to remove from cart entirely
+    var del=document.createElement('button');
+    del.className='qty-btn';del.textContent='✕';
+    del.style.marginLeft='8px';
+    del.onclick=(function(id){return function(){
+      var idx=drinksCart.findIndex(function(i){return i.id===id;});
+      if(idx>-1) drinksCart.splice(idx,1);
+      renderDrinkItems();renderDrinksCart();
+    };})(item.id);
+    row.appendChild(name);row.appendChild(qty);row.appendChild(del);
+    el.appendChild(row);
+  });
+}
+
+function isWaterItem(item){var cat=(item.category||'').toLowerCase();return cat==='water'||cat==='acqua';}
+
+function buildDrinkCatTabs(){
+  var el=document.getElementById('drink-cat-tabs');
+  if(!el) return;
+  el.innerHTML='';
+  var cats=typeof getMenuCourses==='function'?getMenuCourses('drinks'):(S.drinkCats||[]);
+  if(!cats.length){el.innerHTML='<p style="font-size:12px;color:var(--ink-muted)">Add drink categories in Admin first</p>';return;}
+  if(!selDrinkCat||cats.indexOf(selDrinkCat)===-1) selDrinkCat=cats[0];
+  cats.forEach(function(cat){
+    var btn=document.createElement('button');
+    btn.className='ctab'+(cat===selDrinkCat?' active':'');
+    btn.textContent=capFirst(cat.replace(/_/g,' '));
+    btn.onclick=(function(c){return function(){selDrinkCat=c;buildDrinkCatTabs();renderDrinkItems();};})(cat);
+    el.appendChild(btn);
+  });
+}
+
+function renderDrinkItems(){
+  var el=document.getElementById('drink-items-list');
+  if(!el) return;
+  el.innerHTML='';
+  var drinks=S.menu.filter(function(d){return d.menu==='drinks'&&d.active&&(!selDrinkCat||d.course===selDrinkCat);});
+  if(!drinks.length){
+    el.innerHTML='<p style="font-size:13px;color:var(--ink-muted);padding:10px 0">No drinks in this category</p>';
+    return;
+  }
+  drinks.forEach(function(d){
+    var inCart=drinksCart.find(function(i){return i.id===d.id;});
+    var qG=inCart?inCart.qtyGlass:0;
+    var qB=inCart?(inCart.qtyBottle||0):0;
+    var card=document.createElement('div');
+    card.className='drink-card';
+    // Single row: name | [glass controls] [bottle controls]
+    var srv=d.serving||(d.hasBottle===true?'both':d.hasBottle===false?'glass':'glass');
+    var showGlass=srv==='glass'||srv==='both';
+    var showBottle=srv==='bottle'||srv==='both';
+    var html2='<span class="dc-name">'+esc(d.name)+'</span>'
+      +'<div class="dc-row">'
+      +(showGlass
+        ?'<span class="dc-unit-label" style="min-width:26px">'+T('glass')+'</span>'
+         +'<button class="qty-btn" onclick="adjDrinkQty(\''+d.id+'\',\'glass\',-1)">−</button>'
+         +'<span class="qty-num" id="dqg-'+d.id+'">'+qG+'</span>'
+         +'<button class="qty-btn" onclick="adjDrinkQty(\''+d.id+'\',\'glass\',1)">+</button>'
+        :'')
+      +(showBottle
+        ?'<span style="width:'+(showGlass?'8':'0')+'px"></span>'
+         +'<span class="dc-unit-label" style="min-width:26px">'+T('bottle')+'</span>'
+         +'<button class="qty-btn" onclick="adjDrinkQty(\''+d.id+'\',\'bottle\',-1)">−</button>'
+         +'<span class="qty-num" id="dqb-'+d.id+'">'+qB+'</span>'
+         +'<button class="qty-btn" onclick="adjDrinkQty(\''+d.id+'\',\'bottle\',1)">+</button>'
+        :'')
+      +'</div>';
+    card.innerHTML=html2;
+    el.appendChild(card);
+  });
+}
+
+function adjDrinkQty(id,unit,delta){
+  var d=S.menu.find(function(m){return m.id===id;});if(!d) return;
+  var idx=drinksCart.findIndex(function(i){return i.id===id;});
+  if(idx===-1){
+    var srv=d.serving||(d.hasBottle===true?'both':d.hasBottle===false?'glass':'glass');
+    drinksCart.push({id:id,name:d.name,category:d.course,serving:srv,qtyGlass:0,qtyBottle:0});
+    idx=drinksCart.length-1;
+  }
+  if(unit==='glass') drinksCart[idx].qtyGlass=Math.max(0,drinksCart[idx].qtyGlass+delta);
+  else drinksCart[idx].qtyBottle=Math.max(0,(drinksCart[idx].qtyBottle||0)+delta);
+  if(drinksCart[idx].qtyGlass===0&&(drinksCart[idx].qtyBottle||0)===0) drinksCart.splice(idx,1);
+  var gEl=document.getElementById('dqg-'+id);
+  var bEl=document.getElementById('dqb-'+id);
+  var entry=drinksCart.find(function(i){return i.id===id;});
+  if(gEl) gEl.textContent=entry?entry.qtyGlass:0;
+  if(bEl) bEl.textContent=entry?(entry.qtyBottle||0):0;
+  renderDrinksCart();
+}
+
+function confirmDrinks(){
+  var items=drinksCart.filter(function(i){return i.qtyGlass>0||(i.qtyBottle||0)>0;});
+  if(!items.length){toast('Add at least one drink','tr');return;}
+  if(!selOrderTable){toast(T('select_table'),'tr');return;}
+  if(!selCovers){toast(T('select_guests'),'tr');return;}
+  var notes=document.getElementById('drinks-notes');
+  var drinkEntry={ts:Date.now(),items:items,notes:notes?notes.value.trim():''};
+  if(editingOrderKey&&S.orders[editingOrderKey]){
+    var o=S.orders[editingOrderKey];
+    // Update primarySvc if this is first food order on a drinks-only table
+    if(!o.primarySvc&&selPrimarySvc){
+      o.primarySvc=selPrimarySvc;
+      if(fbDB) fbDB.ref('orders_v2/'+editingOrderKey+'/primarySvc').set(selPrimarySvc);
+    }
+    if(!o.drinks) o.drinks=[];
+    o.drinks.push(drinkEntry);
+    if(fbDB) fbDB.ref('orders_v2/'+editingOrderKey+'/drinks').set(o.drinks);
+    else save();
+    drinksCart=[];if(notes) notes.value='';
+    closeDrinksBuilder();renderDrinkItems();buildTableGrid();
+    renderOrdersList();updateFOHBadges();
+    toast(T('drinks_confirmed'),'tg');
+    return;
+  } else {
+    var now2=Date.now();
+    var newOrder={table:selOrderTable,guests:selCovers,ts:now2,status:'open',closedAt:null,
+      primarySvc:'',waves:{},drinks:[drinkEntry],notes:'',waiter:S.waiterName||''};
+    fbPush('orders',newOrder,function(key){
+      editingOrderKey=key;
+      drinksCart=[];if(notes) notes.value='';
+      closeDrinksBuilder();renderDrinkItems();
+      buildTableGrid();
+      renderOrdersList();updateFOHBadges();
+      toast(T('drinks_confirmed'),'tg');
+    });
+    return; // wait for callback
+  }
+  drinksCart=[];if(notes) notes.value='';
+  closeDrinksBuilder();renderDrinkItems();
+  buildTableGrid();
+  renderOrdersList();updateFOHBadges();
+  toast(T('drinks_confirmed'),'tg');
+}
+
+function updateSvcButtons(){
+  var svcs=['breakfast','aperitivo','lunch','dinner'];
+  svcs.forEach(function(s){
+    var btn=document.getElementById('svc-btn-'+s);
+    if(!btn) return;
+    var hasDishes=S.menu.some(function(d){return d.active&&(d.menu===s||(d.serviceTypes&&d.serviceTypes.indexOf(s)>-1)||(!d.menu&&!d.serviceTypes&&s==='lunch'));});
+    btn.classList.toggle('svc-dim',!hasDishes);
+    btn.classList.toggle('sel',s===selSvcType);
+    // Sync svc-name color
+    var nm=btn.querySelector('.svc-name');if(nm)nm.style.color=s===selSvcType?'var(--basil)':'';
+  });
+}
+
+function selectSvcType(svc){
+  selSvcType=svc;
+  if(!selPrimarySvc&&svc!=='drinks') selPrimarySvc=svc;
+  updateSvcButtons();
+  var ob=document.getElementById('order-builder');
+  if(ob) ob.classList.add('open');
+  renderWaveRow();
+  buildCourseTabsV2();
+  renderItemsV2();
+}
+
+function renderWaveRow(){
+  var el=document.getElementById('wave-row-btns');
+  if(!el) return;
+  el.innerHTML='';
+  var waveColors=['#266533','#B87A2A','#F16838','#7B5EA7'];
+  var maxW=Math.max(4,selWave);
+  // Get locked waves from existing order
+  var lockedWaves={};
+  if(editingOrderKey&&S.orders[editingOrderKey]){
+    var ow=S.orders[editingOrderKey].waves||{};
+    Object.keys(ow).forEach(function(wn){
+      var st=ow[wn].status;
+      if(st==='sent'||st==='ready'||st==='collected') lockedWaves[parseInt(wn)]=st;
+    });
+  }
+  for(var w=1;w<=maxW;w++){
+    var ci=(w-1)%4;
+    var clr=waveColors[ci];
+    var isLocked=!!lockedWaves[w];
+    var btn=document.createElement('button');
+    btn.className='wave-btn'+(w===selWave?' sel-w'+(ci+1):'')+(isLocked?' svc-dim':'');
+    var hasItems=cart[w]&&cart[w].length>0;
+    if(hasItems) btn.style.fontWeight='700';
+    var lockIcon=isLocked?'<span style="font-size:9px;opacity:.6"> 🔒</span>':'';
+    btn.innerHTML='<span class="wdot" style="background:'+clr+'"></span>Wave '+w+lockIcon;
+    if(!isLocked){
+      btn.onclick=(function(wn){return function(){selWave=wn;renderWaveRow();};})(w);
+    }
+    el.appendChild(btn);
+  }
+  if(selWave>=4){
+    var addBtn=document.createElement('button');
+    addBtn.className='wave-btn';addBtn.textContent='+ Wave';
+    addBtn.onclick=function(){selWave++;renderWaveRow();};
+    el.appendChild(addBtn);
+  }
+}
+
+function buildCourseTabsV2(){
+  var el=document.getElementById('course-tabs');
+  if(!el) return;
+  el.innerHTML='';
+  var allCourses=getMenuCourses(selSvcType);
+  var courses=allCourses.filter(function(c){
+    return S.menu.some(function(d){return d.active&&d.course===c&&(d.menu===selSvcType||(d.serviceTypes&&d.serviceTypes.indexOf(selSvcType)>-1)||(!d.menu&&!d.serviceTypes&&selSvcType==='lunch'));});
+  });
+  if(!courses.length){
+    el.innerHTML='<p style="font-size:12px;color:var(--ink-muted)">No dishes in this menu yet. Add them in Admin.</p>';
+    return;
+  }
+  if(!selCourse||courses.indexOf(selCourse)===-1) selCourse=courses[0];
+  courses.forEach(function(c){
+    var btn=document.createElement('button');
+    btn.className='ctab'+(c===selCourse?' active':'');
+    var count=Object.values(cart).reduce(function(s,w){return s+(w||[]).filter(function(i){return i.course===c;}).reduce(function(ss,i){return ss+i.qty;},0);},0);
+    btn.innerHTML=capT(c)+(count>0?'<span class="ctab-count">'+count+'</span>':'');
+    btn.onclick=(function(course){return function(){selCourse=course;buildCourseTabsV2();renderItemsV2();};})(c);
+    el.appendChild(btn);
+  });
+}
+
+function renderItemsV2(){
+  var el=document.getElementById('items-grid');
+  if(!el) return;
+  el.innerHTML='';
+  if(!selCourse) return;
+  var items=S.menu.filter(function(d){return d.active&&d.course===selCourse&&(d.menu===selSvcType||(d.serviceTypes&&d.serviceTypes.indexOf(selSvcType)>-1)||(!d.menu&&!d.serviceTypes&&selSvcType==='lunch'));});
+  if(!items.length){el.innerHTML='<div style="grid-column:span 2;text-align:center;padding:20px;color:var(--ink-muted);font-size:13px">'+T('no_active_items')+'</div>';return;}
+  items.forEach(function(d){
+    var qty=Object.values(cart).reduce(function(s,w){return s+(w||[]).filter(function(i){return i.id===d.id;}).reduce(function(ss,i){return ss+i.qty;},0);},0);
+    var card=document.createElement('div');
+    card.className='item-card'+(qty>0?' sel':'');
+    card.innerHTML=(qty>0?'<span class="item-qty-badge">'+qty+'</span>':'')+'<span class="item-name">'+esc(d.name)+'</span>';
+    card.onclick=(function(id,name,course){return function(){tapItemV2(id,name,course);};})(d.id,d.name,d.course);
+    el.appendChild(card);
+  });
+  renderCartArea();
+}
+
+function tapItemV2(id,name,course){
+  if(!cart[selWave]) cart[selWave]=[];
+  var idx=cart[selWave].findIndex(function(i){return i.id===id;});
+  if(idx===-1) cart[selWave].push({id:id,name:name,course:course,svcType:selSvcType,qty:1});
+  else cart[selWave][idx].qty++;
+  renderItemsV2();buildCourseTabsV2();renderWaveRow();
+}
+
+function changeQtyV2(id,wave,delta){
+  if(!cart[wave]) return;
+  var idx=cart[wave].findIndex(function(i){return i.id===id;});
+  if(idx===-1) return;
+  cart[wave][idx].qty=Math.max(0,cart[wave][idx].qty+delta);
+  if(cart[wave][idx].qty===0) cart[wave].splice(idx,1);
+  renderItemsV2();buildCourseTabsV2();renderWaveRow();renderCartArea();
+}
+
+function removeCartItemV2(id,wave){
+  if(!cart[wave]) return;
+  cart[wave]=cart[wave].filter(function(i){return i.id!==id;});
+  renderItemsV2();buildCourseTabsV2();renderWaveRow();renderCartArea();
+}
+
+function renderCartArea(){
+  var el=document.getElementById('cart-area');
+  if(!el) return;
+  el.innerHTML='';
+  var waveColors=['#266533','#B87A2A','#F16838','#7B5EA7'];
+  var hasAny=Object.keys(cart).some(function(w){return cart[w]&&cart[w].length>0;});
+  if(!hasAny) return;
+  Object.keys(cart).map(Number).sort(function(a,b){return a-b;}).forEach(function(wn){
+    var items=cart[wn];if(!items||!items.length) return;
+    var ci=(wn-1)%4;var clr=waveColors[ci];
+    var section=document.createElement('div');section.className='cart-section';
+    var waveDiv=document.createElement('div');waveDiv.className='cart-wave wave-'+(ci+1);
+    var hdr=document.createElement('div');hdr.className='wave-header';
+    hdr.innerHTML='<span style="display:flex;align-items:center;gap:6px"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="'+clr+'"/></svg>Wave '+wn+'</span>';
+    var body=document.createElement('div');body.className='wave-body';
+    items.forEach(function(item){
+      var row=document.createElement('div');row.className='cart-item';
+      row.innerHTML='<span class="ci-name">'+esc(item.name)+'</span>'
+        +'<div class="ci-controls">'
+        +'<button class="qty-btn" onclick="changeQtyV2(\''+item.id+'\','+wn+',-1)">−</button>'
+        +'<span class="qty-num">'+item.qty+'</span>'
+        +'<button class="qty-btn" onclick="changeQtyV2(\''+item.id+'\','+wn+',1)">+</button>'
+        +'<button class="ci-del" onclick="removeCartItemV2(\''+item.id+'\','+wn+')">✕</button>'
+        +'</div>';
+      body.appendChild(row);
+    });
+    waveDiv.appendChild(hdr);waveDiv.appendChild(body);section.appendChild(waveDiv);el.appendChild(section);
+  });
+}
+
+function clearNewOrder(){
+  selOrderTable='';selCovers=0;selWave=1;selSvcType='';selPrimarySvc='';
+  selCourse=null;cart={};drinksCart=[];editingOrderKey='';
+  buildTableGrid();
+  var cs=document.getElementById('covers-section');if(cs) cs.style.display='none';
+  var cd2=document.getElementById('covers-display');if(cd2){cd2.textContent='0';cd2.style.color='var(--passata)';}
+  var mn=document.getElementById('covers-minus');if(mn){mn.style.opacity='0.3';mn.style.pointerEvents='none';}
+  var ob=document.getElementById('order-builder');if(ob) ob.classList.remove('open');
+  var wn=document.getElementById('f-wave-notes');if(wn) wn.value='';
+  var sb=document.getElementById('send-bar');if(sb) sb.style.display='none';
+  var as=document.getElementById('ato-summary');if(as){as.style.display='none';as.innerHTML='';};
+  closeDrinksBuilder();updateSvcButtons();
+}
+
+function sendOrder(){
+  var hasFood=Object.keys(cart).some(function(w){return cart[w]&&cart[w].length>0;});
+  var drinkItems=drinksCart.filter(function(i){return i.qtyGlass>0||(i.qtyBottle||0)>0;});
+  var hasDrinks=drinkItems.length>0;
+  if(!hasFood&&!hasDrinks){toast(T('add_dish_first'),'tr');return;}
+  if(!selOrderTable){toast(T('select_table'),'tr');return;}
+  if(!selCovers){toast(T('select_guests'),'tr');return;}
+  var notesEl=document.getElementById('drinks-notes');
+  var drinkEntry=hasDrinks?{ts:Date.now(),items:drinkItems,notes:notesEl?notesEl.value.trim():''}:null;
+  var waveNotesEl=document.getElementById('f-wave-notes');
+  var waveNotes=waveNotesEl?waveNotesEl.value.trim():'';
+  var now=Date.now();
+  if(editingOrderKey&&S.orders[editingOrderKey]){
+    var o=S.orders[editingOrderKey];
+    // Update primarySvc if this is first food order on a drinks-only table
+    if(!o.primarySvc&&selPrimarySvc){
+      o.primarySvc=selPrimarySvc;
+      if(fbDB) fbDB.ref('orders_v2/'+editingOrderKey+'/primarySvc').set(selPrimarySvc);
+    }
+    var existingNums=Object.keys(o.waves||{}).map(Number);
+    var maxExisting=existingNums.length?Math.max.apply(null,existingNums):0;
+    // Block sending if any waves are in-flight (sent/ready) OR any held waves exist
+    // A new wave must always queue behind existing held waves
+    var hasInFlight=existingNums.some(function(n){
+      return ['sent','ready'].indexOf((o.waves[n]||{}).status)!==-1;
+    });
+    var hasHeld=existingNums.some(function(n){
+      return (o.waves[n]||{}).status==='held';
+    });
+    var blockSend=hasInFlight||hasHeld;
+    var firstNew=true;
+    Object.keys(cart).map(Number).sort(function(a,b){return a-b;}).forEach(function(w,idx){
+      var items=cart[w];if(!items||!items.length) return;
+      // Use cart wave number directly if it matches an existing held wave → merge
+      // Otherwise create new wave after max existing
+      var matchedHeld=o.waves&&o.waves[w]&&o.waves[w].status==='held'?o.waves[w]:null;
+      var wn=matchedHeld?w:(maxExisting+idx+1);
+      var svcTypes=[...new Set(items.map(function(i){return i.svcType;}))];
+      var waveObj;
+      if(matchedHeld){
+        // Merge into existing held wave — keep held status, FOH releases
+        var mergedDishes=(matchedHeld.dishes||[]).concat(
+          items.map(function(i){return {id:i.id,name:i.name,course:i.course,svcType:i.svcType,qty:i.qty,ready:false};})
+        );
+        waveObj=Object.assign({},matchedHeld,{dishes:mergedDishes});
+      } else {
+        // New wave: sent only if no blocking waves (no in-flight, no held ahead)
+        var waveStatus=(firstNew&&!blockSend)?'sent':'held';
+        waveObj={status:waveStatus,sentAt:waveStatus==='sent'?now:null,readyAt:null,collectedAt:null,
+          notes:firstNew?waveNotes:'',serviceTypes:svcTypes,
+          dishes:items.map(function(i){return {id:i.id,name:i.name,course:i.course,svcType:i.svcType,qty:i.qty,ready:false};})};
+      }
+      if(fbDB) fbDB.ref('orders_v2/'+editingOrderKey+'/waves/'+wn).set(waveObj);
+      else{if(!o.waves)o.waves={};o.waves[wn]=waveObj;}
+      firstNew=false;
+    });
+    // Save drinks to existing order if any
+    if(hasDrinks&&drinkEntry){
+      if(!o.drinks) o.drinks=[];
+      o.drinks.push(drinkEntry);
+      if(fbDB) fbDB.ref('orders_v2/'+editingOrderKey+'/drinks').set(o.drinks);
+    }
+    if(fbDB) fbDB.ref('orders_v2/'+editingOrderKey+'/guests').set(selCovers);
+    else save();
+    // Only notify kitchen if a wave was actually sent
+    var anySent=hasFood&&Object.keys(cart).some(function(w){
+      return cart[w]&&cart[w].length>0&&!blockSend&&firstNew===false;
+    });
+    // Simpler: check if any new wave has status sent
+    var newlySent=hasFood&&Object.values(o.waves||{}).some(function(wv){
+      return wv.status==='sent'&&wv.sentAt&&(now-wv.sentAt)<5000;
+    });
+    if(newlySent){
+      sendPushNotification('kitchen','Ordine / Order - Tavolo '+selOrderTable,selCovers+' coperti');
+    }
+    toast(hasDrinks&&!hasFood?T('drinks_confirmed'):T('order_sent'),'tg');
+    if(hasFood) renderKitchen();
+    cart={};selSvcType='';selCourse=null;
+    drinksCart=[];
+    if(notesEl) notesEl.value='';
+    var wnn=document.getElementById('f-wave-notes');if(wnn) wnn.value='';
+    var ob=document.getElementById('order-builder');if(ob)ob.classList.remove('open');
+    closeDrinksBuilder();renderDrinkItems();renderDrinksCart();
+    updateSvcButtons();renderWaveRow();
+    showOrderSummary(editingOrderKey);
+    renderOrdersList();updateFOHBadges();buildTableGrid();
+    return;
+  } else {
+    var waves={};var firstWave=true;
+    Object.keys(cart).map(Number).sort(function(a,b){return a-b;}).forEach(function(w,idx){
+      var items=cart[w];if(!items||!items.length) return;
+      var wn=idx+1;
+      var svcTypes=[...new Set(items.map(function(i){return i.svcType;}))];
+      waves[wn]={status:firstWave?'sent':'held',sentAt:firstWave?now:null,readyAt:null,collectedAt:null,
+        notes:firstWave?waveNotes:'',serviceTypes:svcTypes,
+        dishes:items.map(function(i){return {id:i.id,name:i.name,course:i.course,svcType:i.svcType,qty:i.qty,ready:false};})};
+      firstWave=false;
+    });
+    var order={table:selOrderTable,guests:selCovers,ts:now,status:'open',closedAt:null,
+      primarySvc:selPrimarySvc||'lunch',waves:waves,
+      drinks:drinkEntry?[drinkEntry]:[],
+      notes:'',waiter:S.waiterName||''};
+    fbPush('orders',order,function(key){
+      editingOrderKey=key;
+      // Notify kitchen only if any wave is sent
+      var anyWaveSent=Object.values(waves).some(function(wv){return wv.status==='sent';});
+      if(anyWaveSent){
+        sendPushNotification('kitchen','Ordine / Order - Tavolo '+selOrderTable,selCovers+' coperti');
+      }
+      toast(hasDrinks&&!hasFood?T('drinks_confirmed'):T('order_sent'),'tg');
+      if(hasFood) renderKitchen();
+      drinksCart=[];if(notesEl) notesEl.value='';
+      clearNewOrder();renderOrdersList();updateFOHBadges();
+    });
+    return; // wait for callback
   }
 }
 
@@ -1654,7 +2409,7 @@ function fTab(t){
     document.getElementById('foh-p-'+x).style.display=x===t?'block':'none';
   });
   // Update text nodes only — preserve SVG icons and badges
-  var fohTabLabels={new:T('add_to_order'),orders:T('tables'),collect:T('pass_tab')};
+  var fohTabLabels={new:T('new_order_tab')||T('add_to_order'),orders:T('tables'),collect:T('pass_tab')};
   ['new','orders','collect'].forEach(function(x){
     var btn=document.getElementById('foh-t-'+x);
     if(!btn) return;
@@ -1662,6 +2417,7 @@ function fTab(t){
       if(btn.childNodes[i].nodeType===3){btn.childNodes[i].textContent=fohTabLabels[x];break;}
     }
   });
+  if(t==='new'){initOrderTab();}
   if(t==='orders')renderOrdersList();
   if(t==='collect')renderCollectList();
 }
@@ -1670,18 +2426,57 @@ function fTab(t){
 
 function buildTableGrid(){
   var el=document.getElementById('order-table-grid');
-  el.innerHTML=S.tables.map(function(t){
-    var occupied=Object.values(S.orders).some(function(o){return o.table===t.name&&o.status!=='closed';});
-    return '<div class="table-chip'+(selTable===t.name?' sel':'')+(occupied?' occupied':'')+'" onclick="selTableFn(\''+esc(t.name)+'\')">'
-      +esc(t.name)
-      +'</div>';
-  }).join('');
+  if(!el) return;
+  el.innerHTML='';
+  S.tables.forEach(function(t){
+    var btn=document.createElement('div');
+    btn.className='table-chip';
+    var activeKey=Object.keys(S.orders).find(function(k){return S.orders[k].status!=='closed'&&S.orders[k].table===t.name;});
+    if(activeKey) btn.classList.add('has-order');
+    if(t.name===selOrderTable) btn.classList.add('sel');
+    btn.innerHTML=esc(t.name)+(activeKey?'<span class="chip-dot"></span>':'');
+    btn.onclick=(function(name,key){return function(){
+      selOrderTable=name;
+      if(key){
+        editingOrderKey=key;
+        var o=S.orders[key];
+        selCovers=o.guests||1;
+        selPrimarySvc=o.primarySvc||o.serviceType||'';
+        cart={};drinksCart=[];
+        // Show existing order summary
+        setTimeout(function(){showOrderSummary(key);},0);
+      } else {
+        editingOrderKey='';
+        selCovers=0;selPrimarySvc='';cart={};drinksCart=[];selWave=1;
+      }
+      selSvcType='';selCourse='';
+      buildTableGrid();
+      var cs=document.getElementById('covers-section');
+      if(cs) cs.style.display='';
+      var cd=document.getElementById('covers-display');
+      var covNum=selCovers||0;
+      if(cd){cd.textContent=covNum;cd.style.color=covNum===0?'var(--passata)':'';}
+      var mn=document.getElementById('covers-minus');
+      if(mn){mn.style.opacity=covNum===0?'0.3':'1';mn.style.pointerEvents=covNum===0?'none':'';}
+      var ob=document.getElementById('order-builder');
+      if(ob) ob.classList.remove('open');
+      var db=document.getElementById('drinks-builder');
+      if(db) db.classList.remove('open');
+      var dtb=document.getElementById('drinks-toggle-btn');
+      if(dtb) dtb.classList.remove('open');
+      var arr=document.getElementById('drinks-toggle-arrow');
+      if(arr) arr.textContent='\u25b8';
+      updateSvcButtons();
+      renderWaveRow();
+      var sb2=document.getElementById('send-bar');if(sb2) sb2.style.display='';
+    };})(t.name, activeKey||'');
+    el.appendChild(btn);
+  });
 }
 
 function selTableFn(name){
-  selTable=name;
-  if(selServiceType==='aperitivo'){buildAperTableGrid();}
-  else{buildTableGrid();}
+  selOrderTable=name;
+  buildTableGrid();
 }
 
 function buildCourseTabs(){
@@ -1777,99 +2572,10 @@ function renderCart(){
   }).join('')+'</div>';
 }
 
-function clearNewOrder(){
-  cart=[];selTable=null;selServiceType=null;
-  var fg=document.getElementById('f-guests');if(fg)fg.value='';
-  var ag=document.getElementById('aper-guests');if(ag)ag.value='';
-  var an=document.getElementById('aper-notes');if(an)an.value='';
-  waveNotes={1:'',2:'',3:''};
-  var wn=document.getElementById('f-wave-notes');if(wn)wn.value='';
-  selWave=1;
-  // Reset service type cards and hide sub-panes
-  ['lunch','breakfast','aperitivo','dinner'].forEach(function(t){
-    var el=document.getElementById('svc-'+t);if(el)el.classList.remove('sel');
-  });
-  document.getElementById('aperitivo-pane').style.display='none';
-  document.getElementById('standard-order-pane').style.display='none';
-  ['1','2','3','4'].forEach(function(x){
-    var b=document.getElementById('wp-'+x);
-    if(b) b.className='wave-pick-btn'+(x==='1'?' sel-w1':'');
-  });
-  buildTableGrid();
-}
+// v1 clearNewOrder removed — v2 version above
 
-function sendOrder(){
-  if(!selServiceType){toast(T('select_service'),'tr');return;}
-  var guests=parseInt(document.getElementById('f-guests').value)||0;
-  var notes='';
-  if(!selTable){toast(T('select_table'),'tr');return;}
-  if(!guests||guests<1){toast(T('select_guests'),'tr');document.getElementById('f-guests').focus();return;}
-  if(!cart.length){toast(T('add_dish_first'),'tr');return;}
+// v1 sendOrder removed — v2 version above
 
-  // Build waves object
-  // Save current wave note before reading
-  var noteEl=document.getElementById('f-wave-notes');
-  if(noteEl) waveNotes[selWave]=noteEl.value;
-  var waves={};
-  var now=Date.now();
-  [1,2,3,4].forEach(function(w){
-    var items=cart.filter(function(i){return i.wave===w;});
-    if(items.length){
-      waves[w]={
-        status:w===1?'sent':'held',
-        sentAt:w===1?now:null,
-        readyAt:null,
-        collectedAt:null,
-        notes:waveNotes[w]||'',
-        dishes:items.map(function(i){return {id:i.id,name:i.name,course:i.course,qty:i.qty,ready:false};})
-      };
-    }
-  });
-
-  var order={
-    table:selTable, guests:guests, notes:notes,
-    serviceType:selServiceType||'lunch',
-    waves:waves, status:'open', ts:Date.now(), closedAt:null
-  };
-
-  fbPush('orders',order,function(key){
-    toast(T('order_sent'),'tg');
-    clearNewOrder();
-    updateFOHBadges();
-    fTab('orders');
-    // Push notification to Kitchen
-    sendPushNotification('kitchen',
-      'Ordine / Order - Tavolo '+selTable,
-      guests+' coperti / covers'
-    );
-  });
-}
-
-function sendAperitivoOrder(){
-  if(!selServiceType){toast(T('select_service'),'tr');return;}
-  var guests=parseInt(document.getElementById('aper-guests').value)||0;
-  var notes=document.getElementById('aper-notes').value.trim();
-  if(!selTable){toast(T('select_table'),'tr');return;}
-  if(!guests||guests<1){toast(T('select_guests'),'tr');document.getElementById('aper-guests').focus();return;}
-  var now=Date.now();
-  var order={
-    table:selTable, guests:guests, notes:notes,
-    serviceType:'aperitivo',
-    waves:{1:{status:'sent',sentAt:now,readyAt:null,collectedAt:null,notes:notes,
-      dishes:[{id:'aper',name:'Aperitivo snacks',course:'aperitivo',qty:guests,ready:false}]}},
-    status:'open', ts:now, closedAt:null
-  };
-  fbPush('orders',order,function(key){
-    toast(T('aperitivo_sent'),'tg');
-    clearNewOrder();
-    updateFOHBadges();
-    fTab('orders');
-    sendPushNotification('kitchen',
-      'Ordine / Order - Tavolo '+selTable,
-      guests+' coperti / covers'
-    );
-  });
-}
 
 // ════════════════════════════════════════════
 //  FOH — ORDERS LIST
@@ -1906,7 +2612,7 @@ function renderOrdersList(){
 }
 
 function fohOrderCard(key,o,isClosedView){
-  var waveNums=Object.keys(o.waves).map(Number).sort();
+  var waveNums=Object.keys(o.waves||{}).map(Number).sort();
   var hasReady=waveNums.some(function(w){return o.waves[w].status==='ready';});
 
   var card=document.createElement('div');
@@ -1916,15 +2622,17 @@ function fohOrderCard(key,o,isClosedView){
   // Header
   var head=document.createElement('div');
   head.className='oc-head';
-  var ocSvcLabels={lunch:T('lunch'),breakfast:T('breakfast'),aperitivo:T('aperitivo'),dinner:T('dinner')};
-  var ocSType=o.serviceType||'lunch';
-  var ocSvcBadge='<span style="font-size:9px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;background:rgba(38,101,51,.08);color:var(--ink-muted);padding:2px 6px;border-radius:6px;margin-left:6px">'+(ocSvcLabels[ocSType]||'Lunch')+'</span>';
+  var ocSvcLabels={lunch:T('lunch'),breakfast:T('breakfast'),aperitivo:T('aperitivo'),dinner:T('dinner'),drinks:'Drinks'};
+  var ocSType=o.primarySvc||o.serviceType||'lunch';
+  var ocSvcLabel=ocSvcLabels[ocSType]||'';
+  var ocSvcBadge=ocSvcLabel?'<span style="font-size:9px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;background:rgba(38,101,51,.08);color:var(--ink-muted);padding:2px 6px;border-radius:6px;margin-left:6px">'+ocSvcLabel+'</span>':'';
+  var ocWaiter=o.waiter?'<span style="font-size:11px;color:var(--ink-muted);font-weight:400"> · '+esc(o.waiter)+'</span>':'';
   head.innerHTML='<div style="flex:1;min-width:0">'
     +'<div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">'
-    +'<div class="oc-table">'+T('table_label')+' '+esc(o.table)+'</div>'
+    +'<div class="oc-table">'+T('table_label')+' '+esc(o.table)+ocWaiter+'</div>'
     +'<span class="status-pill '+overallStatusPill(o)+'">'+overallStatusLabel(o)+'</span>'
     +'</div>'
-    +'<div class="oc-meta" style="margin-top:3px">'+ocSvcBadge+' · '+o.guests+' '+(o.guests!==1?T('guests'):T('guests'))+' · '+fmtTime(o.ts)+'</div>'
+    +'<div class="oc-meta" style="margin-top:3px">'+(ocSvcBadge?ocSvcBadge+' · ':'')+o.guests+' '+T('guests')+' · '+fmtTime(o.ts)+'</div>'
     +'</div>';
   card.appendChild(head);
 
@@ -1943,7 +2651,7 @@ function fohOrderCard(key,o,isClosedView){
     var isCollected=wv.status==='collected';
     var isHeld=wv.status==='held';
     var statusTag=waveStatusTag(wv.status);
-    // In closed view always expand all waves so full order is visible
+    // In closed view always expand all waves
     var shouldCollapse=isClosedView?false:(isCollected||(isHeld&&w!==nilFOH));
 
     var waveDiv=document.createElement('div');
@@ -1952,7 +2660,8 @@ function fohOrderCard(key,o,isClosedView){
     // Wave header — tap to toggle
     var wHdr=document.createElement('div');
     wHdr.className='oc-wave-hdr wl-'+w;
-    wHdr.innerHTML='<span class="oc-wave-label"><span class="wl-dot"></span>'+T('wave_label')+' '+w+'</span>'
+    var wSvcTags=(wv.serviceTypes||[]).map(function(s){return '<span style="font-size:9px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;padding:1px 6px;border-radius:6px;background:var(--paper-warm);color:var(--ink-muted)">'+T(s)+'</span>';}).join(' ');
+    wHdr.innerHTML='<span class="oc-wave-label"><span class="wl-dot"></span>'+T('wave_label')+' '+w+(wSvcTags?' <span style="display:flex;gap:3px;flex-wrap:wrap;margin-left:4px">'+wSvcTags+'</span>':'')+'</span>'
       +'<span class="wave-status-tag '+statusTag.cls+'">'+statusTag.label+'</span>';
     wHdr.addEventListener('click',(function(wd){return function(){toggleWave(wd);};})(waveDiv));
     waveDiv.appendChild(wHdr);
@@ -1977,13 +2686,30 @@ function fohOrderCard(key,o,isClosedView){
       var tsRow=document.createElement('div');tsRow.className='wave-ts-row';tsRow.innerHTML=tsHtml;body.appendChild(tsRow);
     }
 
-    // Dishes
+    // Dishes — held waves get +/- edit controls
     wv.dishes.forEach(function(d){
       var row=document.createElement('div');
       row.className='oc-dish'+(isCollected?' oc-dish-collected':'');
       var nm=document.createElement('span');nm.className='oc-dish-name';nm.textContent=d.name;
-      var qty=document.createElement('span');qty.className='oc-dish-qty';qty.textContent='×'+d.qty;
-      row.appendChild(nm);row.appendChild(qty);
+      row.appendChild(nm);
+      if(isHeld&&!isClosedView){
+        var ctrl=document.createElement('div');ctrl.className='ci-controls';
+        var minBtn=document.createElement('button');minBtn.className='qty-btn';minBtn.textContent='−';
+        minBtn.addEventListener('click',(function(k,wn,id){return function(e){
+          e.stopPropagation();editHeldDish(k,wn,id,-1);
+        };})(key,w,d.id));
+        var qSpan=document.createElement('span');qSpan.className='qty-num';qSpan.textContent=d.qty;
+        qSpan.id='hq-'+key+'-'+w+'-'+d.id;
+        var plsBtn=document.createElement('button');plsBtn.className='qty-btn';plsBtn.textContent='+';
+        plsBtn.addEventListener('click',(function(k,wn,id){return function(e){
+          e.stopPropagation();editHeldDish(k,wn,id,1);
+        };})(key,w,d.id));
+        ctrl.appendChild(minBtn);ctrl.appendChild(qSpan);ctrl.appendChild(plsBtn);
+        row.appendChild(ctrl);
+      } else {
+        var qty=document.createElement('span');qty.className='oc-dish-qty';qty.textContent='×'+d.qty;
+        row.appendChild(qty);
+      }
       body.appendChild(row);
     });
 
@@ -2004,10 +2730,56 @@ function fohOrderCard(key,o,isClosedView){
     card.appendChild(waveDiv);
   });
 
+  // Drinks block — always at bottom, folded
+  if(o.drinks&&(o.drinks.length>0||!isClosedView)){  // drinks block
+    var dBlock=document.createElement('div');
+    dBlock.className='drinks-block';
+    var dHdr=document.createElement('div');
+    dHdr.className='drinks-block-hdr';
+    if(isClosedView) dBlock.classList.add('open'); // auto-expand in history
+    var dLabel=document.createElement('span');dLabel.className='drinks-block-label';
+    var totalDrinks=(o.drinks||[]).reduce(function(s,e){return s+(e.items||[]).reduce(function(ss,i){return ss+(i.qtyGlass||0)+(i.qtyBottle||0);},0);},0);
+    dLabel.textContent='Drinks'+(totalDrinks>0?' ('+totalDrinks+')':'');
+    var dArrow=document.createElement('span');dArrow.style.cssText='font-size:11px;color:var(--ink-muted)';dArrow.textContent='▸';
+    dHdr.appendChild(dLabel);dHdr.appendChild(dArrow);
+    dHdr.onclick=function(){
+      var open=dBlock.classList.toggle('open');
+      dArrow.textContent=open?'▾':'▸';
+    };
+    var dBody=document.createElement('div');dBody.className='drinks-block-body';
+    (o.drinks||[]).forEach(function(entry){
+      var entryDiv=document.createElement('div');entryDiv.className='drinks-entry';
+      if(entry.ts){var tDiv=document.createElement('div');tDiv.className='drinks-entry-time';tDiv.textContent=fmtTime(entry.ts);entryDiv.appendChild(tDiv);}
+      (entry.items||[]).forEach(function(item){
+        var iDiv=document.createElement('div');iDiv.className='drinks-item';
+        var parts=[];
+        if(item.qtyGlass>0) parts.push(item.qtyGlass+'×'+(item.hasBottle?' glass':''));
+        if((item.qtyBottle||0)>0) parts.push(item.qtyBottle+'× btl');
+        if(!item.hasBottle&&item.qtyGlass>0) parts=['×'+item.qtyGlass];
+        iDiv.innerHTML='<span class="drinks-item-name">'+esc(item.name)+'</span><span class="drinks-item-qty">'+parts.join(' · ')+'</span>';
+        entryDiv.appendChild(iDiv);
+      });
+      if(entry.notes){var nDiv=document.createElement('div');nDiv.style.cssText='font-size:11px;color:var(--terra);padding:3px 0';nDiv.textContent='⚠️ '+entry.notes;entryDiv.appendChild(nDiv);}
+      dBody.appendChild(entryDiv);
+    });
+    if(!o.drinks||!o.drinks.length){
+      var emptyDiv=document.createElement('div');emptyDiv.style.cssText='padding:8px 14px;font-size:12px;color:var(--ink-muted)';
+      emptyDiv.textContent='No drinks ordered';dBody.appendChild(emptyDiv);
+    }
+    dBlock.appendChild(dHdr);dBlock.appendChild(dBody);
+    card.appendChild(dBlock);
+  }
+
   if(isClosedView){
     // Read-only closed card — grey overlay, show closed time, no buttons
-    card.style.opacity='0.5';
+    card.style.opacity='0.65';
     card.style.pointerEvents='none';
+    // Force expand all waves and drinks in history view
+    setTimeout(function(){
+      card.querySelectorAll('.oc-wave').forEach(function(w){w.classList.remove('collapsed');});
+      var db=card.querySelector('.drinks-block');
+      if(db){db.classList.add('open');var arr=db.querySelector('span[style*="font-size:11px"]');if(arr)arr.textContent='▾';}
+    },0);
     var closedBar=document.createElement('div');
     closedBar.style.cssText='padding:8px 14px 12px;font-size:11px;color:var(--ink-muted);display:flex;align-items:center;gap:6px';
     closedBar.innerHTML='<span style="color:var(--sage);font-weight:600">✓ '+T('closed')+'</span>'
@@ -2073,12 +2845,12 @@ function releaseWave(key,wave){
   var o=S.orders[key];if(!o)return;
   var wv=o.waves[wave];
   var newWave=Object.assign({},wv,{status:'sent',sentAt:Date.now()});
-  if(fbDB){fbDB.ref('orders/'+key+'/waves/'+wave).set(newWave);}
+  if(fbDB){fbDB.ref('orders_v2/'+key+'/waves/'+wave).set(newWave);}
   else{S.orders[key].waves[wave]=newWave;save();renderOrdersList();}
   toast(T('wave_label')+' '+wave+' '+T('wave_released'),'tb');
   sendPushNotification('kitchen',
     'Uscita / Wave '+wave+' - Tavolo '+o.table,
-    ''
+    (wv.serviceTypes||[]).map(function(s){return T(s)||capFirst(s);}).join(' + ')
   );
 }
 
@@ -2090,7 +2862,7 @@ function closeOrder(key){
   if(card.dataset.confirming==='1'){
     var o=S.orders[key];if(!o)return;
     var updated=Object.assign({},o,{status:'closed',closedAt:Date.now()});
-    if(fbDB){fbDB.ref('orders/'+key).set(updated);}
+    if(fbDB){fbDB.ref('orders_v2/'+key).set(updated);}
     else{S.orders[key]=updated;save();}
     toast(T('table_closed'),'tg');
     renderOrdersList();updateFOHBadges();buildTableGrid();
@@ -2184,7 +2956,7 @@ function markCollected(key,wave){
   var o=S.orders[key];if(!o)return;
   var wv=o.waves[wave];
   var newWave=Object.assign({},wv,{status:'collected',collectedAt:Date.now()});
-  if(fbDB){fbDB.ref('orders/'+key+'/waves/'+wave).set(newWave);}
+  if(fbDB){fbDB.ref('orders_v2/'+key+'/waves/'+wave).set(newWave);}
   else{S.orders[key].waves[wave]=newWave;save();}
   toast('Collected!','tg');
   renderCollectList();renderOrdersList();updateFOHBadges();
@@ -2209,20 +2981,177 @@ function updateFOHBadges(){
 // ════════════════════════════════════════════
 var atoKey=null, atoCart=[], atoWave=1, atoEdits={};
 
-function openAddToOrder(key){
-  atoKey=key;atoCart=[];atoEdits={};
+
+function showOrderSummary(key){
   var o=S.orders[key];
-  if(!o)return;
-  var waveNums=Object.keys(o.waves).map(Number).sort();
-  var maxWave=Math.max.apply(null,waveNums);
-  // Auto-select next wave if all existing waves are already sent/collected
-  var allSentOrDone=waveNums.every(function(w){
-    return ['sent','cooking','ready','collected'].indexOf(o.waves[w].status)!==-1;
+  if(!o) return;
+  var el=document.getElementById('ato-summary');
+  if(!el) return;
+  el.innerHTML='';
+  el.style.display='';
+
+  // Build a mini read-only order card showing current state
+  var waveNums=Object.keys(o.waves||{}).map(Number).sort();
+  var waveColors=['#266533','#B87A2A','#F16838','#7B5EA7'];
+
+  waveNums.forEach(function(w){
+    var wv=o.waves[w];
+    var ci=(w-1)%4;
+    var clr=waveColors[ci];
+    var statusLabels={held:T('held_by_waiter'),sent:T('sent'),ready:T('ready'),collected:T('collected')};
+    var statusColors={held:'var(--ink-muted)',sent:'var(--basil)',ready:'var(--lemon)',collected:'var(--ink-muted)'};
+
+    var wDiv=document.createElement('div');
+    wDiv.style.cssText='background:var(--paper-card);border:1px solid var(--border-soft);border-radius:var(--r);margin-bottom:8px;overflow:hidden';
+
+    // Wave header
+    var hdr=document.createElement('div');
+    hdr.style.cssText='padding:8px 12px;display:flex;align-items:center;justify-content:space-between;background:var(--paper-warm)';
+    hdr.innerHTML='<span style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:'+clr+';display:flex;align-items:center;gap:6px">'
+      +'<svg width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="'+clr+'"/></svg>'
+      +T('wave_label')+' '+w+'</span>'
+      +'<span style="font-size:11px;font-weight:600;color:'+statusColors[wv.status]+'">'+statusLabels[wv.status]+'</span>';
+
+    var body=document.createElement('div');
+    body.style.cssText='padding:6px 12px 8px';
+    (wv.dishes||[]).forEach(function(d){
+      var row=document.createElement('div');
+      row.style.cssText='display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--border-soft)';
+      row.innerHTML='<span style="flex:1;font-size:13px">'+esc(d.name)+'</span>'
+        +'<span style="font-size:14px;font-weight:700;color:var(--ink)">×'+d.qty+'</span>';
+      body.appendChild(row);
+    });
+
+    wDiv.appendChild(hdr);wDiv.appendChild(body);
+    el.appendChild(wDiv);
   });
-  atoWave=allSentOrDone?maxWave+1:maxWave;
-  document.getElementById('ato-title').textContent=T('adding_to')+' '+o.table;
-  buildAtoContent(o,maxWave);
-  document.getElementById('add-to-order-overlay').classList.add('open');
+
+  // Drinks summary if any
+  if(o.drinks&&o.drinks.length){
+    var dDiv=document.createElement('div');
+    dDiv.style.cssText='background:var(--paper-card);border:1px solid var(--border-soft);border-radius:var(--r);margin-bottom:8px;overflow:hidden';
+    var dHdr=document.createElement('div');
+    dHdr.style.cssText='padding:8px 12px;background:var(--paper-warm);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--wave2)';
+    dHdr.textContent='Drinks';
+    var dBody=document.createElement('div');dBody.style.cssText='padding:6px 12px 8px';
+    o.drinks.forEach(function(entry){
+      (entry.items||[]).forEach(function(item){
+        var row=document.createElement('div');
+        row.style.cssText='display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--border-soft)';
+        var qStr=[];
+        if(item.qtyGlass>0) qStr.push(item.qtyGlass+'× '+T('glass'));
+        if((item.qtyBottle||0)>0) qStr.push(item.qtyBottle+'× '+T('bottle'));
+        row.innerHTML='<span style="flex:1;font-size:13px">'+esc(item.name)+'</span>'
+          +'<span style="font-size:14px;font-weight:700;color:var(--ink)">'+qStr.join(' · ')+'</span>';
+        dBody.appendChild(row);
+      });
+    });
+    dDiv.appendChild(dHdr);dDiv.appendChild(dBody);
+    el.appendChild(dDiv);
+  }
+
+  if(!el.children.length){el.style.display='none';}
+}
+
+
+function renderAtoSummary(key){
+  var el=document.getElementById('ato-summary');
+  if(!el) return;
+  var o=S.orders[key];
+  if(!o){el.style.display='none';return;}
+  el.style.display='';
+  el.innerHTML='';
+  // Show mini order card
+  var card=fohOrderCard(key,o,false);
+  if(card){
+    card.style.marginBottom='0';
+    card.style.pointerEvents='none';
+    card.style.opacity='0.85';
+    el.appendChild(card);
+  }
+}
+
+
+function editHeldDish(orderKey,waveNum,dishId,delta){
+  var o=S.orders[orderKey];
+  if(!o||!o.waves||!o.waves[waveNum]) return;
+  var wv=o.waves[waveNum];
+  if(wv.status!=='held') return;
+  var dish=wv.dishes.find(function(d){return d.id===dishId;});
+  if(!dish) return;
+  var newQty=Math.max(0,dish.qty+delta);
+  if(newQty===0){
+    wv.dishes=wv.dishes.filter(function(d){return d.id!==dishId;});
+  } else {
+    dish.qty=newQty;
+  }
+  // Update qty display directly in DOM — no re-render so wave stays open
+  var qEl=document.getElementById('hq-'+orderKey+'-'+waveNum+'-'+dishId);
+  if(qEl){
+    if(newQty===0){
+      // Remove the dish row from DOM
+      var row=qEl.closest('.oc-dish');
+      if(row) row.remove();
+    } else {
+      qEl.textContent=newQty;
+    }
+  }
+  // If wave now has no dishes, remove the wave card
+  if(!wv.dishes.length){
+    delete o.waves[waveNum];
+    var waveEl=document.querySelector('.oc-wave.wl-'+waveNum);
+    if(waveEl) waveEl.remove();
+  }
+  // Save to Firebase or local
+  if(fbDB) fbDB.ref('orders_v2/'+orderKey+'/waves/'+waveNum).set(wv.dishes.length?wv:null);
+  else save();
+  renderKitchen();
+}
+
+function openAddToOrder(key){
+  var o=S.orders[key];
+  if(!o) return;
+
+  // Determine next available wave (skip sent/ready/collected)
+  var waveNums=Object.keys(o.waves||{}).map(Number).sort();
+  var nextWave=1;
+  if(waveNums.length){
+    // Find first held wave that hasn't been sent yet
+    var heldWave=waveNums.find(function(w){return o.waves[w].status==='held';});
+    if(heldWave){
+      nextWave=heldWave; // Add to existing held wave
+    } else {
+      // All waves sent/collected — start a new wave
+      nextWave=Math.max.apply(null,waveNums)+1;
+    }
+  }
+
+  // Switch to new order pane WITHOUT calling initOrderTab (which resets selWave)
+  ['new','orders','collect'].forEach(function(x){
+    var t=document.getElementById('foh-t-'+x);if(t) t.classList.toggle('active',x==='new');
+    var p=document.getElementById('foh-p-'+x);if(p) p.style.display=x==='new'?'block':'none';
+  });
+  selOrderTable=o.table;
+  selCovers=o.guests||1;
+  selWave=nextWave;
+  editingOrderKey=key;
+  selPrimarySvc=o.primarySvc||o.serviceType||'';
+  cart={};
+
+  buildTableGrid();
+
+  var cs=document.getElementById('covers-section');if(cs) cs.style.display='';
+  var sb3=document.getElementById('send-bar');if(sb3) sb3.style.display='';
+  var cd=document.getElementById('covers-display');
+  if(cd){cd.textContent=selCovers;cd.style.color='';}
+  var mn=document.getElementById('covers-minus');
+  if(mn){mn.style.opacity='1';mn.style.pointerEvents='';}
+
+  // Show order summary before order builder
+  showOrderSummary(key);
+  updateSvcButtons();
+  renderWaveRow();
+
 }
 
 function buildAtoContent(o,maxWave){
@@ -2356,20 +3285,6 @@ function buildAtoContent(o,maxWave){
   document.getElementById('ato-content').innerHTML=html;
 }
 
-function confirmAperitivoRound(key){
-  var o=S.orders[key];if(!o)return;
-  var waveNums=Object.keys(o.waves||{}).map(Number);
-  var nextWave=waveNums.length?Math.max.apply(null,waveNums)+1:1;
-  var now=Date.now();
-  var newWave={status:'sent',sentAt:now,readyAt:null,collectedAt:null,
-    notes:T('round_label')+' '+nextWave,
-    dishes:[{id:'aper',name:'Aperitivo snacks',course:'aperitivo',qty:o.guests||1,ready:false}]};
-  if(fbDB){fbDB.ref('orders/'+key+'/waves/'+nextWave).set(newWave);}
-  else{if(!S.orders[key].waves)S.orders[key].waves={};S.orders[key].waves[nextWave]=newWave;save();renderKitchen();renderOrdersList();}
-  toast(T('round_sent'),'tg');
-  sendPushNotification('kitchen','Altro giro / Another round - Tavolo '+o.table,'');
-  closeAddToOrder();
-}
 
 function atoEditQty(wave,id,delta){
   var key=wave+'_'+id;
@@ -2398,7 +3313,8 @@ function atoQty(id,wave,d){
   buildAtoContent(S.orders[atoKey],Math.max.apply(null,Object.keys(S.orders[atoKey].waves).map(Number)));
 }
 
-function confirmAddToOrder(){
+function confirmAddToOrder(){ return; // V2: handled by sendOrder
+  var _stub=true;
   var hasEdits=Object.keys(atoEdits).some(function(k){return atoEdits[k]!==0;});
   if(!atoCart.length&&!hasEdits){toast(T('add_dish_first'),'tr');return;}
   var o=S.orders[atoKey];if(!o)return;
@@ -2469,7 +3385,8 @@ function confirmAddToOrder(){
   closeAddToOrder();
 }
 
-function closeAddToOrder(e){
+function closeAddToOrder(e){ return; // V2: not needed
+  var _stub=true;
   if(e&&e.target!==document.getElementById('add-to-order-overlay'))return;
   document.getElementById('add-to-order-overlay').classList.remove('open');
 }
@@ -2498,7 +3415,7 @@ function renderKitchen(){
 
 function nextInLine(o){
   // Lowest wave number that is not yet collected
-  var nums=Object.keys(o.waves).map(Number).sort();
+  var nums=Object.keys(o.waves||{}).map(Number).sort();
   for(var i=0;i<nums.length;i++){
     if(o.waves[nums[i]].status!=='collected') return nums[i];
   }
@@ -2522,7 +3439,7 @@ function toggleWave(waveEl){
 
 function kitchenCard(key,o){
   var mins=Math.floor((Date.now()-o.ts)/60000);
-  var waveNums=Object.keys(o.waves).map(Number).sort();
+  var waveNums=Object.keys(o.waves||{}).map(Number).sort();
   var allCollected=waveNums.every(function(w){return o.waves[w].status==='collected';});
   if(allCollected) return null;
 
@@ -2536,13 +3453,12 @@ function kitchenCard(key,o){
   var tableDiv=document.createElement('div');tableDiv.className='kc-table';
   var svcLabels={lunch:T('lunch'),breakfast:T('breakfast'),aperitivo:T('aperitivo'),dinner:T('dinner')};
   var svcColors={lunch:'var(--basil)',breakfast:'var(--wave2)',aperitivo:'var(--wave3)',dinner:'var(--ink-muted)'};
-  var sType=o.serviceType||'lunch';
+  var sType=o.primarySvc||o.serviceType||'lunch';
+  var kcSvcLabel=svcLabels[sType]||'';
+  var kcSvcSpan=kcSvcLabel?' <span style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:rgba(38,101,51,.08);color:'+(svcColors[sType]||'var(--ink-muted)')+';padding:2px 7px;border-radius:8px;margin-left:4px">'+kcSvcLabel+'</span>':'';
   tableDiv.innerHTML=T('table_label')+' '+esc(o.table)
     +' <span style="font-size:14px;font-family:sans-serif;font-weight:400;color:var(--ink-muted)">&middot; '
-    +o.guests+' guest'+(o.guests!==1?'s':'')+'</span>'
-    +' <span style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;'
-    +'background:rgba(38,101,51,.08);color:'+svcColors[sType]+';padding:2px 7px;border-radius:8px;margin-left:4px">'
-    +svcLabels[sType]+'</span>';
+    +o.guests+' guest'+(o.guests!==1?'s':'')+'</span>'+kcSvcSpan;
   var timeSpan=document.createElement('span');
   timeSpan.className='kc-time'+(mins>20?' late':'');
   timeSpan.textContent=(mins===0?T('just_now'):mins+T('mins_ago'));
@@ -2569,7 +3485,8 @@ function kitchenCard(key,o){
     // Wave header — always visible, tap to toggle
     var wHdr=document.createElement('div');wHdr.className='kc-wave-hdr wl-'+w;
     var wLabel=document.createElement('span');wLabel.className='oc-wave-label';
-    wLabel.innerHTML='<span class="wl-dot"></span>'+T('wave_label')+' '+w;
+    var svcTags=(wv.serviceTypes||[]).map(function(s){return '<span class="wave-svc-tag">'+T(s)+'</span>';}).join('');
+    wLabel.innerHTML='<span class="wl-dot"></span>'+T('wave_label')+' '+w+(svcTags?' <span style="margin-left:4px;display:flex;gap:3px;flex-wrap:wrap">'+svcTags+'</span>':'');
     var wStatus=document.createElement('span');wStatus.className='wave-status-tag';
     if(isHeld){wStatus.className+=' wst-held';wStatus.textContent=T('held_by_waiter');}
     else if(isCollected){wStatus.className+=' wst-collected';wStatus.textContent=T('confirm_pickup');}
@@ -2603,7 +3520,7 @@ function kitchenCard(key,o){
     wv.dishes.forEach(function(d){
       var row=document.createElement('div');row.className='kc-dish kc-dish-locked';
       var nm=document.createElement('span');nm.className='kc-dish-name';nm.textContent=d.name;
-      var qt=document.createElement('span');qt.className='kc-dish-qty';qt.textContent='×'+d.qty;
+      var qt=document.createElement('span');qt.className='kc-dish-qty';qt.textContent='×'+d.qty; qt.style.cssText='font-size:16px;font-weight:700;color:var(--ink);min-width:28px;text-align:right';
       row.appendChild(nm);row.appendChild(qt);body.appendChild(row);
     });
 
@@ -2641,7 +3558,7 @@ function sendWaveReady(key,wave){
   var o=S.orders[key];if(!o)return;
   var wv=o.waves[wave];
   var newWave=Object.assign({},wv,{status:'ready',readyAt:Date.now()});
-  if(fbDB){fbDB.ref('orders/'+key+'/waves/'+wave).set(newWave);}
+  if(fbDB){fbDB.ref('orders_v2/'+key+'/waves/'+wave).set(newWave);}
   else{S.orders[key].waves[wave]=newWave;save();renderKitchen();}
   toast(T('waiter_notified_toast')+' '+wave+' ready','tg');
   // Push notification to FOH
@@ -2651,6 +3568,191 @@ function sendWaveReady(key,wave){
     'Uscita / Wave '+wave
   );
 }
+
+
+// ════════════════════════════════════════════
+//  ADMIN — SERVICE TYPE SELECTOR
+// ════════════════════════════════════════════
+var adminSvcType='breakfast';
+
+function setAdminSvcType(svc){
+  adminSvcType=svc;
+  ['breakfast','aperitivo','lunch','dinner','drinks'].forEach(function(s){
+    var el=document.getElementById('adm-st-'+s);
+    if(el) el.classList.toggle('active',s===svc);
+  });
+  // Bottle toggle only for drinks
+  var bottleRow=document.getElementById('adm-bottle-row');
+  if(bottleRow) bottleRow.style.display=svc==='drinks'?'flex':'none';
+  // Update labels
+  var isD=svc==='drinks';
+  var addBtn=document.getElementById('adm-btn-add-dish');
+  if(addBtn) addBtn.textContent=isD?'+ Add Drink':'+ Add Dish';
+  var addLbl=document.getElementById('adm-lbl-add-dish');
+  if(addLbl) addLbl.textContent=isD?'Add New Drink':'Add New Dish';
+  var dname=document.getElementById('a-dname');
+  if(dname) dname.placeholder=isD?'Drink name':'Dish name';
+  var ctLbl=document.getElementById('adm-lbl-manage-ct');
+  if(ctLbl) ctLbl.textContent=isD?'Manage Drink Categories':'Manage Course Types';
+  var ctBtn=document.getElementById('adm-btn-add-type');
+  if(ctBtn) ctBtn.textContent='+ Add Type';
+  // Clear inputs
+  if(dname) dname.value='';
+  selectServingStyle('glass'); // reset serving style picker
+  // Render course type picker and list using per-menu courses
+  renderCourseTypePicker('course-type-picker','');
+  renderCourseTypeList();
+  renderDishList();
+}
+
+// renderDrinkCatAsCourseTypePicker and renderDrinkCatAsTypeList removed — unified with course type system
+
+function getMenuCourses(svc){
+  if(!S.menuCourses) S.menuCourses={breakfast:[],aperitivo:[],lunch:S.courses.slice(),dinner:S.courses.slice(),drinks:[]};
+  if(!S.menuCourses[svc]) S.menuCourses[svc]=[];
+  return S.menuCourses[svc];
+}
+
+function setMenuCourses(svc,arr){
+  if(!S.menuCourses) S.menuCourses={breakfast:[],aperitivo:[],lunch:[],dinner:[],drinks:[]};
+  S.menuCourses[svc]=arr;
+  save();
+}
+
+// ════════════════════════════════════════════
+//  ADMIN — DRINKS CRUD
+// ════════════════════════════════════════════
+function renderDrinkCatPicker(){ renderCourseTypePicker('course-type-picker',''); return; // legacy
+  var _x=true;
+  var el=document.getElementById('drink-cat-picker');
+  if(!el) return;
+  el.innerHTML='';
+  S.drinkCats.forEach(function(c){
+    var chip=document.createElement('div');
+    chip.className='type-chip';
+    chip.textContent=capFirst(c.replace('_',' '));
+    chip.dataset.cat=c;
+    chip.onclick=function(){
+      el.querySelectorAll('.type-chip').forEach(function(x){x.classList.remove('sel');});
+      chip.classList.add('sel');
+    };
+    el.appendChild(chip);
+  });
+  if(el.firstChild) el.firstChild.classList.add('sel');
+}
+
+function renderDrinkCatList(){ renderCourseTypeList(); return; // legacy
+  var _x=true;
+  var el=document.getElementById('drink-cat-list');
+  if(!el) return;
+  el.innerHTML='';
+  S.drinkCats.forEach(function(c,idx){
+    var chip=document.createElement('div');
+    chip.className='type-chip';
+    chip.innerHTML=capFirst(c.replace('_',' '))
+      +'<span class="chip-del" onclick="deleteDrinkCat(\'+c+\')">✕</span>';
+    el.appendChild(chip);
+  });
+}
+
+function renderAdminDrinkList(){ renderDishList(); return; // legacy
+  var _x=true;
+  var el=document.getElementById('admin-drink-list');
+  if(!el) return;
+  el.innerHTML='';
+  var drinks=S.menu.filter(function(d){return d.menu==='drinks';});
+  if(!drinks.length){
+    el.innerHTML='<div class="empty"><p>No drinks yet</p></div>';return;
+  }
+  // Group by category
+  var byCat={};
+  S.drinkCats.forEach(function(c){byCat[c]=[];});
+  drinks.forEach(function(d){if(!byCat[d.course])byCat[d.course]=[];byCat[d.course].push(d);});
+  // Show drinks without a recognized category too
+  var allCats=S.drinkCats.length?S.drinkCats:['general'];
+  drinks.forEach(function(d){if(!allCats.includes(d.course)){if(!byCat['other'])byCat['other']=[];byCat['other'].push(d);}});
+  if(byCat['other']&&byCat['other'].length) allCats=['other'].concat(allCats);
+  allCats.forEach(function(cat){
+    if(!byCat[cat]||!byCat[cat].length) return;
+    var hdr=document.createElement('div');
+    hdr.style.cssText='font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink-muted);margin:12px 0 6px';
+    hdr.textContent=capFirst(cat.replace('_',' '));
+    el.appendChild(hdr);
+    byCat[cat].forEach(function(d){
+      var wrap=document.createElement('div');
+      wrap.className='swipe-wrap';
+      var bg=document.createElement('div');bg.className='swipe-delete-bg';
+      var lbl=document.createElement('span');lbl.className='swipe-delete-lbl';lbl.textContent='Delete';
+      bg.appendChild(lbl);wrap.appendChild(bg);
+      var inner=document.createElement('div');inner.className='swipe-inner';
+      var row=document.createElement('div');
+      row.className='dish-admin '+(d.active?'dish-admin-active':'dish-admin-inactive');
+      var check=document.createElement('div');
+      check.className='da-check'+(d.active?' on':'');
+      check.onclick=(function(id){return function(){toggleActive(id);};})(d.id);
+      var info=document.createElement('div');info.className='da-info';
+      var namDiv=document.createElement('div');namDiv.className='da-name';namDiv.textContent=d.name;
+      var tags=document.createElement('div');tags.className='da-tags';
+      var srv=d.serving||(d.hasBottle===true?'both':'glass');
+      var styleLabel=srv==='both'?'Glass & Bottle':srv==='bottle'?'Bottle only':'Glass only';
+      var styleColor=srv==='both'?'var(--wave2)':srv==='bottle'?'var(--basil)':'var(--ink-muted)';
+      tags.innerHTML='<span class="da-tag" style="color:'+styleColor+';border-color:'+styleColor+'20">'+styleLabel+'</span>'
+        +'<span class="da-tag">'+capFirst(cat.replace('_',' '))+'</span>';
+      info.appendChild(namDiv);info.appendChild(tags);
+      var actions=document.createElement('div');actions.className='da-actions';
+      var delBtn=document.createElement('button');delBtn.className='icon-btn danger';delBtn.innerHTML='🗑';
+      delBtn.onclick=(function(id){return function(){deleteDish(id);renderAdminDrinkList();};})(d.id);
+      actions.appendChild(delBtn);
+      row.appendChild(check);row.appendChild(info);row.appendChild(actions);
+      inner.appendChild(row);wrap.appendChild(inner);
+      addSwipeToDelete(inner,function(){deleteDish(d.id);renderAdminDrinkList();});
+      el.appendChild(wrap);
+    });
+  });
+}
+
+function edSelServing(el){
+  document.querySelectorAll('#ed-serving-picker .type-chip').forEach(function(x){x.classList.remove('sel');});
+  el.classList.add('sel');
+}
+
+function selectServingStyle(val){
+  document.querySelectorAll('#serving-style-picker .type-chip').forEach(function(el){
+    el.classList.toggle('sel', el.dataset.val===val);
+  });
+}
+
+function getServingStyle(){
+  var sel=document.querySelector('#serving-style-picker .type-chip.sel');
+  return sel?sel.dataset.val:'glass';
+}
+
+function addDrink(){
+  var name=document.getElementById('a-drinkname').value.trim();
+  var catEl=document.querySelector('#drink-cat-picker .type-chip.sel');
+  var cat=catEl?catEl.dataset.cat:'';
+  var hasBottle=document.getElementById('a-drink-bottle').checked;
+  if(!name){toast(T('enter_dish_name'),'tr');return;}
+  if(!cat){toast('Select a category','tr');return;}
+  S.menu.push({id:Date.now()+'',name:name,course:cat||'general',menu:'drinks',hasBottle:hasBottle,active:true});
+  save();
+  document.getElementById('a-drinkname').value='';
+  document.getElementById('a-drink-bottle').checked=false;
+  renderAdminDrinkList();
+  renderDrinkCatPicker();
+  toast(T('drink_added'),'tg');
+}
+
+// moveDrinkCat removed — use moveCourse
+
+function deleteDrinkCat(cat){
+  var hasItems=S.menu.some(function(d){return d.serviceTypes&&d.serviceTypes.indexOf('drinks')>-1&&d.course===cat;});
+  if(hasItems){toast(T('remove_dishes_first'),'tr');return;}
+  S.drinkCats=S.drinkCats.filter(function(c){return c!==cat;});
+  save();renderDrinkCatList();renderDrinkCatPicker();
+}
+
+// showAddDrinkCat removed — use showAddCourseType
 
 function endService(){
   // Include ALL orders (open and closed) — waiters may have closed tables before ending service
@@ -2671,6 +3773,7 @@ function endService(){
   var uncollected=[];
   orders.forEach(function(e){
     var o=e[1];
+    if(o.drinks&&o.drinks.length&&!Object.keys(o.waves||{}).length) return; // drinks-only order, skip wave check
     Object.values(o.waves||{}).forEach(function(w){
       if(w.status!=='collected'){
         uncollected.push(T('table_label')+' '+o.table);
@@ -2688,7 +3791,7 @@ function endService(){
   if(btn.dataset.confirming==='1'){
     // Second tap — execute save
     var tables=[...new Set(orders.map(function(e){return e[1].table;}))];
-    var guests=orders.reduce(function(sum,e){return sum+(e[1].guests||0);},0);
+    var guests=orders.filter(function(e){return e[1].primarySvc||e[1].serviceType;}).reduce(function(sum,e){return sum+(e[1].guests||0);},0);
     var plates=orders.reduce(function(s,e){
       return s+Object.values(e[1].waves||{}).reduce(function(ss,w){
         return ss+(w.dishes||[]).reduce(function(sss,d){return sss+(d.qty||0);},0);
@@ -2716,15 +3819,19 @@ function endService(){
         notes:o.notes||'',
         ts:o.ts,
         closedAt:o.closedAt||null,
+        primarySvc:o.primarySvc||o.serviceType||'lunch',
+        serviceType:o.primarySvc||o.serviceType||'lunch',
+        drinks:o.drinks||[],
         waves:Object.keys(o.waves||{}).map(Number).sort().map(function(w){
           var wv=o.waves[w];
           return {
             wave:w,
             notes:wv.notes||'',
+            serviceTypes:wv.serviceTypes||[],
             sentAt:wv.sentAt||null,
             readyAt:wv.readyAt||null,
             collectedAt:wv.collectedAt||null,
-            dishes:(wv.dishes||[]).map(function(d){return {name:d.name,qty:d.qty,course:d.course||''};})
+            dishes:(wv.dishes||[]).map(function(d){return {name:d.name,qty:d.qty,course:d.course||'',svcType:d.svcType||''};})
           };
         })
       };
@@ -2733,8 +3840,29 @@ function endService(){
     // Split orders by service type
     var svcTypes=['lunch','breakfast','aperitivo','dinner'];
     var byType={};
+    // Calculate drinks totals separately (drinks don't have waves/plates)
+    var drinksTotals={};
+    var drinksCovers=0;
+    var drinksTables=new Set();
+    orders.forEach(function(e){
+      var o=e[1];
+      if(!o.drinks||!o.drinks.length) return;
+      drinksTables.add(o.table);
+      drinksCovers+=o.guests||0;
+      o.drinks.forEach(function(entry){
+        (entry.items||[]).forEach(function(item){
+          if(isWaterItem(item)) return; // exclude water from stats
+          var key=item.name.toLowerCase();
+          if(!drinksTotals[key]) drinksTotals[key]={name:item.name,category:item.category||'',qtyGlass:0,qtyBottle:0,qty:0};
+          drinksTotals[key].qtyGlass+=(item.qtyGlass||0);
+          drinksTotals[key].qtyBottle+=(item.qtyBottle||0);
+          drinksTotals[key].qty+=(item.qtyGlass||0)+(item.qtyBottle||0);
+        });
+      });
+    });
+    var drinksList=Object.values(drinksTotals).sort(function(a,b){return b.qty-a.qty;});
     svcTypes.forEach(function(st){
-      var stOrders=orders.filter(function(e){return (e[1].serviceType||'lunch')===st;});
+      var stOrders=orders.filter(function(e){var ps=e[1].primarySvc||e[1].serviceType;return ps&&ps===st;});
       if(!stOrders.length){byType[st]=null;return;}
       var stTables=[...new Set(stOrders.map(function(e){return e[1].table;}))];
       var stGuests=stOrders.reduce(function(s,e){return s+(e[1].guests||0);},0);
@@ -2748,8 +3876,9 @@ function endService(){
         Object.values(e[1].waves||{}).forEach(function(w){
           (w.dishes||[]).forEach(function(d){
             if(d.id==='aper')return; // skip auto aperitivo placeholder
-            if(!stDishMap[d.name])stDishMap[d.name]={name:d.name,course:d.course||'',qty:0};
-            stDishMap[d.name].qty+=(d.qty||0);
+            var dk=d.name.toLowerCase();
+            if(!stDishMap[dk])stDishMap[dk]={name:d.name,course:d.course||'',qty:0};
+            stDishMap[dk].qty+=(d.qty||0);
           });
         });
       });
@@ -2805,10 +3934,16 @@ function endService(){
       openAtClose:openCount,
       dishTotals:dishTotals,
       orderSnapshots:orderSnapshots,
-      byType:byType
+      byType:byType,
+      drinks:{
+        tables:drinksTables.size,
+        covers:guests, // use total session covers for drinks per cover
+        totalServings:drinksList.reduce(function(s,d){return s+d.qty;},0),
+        items:drinksList
+      }
     });
     S.orders={};save();
-    if(fbDB)fbDB.ref('orders').set(null);
+    if(fbDB)fbDB.ref('orders_v2').set(null);
     toast(T('service_saved'),'ty');
     setTimeout(function(){show('s-role');},2200);
     return;
@@ -2817,7 +3952,7 @@ function endService(){
   var svcLabelsEs={lunch:T('lunch'),breakfast:T('breakfast'),aperitivo:T('aperitivo'),dinner:T('dinner')};
   var summaryParts=[];
   ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
-    var stOrders=orders.filter(function(e){return (e[1].serviceType||'lunch')===st;});
+    var stOrders=orders.filter(function(e){var ps=e[1].primarySvc||e[1].serviceType;return ps&&ps===st;});
     if(!stOrders.length) return;
     var stGuests=stOrders.reduce(function(s,e){return s+(e[1].guests||0);},0);
     summaryParts.push(svcLabelsEs[st]+' '+stGuests);
@@ -2913,11 +4048,14 @@ function renderAdminMenu(){
 
 function renderCourseTypePicker(elId,selected){
   var el=document.getElementById(elId);
+  if(!el) return;
   el.innerHTML='';
-  S.courses.forEach(function(c){
+  var courses=getMenuCourses(adminSvcType||'lunch');
+  courses.forEach(function(c){
     var chip=document.createElement('div');
     chip.className='type-chip'+(selected===c?' sel':'');
-    chip.textContent=capT(c);
+    chip.textContent=capFirst(c.replace(/_/g,' '));
+    chip.dataset.val=c;
     chip.addEventListener('click',(function(id,cv){
       return function(){selectCourseType(id,cv);};
     })(elId,c));
@@ -2928,40 +4066,59 @@ function renderCourseTypePicker(elId,selected){
 function selectCourseType(elId,c){
   document.querySelectorAll('#'+elId+' .type-chip').forEach(function(el){el.classList.remove('sel');});
   document.querySelectorAll('#'+elId+' .type-chip').forEach(function(el){
-    if(el.textContent.trim().toLowerCase()===c) el.classList.add('sel');
+    if(el.dataset.val===c) el.classList.add('sel');
   });
 }
 
 function getSelectedCourseType(elId){
   var sel=document.querySelector('#'+elId+' .type-chip.sel');
-  return sel?sel.textContent.trim().toLowerCase():null;
+  if(!sel) return null;
+  return sel.dataset.val||sel.textContent.trim().toLowerCase().replace(/\s+/g,'_');
 }
 
 function addDish(){
   var name=document.getElementById('a-dname').value.trim();
-  var course=getSelectedCourseType('course-type-picker');
   if(!name){toast(T('enter_dish_name'),'tr');return;}
-  if(!course){toast(T('select_course'),'tr');return;}
-  S.menu.push({id:Date.now()+'',name:name,course:course,active:true});
+  var isD=adminSvcType==='drinks';
+  // Get selected course/category from picker
+  var pickerEl=document.getElementById('course-type-picker');
+  var selChip=pickerEl?pickerEl.querySelector('.type-chip.sel'):null;
+  var course='';
+  if(selChip) course=selChip.dataset.val||selChip.textContent.trim().toLowerCase().replace(/\s+/g,'_');
+  if(!course&&(adminSvcType==='lunch'||adminSvcType==='dinner')){toast(T('select_course'),'tr');return;}
+  if(!course) course='general';
+  var serving=isD?getServingStyle():'glass';
+  S.menu.push({id:Date.now()+'',name:name,course:course,menu:adminSvcType,active:true,serving:serving});
   save();document.getElementById('a-dname').value='';
-  renderAdminMenu();toast(T('dish_added'),'tg');
+  selectServingStyle('glass'); // reset picker
+  renderDishList();
+  renderCourseTypePicker('course-type-picker','');
+  toast(isD?T('drink_added'):T('dish_added'),'tg');
 }
 
 function renderDishList(){
   var el=document.getElementById('admin-dish-list');
   el.innerHTML='';
-  if(!S.menu.length){
+  // Filter by current admin service type (exclude drinks — they have their own list)
+  var menuFiltered=S.menu.filter(function(d){
+    if(d.menu) return d.menu===adminSvcType;
+    if(d.serviceTypes) return d.serviceTypes.indexOf(adminSvcType)>-1;
+    return adminSvcType==='lunch';
+  });
+  if(!menuFiltered.length){
     el.innerHTML='<div class="empty"><div class="empty-ic"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><p>'+T('no_active_items')+'</p></div>';return;
   }
   var byCourse={};
-  S.courses.forEach(function(c){byCourse[c]=[];});
-  S.menu.forEach(function(m){if(!byCourse[m.course])byCourse[m.course]=[];byCourse[m.course].push(m);});
-  S.courses.filter(function(c){return byCourse[c]&&byCourse[c].length;}).forEach(function(c){
+  var courseOrder=typeof getMenuCourses==='function'?getMenuCourses(adminSvcType):S.courses;
+  courseOrder.forEach(function(crs){byCourse[crs]=[];});
+  menuFiltered.forEach(function(m){var ckey=m.course||'general';if(!byCourse[ckey])byCourse[ckey]=[];byCourse[ckey].push(m);});
+  courseOrder.forEach(function(c){
+    if(!byCourse[c]||!byCourse[c].length) return;
     var section=document.createElement('div');
     section.style.marginBottom='16px';
     var heading=document.createElement('div');
     heading.style.cssText="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;margin-bottom:7px;color:var(--ink)";
-    heading.textContent=capT(c);
+    heading.textContent=capFirst(c.replace(/_/g,' '));
     section.appendChild(heading);
     byCourse[c].forEach(function(d){
       var row=document.createElement('div');
@@ -2978,6 +4135,16 @@ function renderDishList(){
       if(d.active){stag.style.cssText='background:var(--ready-pale);color:var(--ready);border-color:rgba(61,122,86,.2)';stag.textContent=T('active');}
       else{stag.textContent=T('inactive');}
       tags.appendChild(stag);
+      // Serving style pill for drinks
+      if(d.menu==='drinks'){
+        var srv=d.serving||(d.hasBottle===true?'both':'glass');
+        var sLabel=srv==='both'?'Glass & Bottle':srv==='bottle'?'Bottle only':'Glass only';
+        var sColor=srv==='both'?'var(--wave2)':srv==='bottle'?'var(--basil)':'var(--ink-muted)';
+        var stag2=document.createElement('span');stag2.className='da-tag';
+        stag2.style.cssText='color:'+sColor;
+        stag2.textContent=sLabel;
+        tags.appendChild(stag2);
+      }
       info.appendChild(tags);row.appendChild(info);
       var editBtn=document.createElement('button');
       editBtn.type='button';editBtn.className='icon-btn';
@@ -3010,9 +4177,20 @@ function openEditDish(id){
   renderCourseTypePicker('ed-course-picker',d.course);
   setTimeout(function(){
     document.querySelectorAll('#ed-course-picker .type-chip').forEach(function(el){
-      el.classList.toggle('sel',el.textContent.trim().toLowerCase()===d.course);
+      el.classList.toggle('sel',el.dataset.val===d.course);
     });
   },50);
+  // Show/hide serving style row in edit overlay
+  var edSrv=document.getElementById('ed-serving-row');
+  if(edSrv){
+    edSrv.style.display=d.menu==='drinks'?'':'none';
+    if(d.menu==='drinks'){
+      var srv=d.serving||(d.hasBottle===true?'both':'glass');
+      document.querySelectorAll('#ed-serving-picker .type-chip').forEach(function(el){
+        el.classList.toggle('sel',el.dataset.val===srv);
+      });
+    }
+  }
   document.getElementById('edit-dish-overlay').classList.add('open');
 }
 
@@ -3024,6 +4202,12 @@ function saveEditDish(){
   if(!name){toast(T('enter_name'),'tr');return;}
   if(!course){toast(T('select_course_type'),'tr');return;}
   d.name=name;d.course=course;
+  // Save serving style if editing a drink
+  var edSrvPicker=document.getElementById('ed-serving-picker');
+  if(edSrvPicker&&d.menu==='drinks'){
+    var selSrv=edSrvPicker.querySelector('.type-chip.sel');
+    if(selSrv) d.serving=selSrv.dataset.val;
+  }
   save();closeEditDish();renderDishList();toast(T('dish_updated'),'tg');
 }
 
@@ -3034,13 +4218,15 @@ function closeEditDish(e){
 
 function renderCourseTypeList(){
   var el=document.getElementById('course-type-list');
+  if(!el) return;
   el.innerHTML='';
-  S.courses.forEach(function(c,idx){
+  var courses=getMenuCourses(adminSvcType||'lunch');
+  courses.forEach(function(c,idx){
     var row=document.createElement('div');
     row.style.cssText='display:flex;align-items:center;gap:6px;margin-bottom:6px;background:var(--paper-card);border:1px solid var(--border-soft);border-radius:var(--r);padding:8px 10px';
     var name=document.createElement('span');
     name.style.cssText='flex:1;font-size:14px;font-weight:500';
-    name.textContent=capT(c);
+    name.textContent=capFirst(c.replace(/_/g,' '));
     // Up button
     var upBtn=document.createElement('button');
     upBtn.type='button';upBtn.className='icon-btn';upBtn.textContent='↑';
@@ -3049,8 +4235,8 @@ function renderCourseTypeList(){
     // Down button
     var dnBtn=document.createElement('button');
     dnBtn.type='button';dnBtn.className='icon-btn';dnBtn.textContent='↓';
-    dnBtn.style.opacity=idx===S.courses.length-1?'0.3':'1';
-    if(idx<S.courses.length-1) dnBtn.addEventListener('click',(function(i){return function(){moveCourse(i,1);};})(idx));
+    dnBtn.style.opacity=idx===courses.length-1?'0.3':'1';
+    if(idx<courses.length-1) dnBtn.addEventListener('click',(function(i){return function(){moveCourse(i,1);};})(idx));
     // Delete
     var delBtn=document.createElement('button');
     delBtn.type='button';delBtn.className='icon-btn danger';delBtn.textContent='×';
@@ -3061,23 +4247,32 @@ function renderCourseTypeList(){
 }
 
 function moveCourse(idx,dir){
-  var tmp=S.courses[idx];
-  S.courses[idx]=S.courses[idx+dir];
-  S.courses[idx+dir]=tmp;
-  save();renderAdminMenu();
+  var courses=getMenuCourses(adminSvcType);
+  if(idx+dir<0||idx+dir>=courses.length) return;
+  var tmp=courses[idx];courses[idx]=courses[idx+dir];courses[idx+dir]=tmp;
+  setMenuCourses(adminSvcType,courses);
+  renderCourseTypeList();renderCourseTypePicker('course-type-picker','');
 }
 
 function showAddCourseType(){document.getElementById('new-ct-name').value='';document.getElementById('add-ct-overlay').classList.add('open');}
 function closeAddCT(e){if(e&&e.target!==document.getElementById('add-ct-overlay'))return;document.getElementById('add-ct-overlay').classList.remove('open');}
 function saveCourseType(){
-  var name=document.getElementById('new-ct-name').value.trim().toLowerCase();
+  var name=document.getElementById('new-ct-name').value.trim();
   if(!name){toast(T('enter_name'),'tr');return;}
-  if(S.courses.indexOf(name)!==-1){toast(T('already_exists')||'Already exists','tr');return;}
-  S.courses.push(name);save();renderAdminMenu();closeAddCT();toast(T('course_type_added'),'tg');
+  var cv=name.toLowerCase().replace(/\s+/g,'_');
+  var courses=getMenuCourses(adminSvcType);
+  if(courses.indexOf(cv)!==-1){toast(T('already_exists'),'tr');return;}
+  courses.push(cv);
+  setMenuCourses(adminSvcType,courses);
+  renderCourseTypeList();renderCourseTypePicker('course-type-picker','');
+  closeAddCT();toast(T('course_type_added'),'tg');
 }
-function deleteCourseType(c){
-  if(S.menu.some(function(m){return m.course===c;})){toast(T('remove_dishes_first'),'tr');return;}
-  S.courses=S.courses.filter(function(x){return x!==c;});save();renderAdminMenu();
+function deleteCourseType(cv){
+  var hasItems=S.menu.some(function(m){return m.course===cv&&m.menu===adminSvcType;});
+  if(hasItems){toast(T('remove_dishes_first'),'tr');return;}
+  var courses=getMenuCourses(adminSvcType);
+  setMenuCourses(adminSvcType,courses.filter(function(x){return x!==cv;}));
+  renderCourseTypeList();renderCourseTypePicker('course-type-picker','');
 }
 
 // ════════════════════════════════════════════
@@ -3456,24 +4651,28 @@ function renderSeasonal(){
   var dSub=document.createElement('div');dSub.className='dash-section-sub';dSub.textContent=T('dishes_8w');
   dishSec.appendChild(dTitle);dishSec.appendChild(dSub);
 
-  var dishTotals={};var dishCourse={};
+  var dishTotals={};var dishCourse={};var dishNames={};
   scope8w.forEach(function(h){
     ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
       var d=h.byType&&h.byType[st];if(!d||!d.dishTotals) return;
       d.dishTotals.forEach(function(dish){
-        if(!dishTotals[dish.name]) dishTotals[dish.name]=0;
-        dishTotals[dish.name]+=(dish.qty||0);
-        dishCourse[dish.name]=capT(dish.course||'');
+        var dk2=dish.name.toLowerCase();
+        if(!dishTotals[dk2]) dishTotals[dk2]=0;
+        dishTotals[dk2]+=(dish.qty||0);
+        dishCourse[dk2]=capT(dish.course||'');
+        dishNames=dishNames||{};dishNames[dk2]=dishNames[dk2]||dish.name;
       });
     });
     if(!h.byType&&h.dishTotals) h.dishTotals.forEach(function(dish){
-      if(!dishTotals[dish.name]) dishTotals[dish.name]=0;
-      dishTotals[dish.name]+=(dish.qty||0);
-      dishCourse[dish.name]=capT(dish.course||'');
+      var dk3=dish.name.toLowerCase();
+      if(!dishTotals[dk3]) dishTotals[dk3]=0;
+      dishTotals[dk3]+=(dish.qty||0);
+      dishCourse[dk3]=capT(dish.course||'');
+      dishNames[dk3]=dishNames[dk3]||dish.name;
     });
   });
 
-  var sortedDishes=Object.keys(dishTotals).map(function(n){return{name:n,qty:dishTotals[n],course:dishCourse[n]||''};}).sort(function(a,b){return b.qty-a.qty;}).slice(0,10);
+  var sortedDishes=Object.keys(dishTotals).map(function(n){return{name:dishNames[n]||n,qty:dishTotals[n],course:dishCourse[n]||''};}).sort(function(a,b){return b.qty-a.qty;}).slice(0,10);
   var totalDishPlates8w=Object.values(dishTotals).reduce(function(s,v){return s+v;},0);
   if(totalDishPlates8w>0) dSub.textContent=T('dishes_8w')+' · '+totalDishPlates8w+' '+T('plates');
   if(!sortedDishes.length){
@@ -3511,8 +4710,50 @@ function renderSeasonal(){
     });
   }
   el.appendChild(dishSec);
-}
 
+  // ── Section 6: Drinks — 8 weeks ────────────────────────────
+  var drinkScope8w=scope8w.filter(function(h){return h.drinks&&h.drinks.totalServings>0;});
+  if(drinkScope8w.length){
+    var dkSec8=document.createElement('div');dkSec8.className='dash-section';
+    var dk8Title=document.createElement('div');dk8Title.className='dash-section-title';dk8Title.textContent='Drinks (excl. water)';
+    var dk8Sub=document.createElement('div');dk8Sub.className='dash-section-sub';dk8Sub.textContent='Last 8 weeks';
+    dkSec8.appendChild(dk8Title);dkSec8.appendChild(dk8Sub);
+
+    // KPI row
+    var dk8Srv=drinkScope8w.reduce(function(s,h){return s+(h.drinks.totalServings||0);},0);
+    var dk8Cvr=drinkScope8w.reduce(function(s,h){return s+(h.drinks.covers||0);},0);
+    var dk8Pct=Math.round(drinkScope8w.length/scope8w.length*100);
+    var dk8Kpi=document.createElement('div');dk8Kpi.style.cssText='display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px';
+    [
+      {label:'Servings',val:dk8Srv},
+      {label:'Per cover',val:dk8Cvr>0?(dk8Srv/dk8Cvr).toFixed(1):'—'},
+      {label:'Sessions %',val:dk8Pct+'%'}
+    ].forEach(function(k){
+      var kc=document.createElement('div');kc.style.cssText='background:var(--paper-card);border-radius:var(--r);padding:10px;border:1px solid var(--border-soft);text-align:center';
+      kc.innerHTML='<div style="font-size:18px;font-weight:700;color:var(--basil)">'+k.val+'</div>'
+        +'<div style="font-size:9px;color:var(--ink-muted);letter-spacing:.5px;text-transform:uppercase;margin-top:2px">'+k.label+'</div>';
+      dk8Kpi.appendChild(kc);
+    });
+    dkSec8.appendChild(dk8Kpi);
+
+    // Category breakdown
+    var cat8={};var tot8=0;
+    drinkScope8w.forEach(function(h){(h.drinks.items||[]).forEach(function(item){
+      var cat=capFirst((item.category||'other').replace(/_/g,' '));
+      cat8[cat]=(cat8[cat]||0)+(item.qty||0);tot8+=(item.qty||0);
+    });});
+    var catColors8=['#266533','#B87A2A','#F16838','#7B5EA7','#1A4422','#4A7C59'];
+    Object.keys(cat8).sort(function(a,b){return cat8[b]-cat8[a];}).forEach(function(cat,i){
+      var pct=Math.round(cat8[cat]/tot8*100);
+      var br=document.createElement('div');br.className='dish-bar-row';
+      br.innerHTML='<span class="dish-bar-name">'+cat+'</span>'
+        +'<div class="dish-bar-track"><div class="dish-bar-fill" style="width:'+pct+'%;background:'+catColors8[i%catColors8.length]+'"></div></div>'
+        +'<span class="dish-bar-qty">'+pct+'%</span>';
+      dkSec8.appendChild(br);
+    });
+    el.appendChild(dkSec8);
+  }
+}
 
 function renderYearly(){
   var el=document.getElementById('stats-yearly');
@@ -3528,6 +4769,7 @@ function renderYearly(){
     {key:'aperitivo',label:T('aperitivo'),color:'#F16838'},
     {key:'dinner',label:T('dinner'),color:'#1A4422'}
   ];
+  var hasDrinkStats=scope.some(function(h){return h.drinks&&h.drinks.totalServings>0;});
 
   // ── Year header ─────────────────────────────────────────────
   var hdr=document.createElement('div');hdr.style.cssText='margin-bottom:20px;padding-top:4px';
@@ -3536,6 +4778,7 @@ function renderYearly(){
   var sub=document.createElement('div');sub.style.cssText='font-size:11px;color:var(--ink-muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px';
   sub.textContent=scope.length+' '+(usingAllTime?T('services_total'):T('services_this_year'));
   hdr.appendChild(title);hdr.appendChild(sub);el.appendChild(hdr);
+
 
   // ── Section 1: Service Comparison Leaderboard ───────────────
   var ldSec=document.createElement('div');ldSec.className='dash-section';
@@ -3848,6 +5091,114 @@ function buildKpiSection(label,svcRecords,showPlates){
   return wrap;
 }
 
+  // ── Drinks stats (excl. water) ───────────────────────────────
+  if(hasDrinkStats){
+    var drinkScope=scope.filter(function(h){return h.drinks&&h.drinks.totalServings>0;});
+    var totalServings=drinkScope.reduce(function(s,h){return s+(h.drinks.totalServings||0);},0);
+    var totalCovers=drinkScope.reduce(function(s,h){return s+(h.drinks.covers||h.guests||0);},0);
+    var drinksPerCover=totalCovers>0?(totalServings/totalCovers).toFixed(1):'—';
+    var sessionsWithDrinks=drinkScope.length;
+    var avgPerSession=sessionsWithDrinks>0?(totalServings/sessionsWithDrinks).toFixed(1):'—';
+
+    // Aggregate items and categories
+    var allDrinkItems={};var catTotals={};
+    var totalGls=0;var totalBtl=0;
+    drinkScope.forEach(function(h){
+      (h.drinks.items||[]).forEach(function(item){
+        // Aggregate by item
+        var dik=item.name.toLowerCase();
+        if(!allDrinkItems[dik]) allDrinkItems[dik]={name:item.name,category:item.category||'',qtyGlass:0,qtyBottle:0,qty:0};
+        allDrinkItems[dik].qtyGlass+=(item.qtyGlass||0);
+        allDrinkItems[dik].qtyBottle+=(item.qtyBottle||0);
+        allDrinkItems[dik].qty+=(item.qty||0);
+        // Aggregate by category
+        var cat=capFirst((item.category||'other').replace(/_/g,' '));
+        if(!catTotals[cat]) catTotals[cat]=0;
+        catTotals[cat]+=(item.qty||0);
+        totalGls+=(item.qtyGlass||0);
+        totalBtl+=(item.qtyBottle||0);
+      });
+    });
+    var drinkRanked=Object.values(allDrinkItems).sort(function(a,b){return b.qty-a.qty;});
+    var catRanked=Object.keys(catTotals).map(function(k){return {cat:k,qty:catTotals[k]};}).sort(function(a,b){return b.qty-a.qty;});
+
+    var dkSec=document.createElement('div');dkSec.className='dash-section';
+    var dkTitle=document.createElement('div');dkTitle.className='dash-section-title';
+    dkTitle.textContent='Drinks (excl. water)';
+    dkSec.appendChild(dkTitle);
+
+    // KPI row — 4 cards
+    var dkKpi=document.createElement('div');dkKpi.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px';
+    [
+      {label:'Total servings',val:totalServings},
+      {label:'Per cover',val:drinksPerCover},
+      {label:'Avg / session',val:avgPerSession},
+      {label:'Sessions w/drinks',val:sessionsWithDrinks+'/'+scope.length}
+    ].forEach(function(k){
+      var kcard=document.createElement('div');kcard.style.cssText='background:var(--paper-card);border-radius:var(--r);padding:10px 12px;border:1px solid var(--border-soft)';
+      kcard.innerHTML='<div style="font-size:20px;font-weight:700;color:var(--basil)">'+k.val+'</div>'
+        +'<div style="font-size:10px;color:var(--ink-muted);letter-spacing:.5px;text-transform:uppercase;margin-top:2px">'+k.label+'</div>';
+      dkKpi.appendChild(kcard);
+    });
+    dkSec.appendChild(dkKpi);
+
+    // Glass vs Bottle split (if any bottles)
+    if(totalBtl>0){
+      var splitDiv=document.createElement('div');splitDiv.style.cssText='margin-bottom:14px';
+      var splitLbl=document.createElement('div');splitLbl.style.cssText='font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-muted);margin-bottom:6px';
+      splitLbl.textContent='Glass vs Bottle split';
+      var total=totalGls+totalBtl;
+      var glsPct=Math.round(totalGls/total*100);
+      var btlPct=100-glsPct;
+      var track=document.createElement('div');track.style.cssText='height:8px;border-radius:4px;background:var(--border-soft);overflow:hidden;display:flex';
+      var glsFill=document.createElement('div');glsFill.style.cssText='height:100%;background:var(--basil);width:'+glsPct+'%';
+      var btlFill=document.createElement('div');btlFill.style.cssText='height:100%;background:var(--wave2);width:'+btlPct+'%';
+      track.appendChild(glsFill);track.appendChild(btlFill);
+      var splitKey=document.createElement('div');splitKey.style.cssText='display:flex;gap:12px;margin-top:6px;font-size:11px;color:var(--ink-muted)';
+      splitKey.innerHTML='<span style="color:var(--basil)">● gls '+glsPct+'%</span><span style="color:var(--wave2)">● btl '+btlPct+'%</span>';
+      splitDiv.appendChild(splitLbl);splitDiv.appendChild(track);splitDiv.appendChild(splitKey);
+      dkSec.appendChild(splitDiv);
+    }
+
+    // Category breakdown %
+    if(catRanked.length>1){
+      var catDiv=document.createElement('div');catDiv.style.cssText='margin-bottom:14px';
+      var catLbl=document.createElement('div');catLbl.style.cssText='font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-muted);margin-bottom:8px';
+      catLbl.textContent='By category';
+      catDiv.appendChild(catLbl);
+      var catColors=['#266533','#B87A2A','#F16838','#7B5EA7','#1A4422','#4A7C59'];
+      catRanked.forEach(function(cat,i){
+        var pct=Math.round(cat.qty/totalServings*100);
+        var br=document.createElement('div');br.className='dish-bar-row';
+        var clr=catColors[i%catColors.length];
+        br.innerHTML='<span class="dish-bar-name">'+cat.cat+'</span>'
+          +'<div class="dish-bar-track"><div class="dish-bar-fill" style="width:'+pct+'%;background:'+clr+'"></div></div>'
+          +'<span class="dish-bar-qty">'+pct+'%</span>';
+        catDiv.appendChild(br);
+      });
+      dkSec.appendChild(catDiv);
+    }
+
+    // Top drinks
+    var topLbl=document.createElement('div');topLbl.style.cssText='font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-muted);margin-bottom:8px';
+    topLbl.textContent='Top drinks';
+    dkSec.appendChild(topLbl);
+    var dkMax=drinkRanked.length?drinkRanked[0].qty:1;
+    drinkRanked.slice(0,8).forEach(function(d){
+      var br=document.createElement('div');br.className='dish-bar-row';
+      var pct=Math.round((d.qty/dkMax)*100);
+      var qStr='';
+      if(d.qtyGlass>0&&d.qtyBottle>0) qStr=d.qtyGlass+'× gls · '+d.qtyBottle+'× btl';
+      else if(d.qtyBottle>0) qStr=d.qtyBottle+'× btl';
+      else qStr=d.qty+'×';
+      br.innerHTML='<span class="dish-bar-name">'+d.name+'</span>'
+        +'<div class="dish-bar-track"><div class="dish-bar-fill" style="width:'+pct+'%"></div></div>'
+        +'<span class="dish-bar-qty">'+qStr+'</span>';
+      dkSec.appendChild(br);
+    });
+    el.appendChild(dkSec);
+  }
+
 function renderHistory(){
   var el=document.getElementById('stats-history');
   el.innerHTML='';
@@ -3916,7 +5267,7 @@ function renderHistory(){
 
   // Empty cells before first day
   for(var i=0;i<offset;i++){
-    var empty=document.createElement('div');empty.className='cal-day empty';grid.appendChild(empty);
+    var empty=document.createElement('div');empty.className='cal-day empty';var emptyI=document.createElement('div');emptyI.className='cal-day-inner';empty.appendChild(emptyI);grid.appendChild(empty);
   }
 
   for(var day=1;day<=daysInMonth;day++){
@@ -3927,6 +5278,7 @@ function renderHistory(){
 
     var cell=document.createElement('div');
     cell.className='cal-day'+(hasSvc?' has-service':'')+(isToday?' today':'')+(isSelected?' selected':'');
+    var cellInner=document.createElement('div');cellInner.className='cal-day-inner';
     cell.textContent=day;
     if(hasSvc&&!isSelected){
       var covers8=dateCoversMap[dateKey]||0;
@@ -3993,6 +5345,38 @@ function renderHistory(){
         hdr.innerHTML='<div style="font-size:13px;font-weight:700;color:var(--ink)">'+h.date+(sessionLabel?' <span style="font-size:10px;font-weight:400;color:var(--ink-muted)">'+sessionLabel+'</span>':'')+'</div>'
           +'<div style="font-size:12px;color:var(--ink-muted);margin-top:3px">'+svcSummary.join(' · ')+'</div>';
         row.appendChild(hdr);
+
+        // ── Drinks summary for this session ───────────────
+        if(h.drinks&&h.drinks.totalServings>0){
+          var dkSecH=document.createElement('div');
+          dkSecH.style.cssText='padding:8px 0;border-bottom:1px solid var(--border-soft);margin-bottom:8px';
+          var dkHdr=document.createElement('div');
+          dkHdr.style.cssText='font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--wave2);margin-bottom:6px';
+          var dkCvr=h.drinks.covers>0?(h.drinks.totalServings/h.drinks.covers).toFixed(1)+' per cover':'';
+          dkHdr.textContent='Drinks — '+h.drinks.totalServings+' servings'+(dkCvr?' · '+dkCvr:'');
+          dkSecH.appendChild(dkHdr);
+          // Category breakdown for this session
+          var sessCatTotals={};var sessTotal=h.drinks.totalServings||0;
+          (h.drinks.items||[]).forEach(function(item){
+            var cat=capFirst((item.category||'other').replace(/_/g,' '));
+            sessCatTotals[cat]=(sessCatTotals[cat]||0)+(item.qty||0);
+          });
+          var sessCats=Object.keys(sessCatTotals).sort(function(a,b){return sessCatTotals[b]-sessCatTotals[a];});
+          if(sessCats.length>1){
+            var catLine=sessCats.map(function(k){return k+' '+Math.round(sessCatTotals[k]/sessTotal*100)+'%';}).join(' · ');
+            var catDiv2=document.createElement('div');catDiv2.style.cssText='font-size:11px;color:var(--ink-muted);margin-bottom:6px';
+            catDiv2.textContent=catLine;
+            dkSecH.appendChild(catDiv2);
+          }
+          (h.drinks.items||[]).slice(0,6).forEach(function(item){
+            var iRow=document.createElement('div');
+            iRow.style.cssText='display:flex;justify-content:space-between;font-size:12px;padding:2px 0';
+            var qStr=item.qtyGlass>0&&item.qtyBottle>0?(item.qtyGlass+'× gls · '+item.qtyBottle+'× btl'):(item.qtyBottle>0?item.qtyBottle+'× btl':item.qty+'×');
+            iRow.innerHTML='<span>'+item.name+'</span><span style="font-weight:600">'+qStr+'</span>';
+            dkSecH.appendChild(iRow);
+          });
+          row.appendChild(dkSecH);
+        }
 
         // ── Cover breakdown per service type ──────────────
         if(h.byType){
@@ -4221,8 +5605,9 @@ function saveAndSyncMenu(){
   var ts=Date.now();
   fbDB.ref('config/menu').set(S.menu);
   fbDB.ref('config/courses').set(S.courses);
+  fbDB.ref('config/menuCourses').set(S.menuCourses);
   fbDB.ref('config/menuTs').set(ts);
-  LS.set('menu',S.menu);LS.set('courses',S.courses);LS.set('configTs',ts);
+  LS.set('menu',S.menu);LS.set('courses',S.courses);LS.set('menuCourses',S.menuCourses);LS.set('configTs',ts);
   toast('Menu synced to all devices ✓','tg');
 }
 
