@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_58.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_60.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -1709,6 +1709,21 @@ function _initFirebaseApp(){
         S.tables=val.tables;LS.set('tables',val.tables);
         LS.set('tablesTs',fbTablesTs);
         changed=true;
+      }
+      // Merge V1 history from Firebase into local history
+      if(val.history&&val.history.length){
+        var fbHistory=val.history;
+        var localKeys=new Set(S.history.map(function(h){return h.date+'|'+(h.sessionNum||1);}));
+        var merged=false;
+        fbHistory.forEach(function(h){
+          var k=h.date+'|'+(h.sessionNum||1);
+          if(!localKeys.has(k)){S.history.push(h);merged=true;}
+        });
+        if(merged){
+          S.history.sort(function(a,b){return new Date(b.endedAt||0)-new Date(a.endedAt||0);});
+          LS.set('history',S.history);
+          changed=true;
+        }
       }
       if(changed){
         try{buildCourseTabs();renderItems();buildTableGrid();buildAperTableGrid();reRenderAdmin();}catch(e){}
@@ -4387,8 +4402,11 @@ function renderSeasonal(){
   var wSub=document.createElement('div');wSub.className='dash-section-sub';wSub.textContent=T('covers_per_day');
   weekSec.appendChild(wTitle);weekSec.appendChild(wSub);
 
+  // Build Mon→today (or Mon→Sun if today is Sun)
   var days=[];
-  for(var di=6;di>=0;di--){var d=new Date(today);d.setDate(today.getDate()-di);days.push(d);}
+  var todayDow=today.getDay()||7; // 1=Mon, 7=Sun
+  var mondayOffset=todayDow-1; // days since Monday
+  for(var di=mondayOffset;di>=0;di--){var d=new Date(today);d.setDate(today.getDate()-di);days.push(d);}
 
   var dateCovers={};var dateSvcBreak={};
   scope.forEach(function(h){
@@ -5806,6 +5824,20 @@ function fmtTime(ts){if(!ts)return'';return new Date(ts).toLocaleTimeString([],{
 // ════════════════════════════════════════════
 // Wait for page fully loaded before connecting to Firebase
 window.addEventListener('load', function(){ initFirebase(); });
+
+// Auto-reconnect when app comes back to foreground (iPhone screen unlock)
+document.addEventListener('visibilitychange', function(){
+  if(document.visibilityState==='visible'){
+    if(!fbDB||!firebase||!firebase.apps||!firebase.apps.length){
+      initFirebase();
+    } else {
+      // Firebase SDK loaded but may have lost connection — ping to verify
+      fbDB.ref('.info/connected').once('value',function(snap){
+        if(!snap.val()) initFirebase();
+      });
+    }
+  }
+});
 // Open last screen or kitchen by default — skip role screen
 (function(){
   // Always open on home/role screen — navigate from there
