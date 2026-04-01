@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_60.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_65.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -1661,11 +1661,13 @@ var NTFY_KITCHEN='Notify-Casarico-Cucina';
 var NTFY_FOH='Notify-Casarico-Sala';
 
 function initFirebase(){
+  console.log('initFirebase called, firebase available:', !!window.firebase, 'config:', S.fbConfig&&S.fbConfig.projectId);
   if(!S.fbConfig||!S.fbConfig.apiKey){setSyncUI(false,'Setup Firebase in Admin → Setup');return;}
   setSyncUI(false,'Connecting…');
   if(window.firebase){
     _initFirebaseApp();
   } else {
+    console.warn('Firebase SDK not in window, loading dynamically');
     loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js',function(){
       loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js',function(){
         _initFirebaseApp();
@@ -1675,6 +1677,7 @@ function initFirebase(){
 }
 
 function _initFirebaseApp(){
+  console.log('_initFirebaseApp called, apps:', firebase.apps&&firebase.apps.length);
   try{
     if(firebase.apps&&firebase.apps.length) firebase.apps.forEach(function(a){try{a.delete();}catch(e){}});
     firebase.initializeApp({
@@ -1730,7 +1733,8 @@ function _initFirebaseApp(){
       }
     });
     setSyncUI(true,'Live · Firebase');
-  }catch(e){console.error(e);setSyncUI(false,'Firebase error — check config');}
+    console.log('Firebase connected successfully');
+  }catch(e){console.error('_initFirebaseApp error:',e);setSyncUI(false,'Firebase error — check config');}
 }
 
 
@@ -1834,8 +1838,11 @@ function setNestedPath(obj,path,val){var parts=path.split('/').filter(Boolean);v
 function deleteNestedPath(obj,path){var parts=path.split('/').filter(Boolean);var cur=obj;for(var i=0;i<parts.length-1;i++){cur=cur[parts[i]];if(!cur)return;}delete cur[parts[parts.length-1]];}
 
 function setSyncUI(ok,label){
-  document.getElementById('sdot').className='sdot'+(ok?' on':'');
-  document.getElementById('slbl').textContent=label;
+  var dot=document.getElementById('sdot');
+  var lbl=document.getElementById('slbl');
+  if(dot) dot.className='sdot'+(ok?' on':'');
+  if(lbl) lbl.textContent=label;
+  console.log('setSyncUI:',ok,label);
 }
 
 // ════════════════════════════════════════════
