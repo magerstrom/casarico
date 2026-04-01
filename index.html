@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_65.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_66.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -601,9 +601,9 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
       <div class="role-text"><h3 id="role-admin-h3">Admin</h3></div>
     </div>
   </div>
-  <div class="sync-row"><span class="sdot" id="sdot"></span><span id="slbl">Not connected</span></div>
+  <div class="sync-row"><span class="sdot on" id="sdot"></span><span id="slbl">Live · Firebase</span></div>
   <div style="display:flex;justify-content:center;gap:8px;padding-bottom:8px">
-    <button class="lang-toggle-btn" data-lang="en" onclick="setLang(&#39;en&#39;)" style="border:1px solid rgba(246,244,220,.2);border-radius:8px;padding:5px 16px;font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px;font-weight:400;cursor:pointer;transition:all .18s;color:var(--cream-soft);background:transparent;letter-spacing:.5px">EN</button>
+    <button class="lang-toggle-btn" data-lang="en" onclick="setLang(&#39;en&#39;)" style="border: 1px solid rgba(246, 244, 220, 0.2); border-radius: 8px; padding: 5px 16px; font-family: &quot;DM Sans&quot;, sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.18s; color: var(--basil); background: var(--lemon); letter-spacing: 0.5px;">EN</button>
     <button class="lang-toggle-btn" data-lang="it" onclick="setLang(&#39;it&#39;)" style="border:1px solid rgba(246,244,220,.2);border-radius:8px;padding:5px 16px;font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px;font-weight:400;cursor:pointer;transition:all .18s;color:var(--cream-soft);background:transparent;letter-spacing:.5px">IT</button>
   </div>
 </div>
@@ -737,7 +737,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
         <!-- Dietary note at bottom -->
         <div style="height:8px"></div>
         <span class="lbl" id="lbl-dietary-food">Dietary / Notes</span>
-        <input class="inp" id="f-wave-notes" placeholder="Allergies, special requests…" style="font-size:13px">
+        <input class="inp" id="f-wave-notes" placeholder="Dietary / Notes" style="font-size:13px">
         <div style="height:8px"></div>
       </div>
 
@@ -794,7 +794,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
 
     <!-- Add dish/drink form — same for all, bottle toggle only for drinks -->
     <div class="add-form">
-      <span class="lbl" id="adm-lbl-add-dish">Add New Dish</span>
+      <span class="lbl" id="adm-lbl-add-dish">+ Add Dish</span>
       <input class="inp" id="a-dname" placeholder="Dish name" type="text">
       <span class="lbl" id="adm-lbl-course-type">Course Type</span>
       <div class="type-chips" id="course-type-picker"></div>
@@ -807,7 +807,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
           <div class="type-chip" data-val="bottle" onclick="selectServingStyle(&#39;bottle&#39;)">Bottle only</div>
         </div>
       </div>
-      <button class="btn btn-sage btn-sm" id="adm-btn-add-dish" onclick="addDish()">+ Add Dish</button>
+      <button class="btn btn-sage btn-sm" id="adm-btn-add-dish" onclick="addDish()">+ + Add Dish</button>
     </div>
 
     <!-- Course type manager — same for all -->
@@ -828,7 +828,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
   <div id="adm-p-tables" class="content" style="display:none">
     <div class="add-form">
       <span class="lbl" id="adm-lbl-add-table">Add Table</span>
-      <input class="inp" id="a-tname" placeholder="Table name e.g. 1, 2A, Window, Terrace" type="text">
+      <input class="inp" id="a-tname" placeholder="Table name e.g. 1 piazza" type="text">
       <button class="btn btn-sage btn-sm" id="adm-btn-add-table" onclick="addTable()">+ Add Table</button>
     </div>
     <span class="lbl" id="adm-lbl-tables">Tables</span>
@@ -1668,8 +1668,8 @@ function initFirebase(){
     _initFirebaseApp();
   } else {
     console.warn('Firebase SDK not in window, loading dynamically');
-    loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js',function(){
-      loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js',function(){
+    loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js',function(){
+      loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js',function(){
         _initFirebaseApp();
       });
     });
@@ -5073,55 +5073,6 @@ function renderYearly(){
   }
   el.appendChild(dSec);
 
-  // ── Export / Clear buttons ──────────────────────────────────
-  var exportBtn=document.createElement('button');exportBtn.className='btn btn-outline btn-sm';exportBtn.style.marginTop='12px';exportBtn.textContent=T('export_csv');exportBtn.addEventListener('click',function(){exportCSV();});el.appendChild(exportBtn);
-  var clearBtn=document.createElement('button');clearBtn.className='btn btn-outline btn-sm';clearBtn.style.cssText='margin-top:12px;color:var(--passata);border-color:var(--passata)';clearBtn.textContent=T('clear_history');clearBtn.addEventListener('click',function(){openClearHistory();});el.appendChild(clearBtn);
-}
-
-
-function buildKpiSection(label,svcRecords,showPlates){
-  // Pull the right byType bucket from each session record
-  var tot=svcRecords.reduce(function(s,h){
-    var key=label.toLowerCase();
-    var d=h.byType&&h.byType[key]&&typeof h.byType[key]==='object'?h.byType[key]:{guests:h.guests||0,plates:h.plates||0,orders:h.orders||1};
-    return{n:s.n+1,g:s.g+(d.guests||0),p:s.p+(d.plates||0)};
-  },{n:0,g:0,p:0});
-  if(!tot.n) return null;
-  var avg=tot.n>0?Math.round(tot.g/tot.n):0;
-  var ppc=tot.g>0?(tot.p/tot.g).toFixed(1):'-';
-  var wrap=document.createElement('div');
-  wrap.style.cssText='margin-bottom:24px';
-  var secTitle=document.createElement('div');
-  secTitle.style.cssText='display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px';
-  var sLabel=document.createElement('div');
-  sLabel.className='stats-year-title';
-  sLabel.style.fontSize='19px';
-  sLabel.textContent=label;
-  var sCount=document.createElement('div');
-  sCount.style.cssText='font-size:11px;color:var(--ink-muted);letter-spacing:1.5px;text-transform:uppercase';
-  sCount.textContent=tot.n+' '+(tot.n!==1?T('services_total').replace(' totali','').replace(' total',''):T('services_this_year').replace(" this year",'').replace(" quest'anno",''));
-  secTitle.appendChild(sLabel);secTitle.appendChild(sCount);
-  wrap.appendChild(secTitle);
-  var grid=document.createElement('div');
-  grid.className='stat-grid';
-  var isAper=label.toLowerCase()==='aperitivo';
-  var isBreak=label.toLowerCase()==='breakfast';
-  var tiles=isAper
-    ?[{n:tot.g,l:T('covers')},{n:tot.p,l:T('snacks_served')}]
-    :isBreak
-    ?[{n:tot.g,l:T('covers')},{n:tot.p,l:T('total_plates')}]
-    :[{n:tot.g,l:T('covers')},{n:avg,l:T('avg_per_service')}];
-  if(!isAper&&!isBreak&&showPlates){tiles.push({n:tot.p,l:T('total_plates')});tiles.push({n:ppc,l:T('plates_per_cover')});}
-  tiles.forEach(function(t){
-    var tile=document.createElement('div');
-    tile.className='stat-tile';
-    tile.innerHTML='<div class="stat-n">'+t.n+'</div><div class="stat-l">'+t.l+'</div>';
-    grid.appendChild(tile);
-  });
-  wrap.appendChild(grid);
-  return wrap;
-}
-
   // ── Drinks stats (excl. water) ───────────────────────────────
   if(hasDrinkStats){
     var drinkScope=scope.filter(function(h){return h.drinks&&h.drinks.totalServings>0;});
@@ -5229,6 +5180,56 @@ function buildKpiSection(label,svcRecords,showPlates){
     });
     el.appendChild(dkSec);
   }
+
+
+  // ── Export / Clear buttons ──────────────────────────────────
+  var exportBtn=document.createElement('button');exportBtn.className='btn btn-outline btn-sm';exportBtn.style.marginTop='12px';exportBtn.textContent=T('export_csv');exportBtn.addEventListener('click',function(){exportCSV();});el.appendChild(exportBtn);
+  var clearBtn=document.createElement('button');clearBtn.className='btn btn-outline btn-sm';clearBtn.style.cssText='margin-top:12px;color:var(--passata);border-color:var(--passata)';clearBtn.textContent=T('clear_history');clearBtn.addEventListener('click',function(){openClearHistory();});el.appendChild(clearBtn);
+}
+
+
+function buildKpiSection(label,svcRecords,showPlates){
+  // Pull the right byType bucket from each session record
+  var tot=svcRecords.reduce(function(s,h){
+    var key=label.toLowerCase();
+    var d=h.byType&&h.byType[key]&&typeof h.byType[key]==='object'?h.byType[key]:{guests:h.guests||0,plates:h.plates||0,orders:h.orders||1};
+    return{n:s.n+1,g:s.g+(d.guests||0),p:s.p+(d.plates||0)};
+  },{n:0,g:0,p:0});
+  if(!tot.n) return null;
+  var avg=tot.n>0?Math.round(tot.g/tot.n):0;
+  var ppc=tot.g>0?(tot.p/tot.g).toFixed(1):'-';
+  var wrap=document.createElement('div');
+  wrap.style.cssText='margin-bottom:24px';
+  var secTitle=document.createElement('div');
+  secTitle.style.cssText='display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px';
+  var sLabel=document.createElement('div');
+  sLabel.className='stats-year-title';
+  sLabel.style.fontSize='19px';
+  sLabel.textContent=label;
+  var sCount=document.createElement('div');
+  sCount.style.cssText='font-size:11px;color:var(--ink-muted);letter-spacing:1.5px;text-transform:uppercase';
+  sCount.textContent=tot.n+' '+(tot.n!==1?T('services_total').replace(' totali','').replace(' total',''):T('services_this_year').replace(" this year",'').replace(" quest'anno",''));
+  secTitle.appendChild(sLabel);secTitle.appendChild(sCount);
+  wrap.appendChild(secTitle);
+  var grid=document.createElement('div');
+  grid.className='stat-grid';
+  var isAper=label.toLowerCase()==='aperitivo';
+  var isBreak=label.toLowerCase()==='breakfast';
+  var tiles=isAper
+    ?[{n:tot.g,l:T('covers')},{n:tot.p,l:T('snacks_served')}]
+    :isBreak
+    ?[{n:tot.g,l:T('covers')},{n:tot.p,l:T('total_plates')}]
+    :[{n:tot.g,l:T('covers')},{n:avg,l:T('avg_per_service')}];
+  if(!isAper&&!isBreak&&showPlates){tiles.push({n:tot.p,l:T('total_plates')});tiles.push({n:ppc,l:T('plates_per_cover')});}
+  tiles.forEach(function(t){
+    var tile=document.createElement('div');
+    tile.className='stat-tile';
+    tile.innerHTML='<div class="stat-n">'+t.n+'</div><div class="stat-l">'+t.l+'</div>';
+    grid.appendChild(tile);
+  });
+  wrap.appendChild(grid);
+  return wrap;
+}
 
 function renderHistory(){
   var el=document.getElementById('stats-history');
