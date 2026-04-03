@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_71.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_72.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -1733,6 +1733,15 @@ function initFirebase(){
 
 // Better approach: store token as value under a uuid key
 
+function _wavePlates(waves,waveNum){
+  var wv=waves[waveNum];if(!wv) return 0;
+  return (wv.dishes||[]).reduce(function(s,d){return s+(d.qty||0);},0);
+}
+function _orderPlates(waves){
+  return Object.values(waves||{}).reduce(function(s,wv){
+    return s+(wv.dishes||[]).reduce(function(ss,d){return ss+(d.qty||0);},0);
+  },0);
+}
 var _pushQueue=[];
 var _pushTimer=null;
 var _lastPush={};
@@ -2390,7 +2399,8 @@ function sendOrder(){
       return wv.status==='sent'&&wv.sentAt&&(now-wv.sentAt)<5000;
     });
     if(newlySent){
-      sendPushNotification('kitchen','Ordine / Order - Tavolo '+selOrderTable,selCovers+' coperti');
+      var _pl1=_orderPlates(o.waves||{});var _sv1=T(o.primarySvc||'')||capFirst(o.primarySvc||'');
+      sendPushNotification('kitchen','🔔 '+o.table+' · Ordine',_pl1+' piatti · '+_sv1);
     }
     toast(hasDrinks&&!hasFood?T('drinks_confirmed'):T('order_sent'),'tg');
     if(hasFood) renderKitchen();
@@ -2424,7 +2434,8 @@ function sendOrder(){
       // Notify kitchen only if any wave is sent
       var anyWaveSent=Object.values(waves).some(function(wv){return wv.status==='sent';});
       if(anyWaveSent){
-        sendPushNotification('kitchen','Ordine / Order - Tavolo '+selOrderTable,selCovers+' coperti');
+        var _pl2=_orderPlates(waves);var _sv2=T(selPrimarySvc||'')||capFirst(selPrimarySvc||'');
+        sendPushNotification('kitchen','\uD83D\uDD14 '+selOrderTable+' \u00b7 Ordine',_pl2+' piatti \u00b7 '+_sv2);
       }
       toast(hasDrinks&&!hasFood?T('drinks_confirmed'):T('order_sent'),'tg');
       if(hasFood) renderKitchen();
@@ -2890,10 +2901,8 @@ function releaseWave(key,wave){
   if(fbDB){fbDB.ref('orders_v2/'+key+'/waves/'+wave).set(newWave);}
   else{S.orders[key].waves[wave]=newWave;save();renderOrdersList();}
   toast(T('wave_label')+' '+wave+' '+T('wave_released'),'tb');
-  sendPushNotification('kitchen',
-    'Uscita / Wave '+wave+' - Tavolo '+o.table,
-    (wv.serviceTypes||[]).map(function(s){return T(s)||capFirst(s);}).join(' + ')
-  );
+  var _pl3=_wavePlates(o.waves,wave);var _sv3=(wv.serviceTypes||[]).map(function(s){return T(s)||capFirst(s);}).join(' + ');
+  sendPushNotification('kitchen','🔔 '+o.table+' · Uscita '+wave,_pl3+' piatti · '+_sv3);
 }
 
 function closeOrder(key){
@@ -3422,7 +3431,8 @@ function confirmAddToOrder(){ return; // V2: handled by sendOrder
   var hasSentWave=writes.some(function(w){return w.val&&w.val.status==='sent';});
   if(hasSentWave){
     var o3=S.orders[atoKey];
-    sendPushNotification('kitchen','Aggiunta / Add - Tavolo '+(o3?o3.table:''),'');
+    var _pl5=o3?_orderPlates(o3.waves||{}):0;var _sv5=o3?(T(o3.primarySvc||'')||capFirst(o3.primarySvc||'')):'';
+    sendPushNotification('kitchen','🔔 '+(o3?o3.table:'')+' · Uscita '+wn,_pl5+' piatti · '+_sv5);
   }
   closeAddToOrder();
 }
@@ -3605,10 +3615,7 @@ function sendWaveReady(key,wave){
   toast(T('waiter_notified_toast')+' '+wave+' ready','tg');
   // Push notification to FOH
   var o2=S.orders[key];
-  sendPushNotification('foh',
-    'Pronto / Ready - Tavolo '+(o2?o2.table:''),
-    'Uscita / Wave '+wave
-  );
+  sendPushNotification('foh','🍽️ '+(o2?o2.table:'')+' · Uscita '+wave,'Pronto al pass');
 }
 
 
