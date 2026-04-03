@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_73.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_75.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -1686,14 +1686,14 @@ function initFirebase(){
           var fbMenuTs=val.menuTs||0;
           var fbTablesTs=val.tablesTs||0;
           var changed=false;
-          if(val.menu&&val.menu.length&&fbMenuTs>=localTs){
+          if(val.menu&&val.menu.length&&fbMenuTs>localTs){
             S.menu=val.menu;LS.set('menu',val.menu);
             if(val.courses&&val.courses.length){S.courses=val.courses;LS.set('courses',val.courses);}
             if(val.menuCourses){S.menuCourses=Object.assign({breakfast:[],aperitivo:[],lunch:[],dinner:[],drinks:[]},val.menuCourses);LS.set('menuCourses',S.menuCourses);}
             LS.set('configTs',fbMenuTs);
             changed=true;
           }
-          if(val.tables&&val.tables.length&&fbTablesTs>=localTablesTs){
+          if(val.tables&&val.tables.length&&fbTablesTs>localTablesTs){
             S.tables=val.tables;LS.set('tables',val.tables);
             LS.set('tablesTs',fbTablesTs);
             changed=true;
@@ -5655,12 +5655,12 @@ function updateNotifUI(){
 
 function saveAndSyncMenu(){
   if(!fbDB){toast('Not connected','tr');return;}
-  var ts=Date.now();
+  var ts=Date.now()+1; // +1 so > check on listener ignores echo
+  LS.set('menu',S.menu);LS.set('courses',S.courses);LS.set('menuCourses',S.menuCourses);LS.set('configTs',ts);
   fbDB.ref('config/menu').set(S.menu);
   fbDB.ref('config/courses').set(S.courses);
   fbDB.ref('config/menuCourses').set(S.menuCourses);
   fbDB.ref('config/menuTs').set(ts);
-  LS.set('menu',S.menu);LS.set('courses',S.courses);LS.set('menuCourses',S.menuCourses);LS.set('configTs',ts);
   toast('Menu synced to all devices ✓','tg');
 }
 
