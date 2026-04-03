@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_75.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_77.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -1734,13 +1734,17 @@ function initFirebase(){
 // Better approach: store token as value under a uuid key
 
 function _wavePlates(waves,waveNum){
-  var wv=waves[waveNum];if(!wv) return 0;
-  return (wv.dishes||[]).reduce(function(s,d){return s+(d.qty||0);},0);
+  try{
+    var wv=(waves||{})[waveNum];if(!wv) return 0;
+    return (wv.dishes||[]).reduce(function(s,d){return s+(d.qty||0);},0);
+  }catch(e){return 0;}
 }
 function _orderPlates(waves){
-  return Object.values(waves||{}).reduce(function(s,wv){
-    return s+(wv.dishes||[]).reduce(function(ss,d){return ss+(d.qty||0);},0);
-  },0);
+  try{
+    return Object.values(waves||{}).reduce(function(s,wv){
+      return s+(wv.dishes||[]).reduce(function(ss,d){return ss+(d.qty||0);},0);
+    },0);
+  }catch(e){return 0;}
 }
 var _pushQueue=[];
 var _pushTimer=null;
@@ -2400,7 +2404,7 @@ function sendOrder(){
     });
     if(newlySent){
       var _pl1=_orderPlates(o.waves||{});var _sv1=T(o.primarySvc||'')||capFirst(o.primarySvc||'');
-      sendPushNotification('kitchen','🔔 '+o.table+' · Ordine',_pl1+' piatti · '+_sv1);
+      sendPushNotification('kitchen',o.table+' - Ordine',_pl1+' piatti - '+_sv1);
     }
     toast(hasDrinks&&!hasFood?T('drinks_confirmed'):T('order_sent'),'tg');
     if(hasFood) renderKitchen();
@@ -2435,7 +2439,7 @@ function sendOrder(){
       var anyWaveSent=Object.values(waves).some(function(wv){return wv.status==='sent';});
       if(anyWaveSent){
         var _pl2=_orderPlates(waves);var _sv2=T(selPrimarySvc||'')||capFirst(selPrimarySvc||'');
-        sendPushNotification('kitchen','\uD83D\uDD14 '+selOrderTable+' \u00b7 Ordine',_pl2+' piatti \u00b7 '+_sv2);
+        sendPushNotification('kitchen',selOrderTable+' - Ordine',_pl2+' piatti - '+_sv2);
       }
       toast(hasDrinks&&!hasFood?T('drinks_confirmed'):T('order_sent'),'tg');
       if(hasFood) renderKitchen();
@@ -2902,7 +2906,7 @@ function releaseWave(key,wave){
   else{S.orders[key].waves[wave]=newWave;save();renderOrdersList();}
   toast(T('wave_label')+' '+wave+' '+T('wave_released'),'tb');
   var _pl3=_wavePlates(o.waves,wave);var _sv3=(wv.serviceTypes||[]).map(function(s){return T(s)||capFirst(s);}).join(' + ');
-  sendPushNotification('kitchen','🔔 '+o.table+' · Uscita '+wave,_pl3+' piatti · '+_sv3);
+  sendPushNotification('kitchen',o.table+' - Uscita '+wave,_pl3+' piatti - '+_sv3);
 }
 
 function closeOrder(key){
@@ -3205,6 +3209,25 @@ function openAddToOrder(key){
 
 }
 
+function confirmAperitivoRound(key){
+  var o=S.orders[key];if(!o) return;
+  var existingNums=Object.keys(o.waves||{}).map(Number);
+  var newWaveNum=existingNums.length?Math.max.apply(null,existingNums)+1:1;
+  var now=Date.now();
+  // Create aperitivo placeholder dish for the wave
+  var waveObj={
+    status:'sent',sentAt:now,readyAt:null,collectedAt:null,notes:'',
+    serviceTypes:['aperitivo'],
+    dishes:[{id:'aper',name:'Aperitivo',course:'aperitivo',svcType:'aperitivo',qty:o.guests||1,ready:false}]
+  };
+  if(fbDB) fbDB.ref('orders_v2/'+key+'/waves/'+newWaveNum).set(waveObj);
+  else{if(!o.waves)o.waves={};o.waves[newWaveNum]=waveObj;save();}
+  sendPushNotification('kitchen',o.table+' - Uscita '+newWaveNum,(o.guests||0)+' piatti - Aperitivo');
+  toast(T('order_sent'),'tg');
+  closeAddToOrder();
+  renderKitchen();renderOrdersList();updateFOHBadges();
+}
+
 function buildAtoContent(o,maxWave){
   // Aperitivo orders — simple "another round" flow, no dish selection
   if(o.serviceType==='aperitivo'){
@@ -3409,11 +3432,11 @@ function confirmAddToOrder(){ return; // V2: handled by sendOrder
       waveObj={status:'held',sentAt:null,readyAt:null,collectedAt:null,notes:null,dishes:newDishes};
     }
     delete editedWaves[wn];
-    return {path:'orders/'+atoKey+'/waves/'+wn, val:waveObj};
+    return {path:'orders_v2/'+atoKey+'/waves/'+wn, val:waveObj, waveNum:wn};
   });
   // Pure edits (no new dishes added to that wave) — keep held status
   Object.keys(editedWaves).forEach(function(wn){
-    writes.push({path:'orders/'+atoKey+'/waves/'+wn, val:editedWaves[wn]});
+    writes.push({path:'orders_v2/'+atoKey+'/waves/'+wn, val:editedWaves[wn], waveNum:wn});
   });
   if(fbDB){
     writes.forEach(function(w){fbDB.ref(w.path).set(w.val);});
@@ -3427,13 +3450,15 @@ function confirmAddToOrder(){ return; // V2: handled by sendOrder
   }
   toast(T('added_to_order'),'tg');
   flashScreen('rgba(184,148,58,.3)');
-  // Push to kitchen if any sent waves included
-  var hasSentWave=writes.some(function(w){return w.val&&w.val.status==='sent';});
-  if(hasSentWave){
-    var o3=S.orders[atoKey];
-    var _pl5=o3?_orderPlates(o3.waves||{}):0;var _sv5=o3?(T(o3.primarySvc||'')||capFirst(o3.primarySvc||'')):'';
-    sendPushNotification('kitchen','🔔 '+(o3?o3.table:'')+' · Uscita '+wn,_pl5+' piatti · '+_sv5);
-  }
+  // Push to kitchen for each sent wave
+  var o3=S.orders[atoKey];
+  writes.forEach(function(w){
+    if(w.val&&w.val.status==='sent'){
+      var _pl5=_wavePlates(o3?o3.waves||{}:{},w.waveNum);
+      var _sv5=o3?(T(o3.primarySvc||'')||capFirst(o3.primarySvc||'')):'';
+      sendPushNotification('kitchen',(o3?o3.table:'')+' - Uscita '+w.waveNum,_pl5+' piatti - '+_sv5);
+    }
+  });
   closeAddToOrder();
 }
 
@@ -3615,7 +3640,7 @@ function sendWaveReady(key,wave){
   toast(T('waiter_notified_toast')+' '+wave+' ready','tg');
   // Push notification to FOH
   var o2=S.orders[key];
-  sendPushNotification('foh','🍽️ '+(o2?o2.table:'')+' · Uscita '+wave,'Pronto al pass');
+  sendPushNotification('foh',(o2?o2.table:'')+' - Uscita '+wave,'Pronto al pass');
 }
 
 
@@ -4506,10 +4531,20 @@ function renderSeasonal(){
           if((dayBreak[st]||0)>0) parts.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+dayBreak[st]+' '+T('covers_label'));
         });
         var histLine=hasHistorical&&dayHistCovers?'<div style="font-size:11px;color:var(--ink-muted);margin-top:4px">'+T('last_year')+': '+dayHistCovers+' '+T('covers_label')+'</div>':'';
-        var dayPlates=Object.keys(dayBreak).filter(function(k){return k.endsWith('P');}).reduce(function(s,k){return s+(dayBreak[k]||0);},0);
-        var ppcParts=[];if(dayPlates>0)ppcParts.push(T('total_plates')+': '+dayPlates);if(dayCovers>0&&dayPlates>0)ppcParts.push(T('plates_per_cover')+': '+(dayPlates/dayCovers).toFixed(1));var ppcLine=ppcParts.length?'<div style="font-size:11px;color:var(--ink-muted);margin-top:6px;line-height:1.9">'+ppcParts.join('<br>')+'</div>':'';
+        // Per-service-type plates breakdown
+        var ppcLines=[];
+        ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
+          var stC=dayBreak[st]||0;var stP=dayBreak[st+'P']||0;if(!stC) return;
+          if(st==='aperitivo'){
+            ppcLines.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+stC+' cop · '+stP+' snack');
+          } else {
+            var ppc=stC>0&&stP>0?(stP/stC).toFixed(1):'';
+            ppcLines.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+stC+' cop · '+stP+' piatti'+(ppc?' · '+ppc+'/cop':''));
+          }
+        });
+        var ppcLine=ppcLines.length?'<div style="font-size:11px;color:var(--ink-muted);margin-top:6px;line-height:2">'+ppcLines.join('<br>')+'</div>':'';
         dd.innerHTML='<div style="font-size:12px;font-weight:600;margin-bottom:4px;color:var(--ink)">'+dayStr+(dayCovers?' — '+dayCovers+' '+T('covers_label'):'')+'</div>'
-          +(parts.length?'<div style="font-size:12px;line-height:1.8">'+parts.join('<br>')+'</div>':'<div style="font-size:12px;color:var(--ink-muted)">-</div>')+ppcLine+histLine;
+          +ppcLine+histLine;
         dd.classList.add('open');
       });
     })(ds,covers,brk,histCovers);
@@ -4605,9 +4640,20 @@ function renderSeasonal(){
           if((weekBreak[st]||0)>0) parts.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+weekBreak[st]+' '+T('covers_label'));
         });
         var histLine=hasHistorical&&weekHistCovers?'<div style="font-size:11px;color:var(--ink-muted);margin-top:4px">'+T('last_year')+': '+weekHistCovers+' '+T('covers_label')+'</div>':'';
-        var wkPlates=Object.keys(weekBreak).filter(function(k){return k.endsWith('P');}).reduce(function(s,k){return s+(weekBreak[k]||0);},0);
         var wAvg=weekSessions>0?Math.round(weekCovers/weekSessions):0;
-        var wExtra=[];if(wkPlates>0)wExtra.push(T('total_plates')+': '+wkPlates);if(weekCovers>0&&wkPlates>0)wExtra.push(T('plates_per_cover')+': '+(wkPlates/weekCovers).toFixed(1));if(weekSessions>0)wExtra.push(T('covers')+' '+T('per_service')+': '+wAvg);var wPpcLine=wExtra.length?'<div style="font-size:11px;color:var(--ink-muted);margin-top:6px;line-height:1.9">'+wExtra.join('<br>')+'</div>':'';
+        // Per-service-type breakdown
+        var svcLines=[];
+        ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
+          var stC=weekBreak[st]||0;var stP=weekBreak[st+'P']||0;if(!stC) return;
+          if(st==='aperitivo'){
+            svcLines.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+stC+' cop · '+stP+' snack');
+          } else {
+            var ppc=stC>0&&stP>0?(stP/stC).toFixed(1):'';
+            svcLines.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+stC+' cop · '+stP+' piatti'+(ppc?' · '+ppc+'/cop':''));
+          }
+        });
+        var avgLine=weekSessions>0?'<div style="font-size:11px;color:var(--ink-muted);margin-top:4px">'+T('covers')+' '+T('per_service')+': '+wAvg+'</div>':'';
+        var wPpcLine=(svcLines.length?'<div style="font-size:11px;color:var(--ink-muted);margin-top:6px;line-height:2">'+svcLines.join('<br>')+'</div>':'')+avgLine;
         td.innerHTML='<div style="font-weight:600;margin-bottom:4px;color:var(--ink)">'+wLabel+(weekCovers?' — '+weekCovers+' '+T('covers_label'):'')+'</div>'
           +(parts.length?parts.join('<br>'):'<div style="color:var(--ink-muted)">-</div>')+wPpcLine+histLine;
         td.classList.add('open');
