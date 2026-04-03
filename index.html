@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_77.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_78.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -2121,6 +2121,7 @@ function confirmDrinks(){
   if(!items.length){toast('Add at least one drink','tr');return;}
   if(!selOrderTable){toast(T('select_table'),'tr');return;}
   if(!selCovers){toast(T('select_guests'),'tr');return;}
+  if(!S.waiterName||!S.waiterName.trim()){toast(T('your_name_ph')||'Enter your name','tr');var wni=document.getElementById('waiter-name-inp');if(wni)wni.focus();return;}
   var notes=document.getElementById('drinks-notes');
   var drinkEntry={ts:Date.now(),items:items,notes:notes?notes.value.trim():''};
   if(editingOrderKey&&S.orders[editingOrderKey]){
@@ -2337,6 +2338,7 @@ function sendOrder(){
   if(!hasFood&&!hasDrinks){toast(T('add_dish_first'),'tr');return;}
   if(!selOrderTable){toast(T('select_table'),'tr');return;}
   if(!selCovers){toast(T('select_guests'),'tr');return;}
+  if(!S.waiterName||!S.waiterName.trim()){toast(T('your_name_ph')||'Enter your name','tr');var wni=document.getElementById('waiter-name-inp');if(wni)wni.focus();return;}
   var notesEl=document.getElementById('drinks-notes');
   var drinkEntry=hasDrinks?{ts:Date.now(),items:drinkItems,notes:notesEl?notesEl.value.trim():''}:null;
   var waveNotesEl=document.getElementById('f-wave-notes');
@@ -3533,9 +3535,10 @@ function kitchenCard(key,o){
   var sType=o.primarySvc||o.serviceType||'lunch';
   var kcSvcLabel=svcLabels[sType]||'';
   var kcSvcSpan=kcSvcLabel?' <span style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:rgba(38,101,51,.08);color:'+(svcColors[sType]||'var(--ink-muted)')+';padding:2px 7px;border-radius:8px;margin-left:4px">'+kcSvcLabel+'</span>':'';
+  var kcWaiter=o.waiter?' <span style="font-size:12px;font-family:sans-serif;font-weight:400;color:var(--ink-muted)">· '+esc(o.waiter)+'</span>':'';
   tableDiv.innerHTML=T('table_label')+' '+esc(o.table)
     +' <span style="font-size:14px;font-family:sans-serif;font-weight:400;color:var(--ink-muted)">&middot; '
-    +o.guests+' guest'+(o.guests!==1?'s':'')+'</span>'+kcSvcSpan;
+    +o.guests+' guest'+(o.guests!==1?'s':'')+'</span>'+kcSvcSpan+kcWaiter;
   var timeSpan=document.createElement('span');
   timeSpan.className='kc-time'+(mins>20?' late':'');
   timeSpan.textContent=(mins===0?T('just_now'):mins+T('mins_ago'));
