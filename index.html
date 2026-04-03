@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_69.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_71.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -1733,21 +1733,47 @@ function initFirebase(){
 
 // Better approach: store token as value under a uuid key
 
+var _pushQueue=[];
+var _pushTimer=null;
 var _lastPush={};
+
 function sendPushNotification(role,title,body){
-  var now=Date.now();
-  // Deduplicate per role+title combo — not just role
+  // Deduplicate — ignore identical role+title within 3 seconds
   var key=role+'|'+title;
+  var now=Date.now();
   if(_lastPush[key]&&now-_lastPush[key]<3000) return;
   _lastPush[key]=now;
-  var channel=role==='kitchen'?NTFY_KITCHEN:NTFY_FOH;
-  // Strip non-ASCII chars from title — Cloud Function header requirement
-  var safeTitle=title.replace(/[^\x20-\x7E]/g,'').trim()||'Casarico';
-  var safeBody=(body||'').replace(/[^\x20-\x7E]/g,'').trim();
+  // Add to queue (max 10)
+  if(_pushQueue.length>=10) return;
+  _pushQueue.push({role:role,title:title,body:body||''});
+  _dispatchPushQueue();
+}
+
+function _dispatchPushQueue(){
+  if(_pushTimer||!_pushQueue.length) return;
+  // Fire first item immediately
+  _firePush(_pushQueue.shift());
+  // If more in queue, schedule next at 6s intervals
+  if(_pushQueue.length){
+    _pushTimer=setInterval(function(){
+      if(_pushQueue.length){
+        _firePush(_pushQueue.shift());
+      } else {
+        clearInterval(_pushTimer);
+        _pushTimer=null;
+      }
+    },6000);
+  }
+}
+
+function _firePush(item){
+  var channel=item.role==='kitchen'?NTFY_KITCHEN:NTFY_FOH;
+  var safeTitle=item.title.replace(/[^\x20-\x7E]/g,'').trim()||'Casarico';
+  var safeBody=item.body.replace(/[^\x20-\x7E]/g,'').trim();
   fetch('https://us-central1-casarico-1e057.cloudfunctions.net/sendPush',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({channel:channel,title:safeTitle,body:safeBody,role:role})
+    body:JSON.stringify({channel:channel,title:safeTitle,body:safeBody,role:item.role})
   }).then(function(r){
     if(!r.ok) toast('Push error: '+r.status,'tr',3000);
   }).catch(function(e){
@@ -3959,7 +3985,10 @@ function endService(){
       }
     });
     S.orders={};save();
-    if(fbDB)fbDB.ref('orders_v2').set(null);
+    if(fbDB){
+      fbDB.ref('orders_v2').set(null);
+      fbDB.ref('config/history').set(S.history);
+    }
     toast(T('service_saved'),'ty');
     setTimeout(function(){show('s-role');},2200);
     return;
