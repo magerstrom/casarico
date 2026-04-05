@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_83.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_86.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -10,7 +10,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Cucina">
 <meta name="theme-color" content="#1A4422">
-<meta http-equiv="Content-Security-Policy" content="default-src &#39;self&#39; &#39;unsafe-inline&#39; &#39;unsafe-eval&#39; data: blob: https://*.googleapis.com https://*.firebaseio.com https://*.cloudfunctions.net https://www.gstatic.com https://fonts.gstatic.com https://fonts.googleapis.com https://ntfy.sh wss://*.firebaseio.com;">
 <title>Cucina</title>
 <link href="./index_files/css2" rel="stylesheet">
 <style>
@@ -1785,12 +1784,20 @@ function _firePush(item){
   var channel=item.role==='kitchen'?NTFY_KITCHEN:NTFY_FOH;
   var safeTitle=item.title.replace(/[^\x20-\x7E]/g,'').trim()||'Casarico';
   var safeBody=item.body.replace(/[^\x20-\x7E]/g,'').trim();
-  fetch('https://us-central1-casarico-1e057.cloudfunctions.net/sendPush',{
+  var priority=item.role==='kitchen'?'urgent':'default';
+  var tags=item.role==='kitchen'?'bell':'fork_and_knife';
+  fetch('https://ntfy.sh/'+channel,{
     method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({channel:channel,title:safeTitle,body:safeBody,role:item.role})
+    headers:{
+      'Content-Type':'text/plain',
+      'Title':safeTitle,
+      'Priority':priority,
+      'Tags':tags,
+      'Authorization':'Bearer tk_zo5qz432e3o7krbzi71dhrik0yjif'
+    },
+    body:safeBody
   }).then(function(r){
-    if(!r.ok) toast('Push error: '+r.status,'tr',3000);
+    if(!r.ok) console.warn('ntfy error:',r.status);
   }).catch(function(e){
     console.warn('push failed:',e);
   });
