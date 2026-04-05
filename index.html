@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_86.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_88.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -1781,26 +1781,21 @@ function _dispatchPushQueue(){
 }
 
 function _firePush(item){
-  var channel=item.role==='kitchen'?NTFY_KITCHEN:NTFY_FOH;
   var safeTitle=item.title.replace(/[^\x20-\x7E]/g,'').trim()||'Casarico';
   var safeBody=item.body.replace(/[^\x20-\x7E]/g,'').trim();
-  var priority=item.role==='kitchen'?'urgent':'default';
-  var tags=item.role==='kitchen'?'bell':'fork_and_knife';
-  fetch('https://ntfy.sh/'+channel,{
-    method:'POST',
-    headers:{
-      'Content-Type':'text/plain',
-      'Title':safeTitle,
-      'Priority':priority,
-      'Tags':tags,
-      'Authorization':'Bearer tk_zo5qz432e3o7krbzi71dhrik0yjif'
-    },
-    body:safeBody
-  }).then(function(r){
-    if(!r.ok) console.warn('ntfy error:',r.status);
-  }).catch(function(e){
-    console.warn('push failed:',e);
-  });
+  var channel=item.role==='kitchen'?NTFY_KITCHEN:NTFY_FOH;
+  if(fbDB){
+    // Write to Firebase — Cloud Function picks it up and sends to ntfy
+    fbDB.ref('notifications').push({
+      channel:channel,
+      title:safeTitle,
+      body:safeBody,
+      role:item.role,
+      ts:Date.now()
+    });
+  } else {
+    console.warn('push failed: no Firebase connection');
+  }
 }
 
 function loadScript(src,cb){
