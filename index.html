@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_88.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_89.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -1784,6 +1784,7 @@ function _firePush(item){
   var safeTitle=item.title.replace(/[^\x20-\x7E]/g,'').trim()||'Casarico';
   var safeBody=item.body.replace(/[^\x20-\x7E]/g,'').trim();
   var channel=item.role==='kitchen'?NTFY_KITCHEN:NTFY_FOH;
+  console.log('_firePush called, fbDB:', !!fbDB, 'title:', safeTitle);
   if(fbDB){
     // Write to Firebase — Cloud Function picks it up and sends to ntfy
     fbDB.ref('notifications').push({
@@ -1792,6 +1793,10 @@ function _firePush(item){
       body:safeBody,
       role:item.role,
       ts:Date.now()
+    }).then(function(){
+      console.log('notification written to Firebase OK');
+    }).catch(function(e){
+      console.error('Firebase notification write failed:', e);
     });
   } else {
     console.warn('push failed: no Firebase connection');
