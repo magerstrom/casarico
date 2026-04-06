@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_91.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_92.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -1694,10 +1694,15 @@ function initFirebase(){
             LS.set('configTs',fbMenuTs);
             changed=true;
           }
-          if(val.tables&&val.tables.length&&fbTablesTs>localTablesTs){
-            S.tables=val.tables;LS.set('tables',val.tables);
-            LS.set('tablesTs',fbTablesTs);
-            changed=true;
+          if(val.tables&&val.tables.length){
+            // Always accept Firebase tables on connect — Firebase is authoritative
+            // Only exception: local tables are newer AND we have more tables (admin just added one)
+            var localHasMore=S.tables.length>val.tables.length&&localTablesTs>fbTablesTs;
+            if(!localHasMore){
+              S.tables=val.tables;LS.set('tables',val.tables);
+              LS.set('tablesTs',fbTablesTs);
+              changed=true;
+            }
           }
           if(val.history&&val.history.length){
             var fbHistory=val.history;
@@ -2138,12 +2143,15 @@ function confirmDrinks(){
     // Update primarySvc if this is first food order on a drinks-only table
     if(!o.primarySvc&&selPrimarySvc){
       o.primarySvc=selPrimarySvc;
-      if(fbDB) fbDB.ref('orders_v2/'+editingOrderKey+'/primarySvc').set(selPrimarySvc);
     }
     if(!o.drinks) o.drinks=[];
     o.drinks.push(drinkEntry);
-    if(fbDB) fbDB.ref('orders_v2/'+editingOrderKey+'/drinks').set(o.drinks);
-    else save();
+    if(fbDB){
+      var drinksUpdate={};
+      drinksUpdate['drinks']=o.drinks;
+      if(selPrimarySvc&&o.primarySvc) drinksUpdate['primarySvc']=o.primarySvc;
+      fbDB.ref('orders_v2/'+editingOrderKey).update(drinksUpdate);
+    } else save();
     drinksCart=[];if(notes) notes.value='';
     closeDrinksBuilder();renderDrinkItems();buildTableGrid();
     renderOrdersList();updateFOHBadges();
@@ -2358,7 +2366,6 @@ function sendOrder(){
     // Update primarySvc if this is first food order on a drinks-only table
     if(!o.primarySvc&&selPrimarySvc){
       o.primarySvc=selPrimarySvc;
-      if(fbDB) fbDB.ref('orders_v2/'+editingOrderKey+'/primarySvc').set(selPrimarySvc);
     }
     var existingNums=Object.keys(o.waves||{}).map(Number);
     var maxExisting=existingNums.length?Math.max.apply(null,existingNums):0;
@@ -2403,16 +2410,15 @@ function sendOrder(){
       o.drinks.push(drinkEntry);
       if(fbDB) fbDB.ref('orders_v2/'+editingOrderKey+'/drinks').set(o.drinks);
     }
-    if(fbDB) fbDB.ref('orders_v2/'+editingOrderKey+'/guests').set(selCovers);
-    else save();
+    if(fbDB){
+      var updates={};
+      updates['guests']=selCovers;
+      if(selPrimarySvc) updates['primarySvc']=selPrimarySvc;
+      fbDB.ref('orders_v2/'+editingOrderKey).update(updates);
+    } else save();
     // Only notify kitchen if a wave was actually sent
-    var anySent=hasFood&&Object.keys(cart).some(function(w){
-      return cart[w]&&cart[w].length>0&&!blockSend&&firstNew===false;
-    });
-    // Simpler: check if any new wave has status sent
-    var newlySent=hasFood&&Object.values(o.waves||{}).some(function(wv){
-      return wv.status==='sent'&&wv.sentAt&&(now-wv.sentAt)<5000;
-    });
+    // Notify kitchen if any new wave was sent directly (not blocked)
+    var newlySent=hasFood&&!blockSend;
     if(newlySent){
       var _pl1=_orderPlates(o.waves||{});var _sv1=T(o.primarySvc||'')||capFirst(o.primarySvc||'');
       sendPushNotification('kitchen',o.table+' - Ordine',_pl1+' piatti - '+_sv1);
@@ -2985,7 +2991,7 @@ function renderCollectList(){
     // Header
     var head=document.createElement('div');head.className='oc-head';
     var ocSvcLabelsP={lunch:T('lunch'),breakfast:T('breakfast'),aperitivo:T('aperitivo'),dinner:T('dinner')};
-    var ocSTypeP=o.serviceType||'lunch';
+    var ocSTypeP=o.primarySvc||o.serviceType||'lunch';
     var ocBadgeP='<span style="font-size:9px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;background:rgba(38,101,51,.08);color:var(--ink-muted);padding:2px 6px;border-radius:6px;margin-right:4px">'+(ocSvcLabelsP[ocSTypeP]||'Lunch')+'</span>';
     head.innerHTML='<div style="flex:1;min-width:0">'
       +'<div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">'
@@ -3241,7 +3247,7 @@ function confirmAperitivoRound(key){
 
 function buildAtoContent(o,maxWave){
   // Aperitivo orders — simple "another round" flow, no dish selection
-  if(o.serviceType==='aperitivo'){
+  if((o.primarySvc||o.serviceType)==='aperitivo'){
     var el=document.getElementById('ato-content');
     el.innerHTML='';
     var info=document.createElement('div');
@@ -3336,8 +3342,9 @@ function buildAtoContent(o,maxWave){
     // ── Menu grid ──────────────────────────────────────────────
     html+='<span class="lbl">'+T('menu')+'</span>';
     S.courses.filter(function(c){
-      if(c==='breakfast'&&o.serviceType!=='breakfast') return false;
-      if(c!=='breakfast'&&o.serviceType==='breakfast') return false;
+      var oSvc=o.primarySvc||o.serviceType||'';
+      if(c==='breakfast'&&oSvc!=='breakfast') return false;
+      if(c!=='breakfast'&&oSvc==='breakfast') return false;
       return byCourse[c]&&byCourse[c].length;
     }).forEach(function(c){
       html+='<span class="lbl" style="font-size:9px;margin-top:6px">'+capT(c)+'</span>';
