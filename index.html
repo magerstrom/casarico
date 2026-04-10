@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_92.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_93.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -2420,8 +2420,12 @@ function sendOrder(){
     // Notify kitchen if any new wave was sent directly (not blocked)
     var newlySent=hasFood&&!blockSend;
     if(newlySent){
-      var _pl1=_orderPlates(o.waves||{});var _sv1=T(o.primarySvc||'')||capFirst(o.primarySvc||'');
-      sendPushNotification('kitchen',o.table+' - Ordine',_pl1+' piatti - '+_sv1);
+      // Count plates for the sent wave only
+      var sentWaveNums=Object.keys(cart).map(Number).filter(function(w){return cart[w]&&cart[w].length>0;});
+      var sentPlates=sentWaveNums.reduce(function(s,w){return s+(cart[w]||[]).reduce(function(ss,i){return ss+(i.qty||0);},0);},0);
+      var sentWaveNum=sentWaveNums.length?sentWaveNums[0]:1;
+      var _sv1=T(o.primarySvc||'')||capFirst(o.primarySvc||'');
+      sendPushNotification('kitchen',o.table+' - Uscita '+sentWaveNum,sentPlates+' piatti - '+_sv1);
     }
     toast(hasDrinks&&!hasFood?T('drinks_confirmed'):T('order_sent'),'tg');
     if(hasFood) renderKitchen();
@@ -3239,7 +3243,8 @@ function confirmAperitivoRound(key){
   };
   if(fbDB) fbDB.ref('orders_v2/'+key+'/waves/'+newWaveNum).set(waveObj);
   else{if(!o.waves)o.waves={};o.waves[newWaveNum]=waveObj;save();}
-  sendPushNotification('kitchen',o.table+' - Uscita '+newWaveNum,(o.guests||0)+' piatti - Aperitivo');
+  var _plAper=waveObj.dishes.reduce(function(s,d){return s+(d.qty||0);},0);
+  sendPushNotification('kitchen',o.table+' - Uscita '+newWaveNum,_plAper+' piatti - Aperitivo');
   toast(T('order_sent'),'tg');
   closeAddToOrder();
   renderKitchen();renderOrdersList();updateFOHBadges();
