@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_94.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_97.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -994,7 +994,7 @@ var S={
     drinks:[]
   },
   menu:      LS.get('menu')||defaultMenu(),
-  tables:    LS.get('tables')||defaultTables(),
+  tables:    [],  // loaded from Firebase on connect
   history:   LS.get('history')||[],
   historicalData: LS.get('historicalData')||{},  // {year:{dateStr:covers,...}}
   notifRole: LS.get('notifRole')||'foh',  // 'foh' or 'kitchen'
@@ -1695,14 +1695,9 @@ function initFirebase(){
             changed=true;
           }
           if(val.tables&&val.tables.length){
-            // Always accept Firebase tables on connect — Firebase is authoritative
-            // Only exception: local tables are newer AND we have more tables (admin just added one)
-            var localHasMore=S.tables.length>val.tables.length&&localTablesTs>fbTablesTs;
-            if(!localHasMore){
-              S.tables=val.tables;LS.set('tables',val.tables);
-              LS.set('tablesTs',fbTablesTs);
-              changed=true;
-            }
+            // Firebase is always authoritative for tables
+            S.tables=val.tables;
+            changed=true;
           }
           if(val.history&&val.history.length){
             var fbHistory=val.history;
@@ -5739,7 +5734,6 @@ function saveAndSyncTables(){
   var ts=Date.now();
   fbDB.ref('config/tables').set(S.tables);
   fbDB.ref('config/tablesTs').set(ts);
-  LS.set('tables',S.tables);LS.set('tablesTs',ts);
   toast('Tables synced to all devices ✓','tg');
 }
 
