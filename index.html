@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_97.html -->
+<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_98.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -4247,6 +4247,18 @@ function renderDishList(){
       editBtn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
       editBtn.addEventListener('click',(function(id){return function(){openEditDish(id);};})(d.id));
       row.appendChild(editBtn);
+      // Up/down arrows
+      var dishes=byCourse[d.course]||[];
+      var dIdx=dishes.findIndex(function(x){return x.id===d.id;});
+      var upBtn=document.createElement('button');
+      upBtn.type='button';upBtn.className='icon-btn';upBtn.textContent='↑';
+      upBtn.style.opacity=dIdx===0?'0.3':'1';
+      if(dIdx>0) upBtn.addEventListener('click',(function(id){return function(){moveDish(id,-1);};})(d.id));
+      var dnBtn=document.createElement('button');
+      dnBtn.type='button';dnBtn.className='icon-btn';dnBtn.textContent='↓';
+      dnBtn.style.opacity=dIdx===dishes.length-1?'0.3':'1';
+      if(dIdx<dishes.length-1) dnBtn.addEventListener('click',(function(id){return function(){moveDish(id,1);};})(d.id));
+      row.appendChild(upBtn);row.appendChild(dnBtn);
       var wrap=addSwipeToDelete(row,(function(id){return function(){deleteDish(id);};})(d.id));
       section.appendChild(wrap);
     });
@@ -4254,6 +4266,28 @@ function renderDishList(){
   });
 }
 
+function moveDish(id,dir){
+  // Find dish and its neighbours within same course and service type
+  var filtered=S.menu.filter(function(d){
+    if(d.menu) return d.menu===adminSvcType;
+    if(d.serviceTypes) return d.serviceTypes.indexOf(adminSvcType)>-1;
+    return adminSvcType==='lunch';
+  });
+  var courseOrder=typeof getMenuCourses==='function'?getMenuCourses(adminSvcType):S.courses;
+  var dish=S.menu.find(function(d){return d.id===id;});
+  if(!dish) return;
+  var sameCourse=filtered.filter(function(d){return d.course===dish.course;});
+  // Sort sameCourse by their position in S.menu
+  sameCourse.sort(function(a,b){return S.menu.indexOf(a)-S.menu.indexOf(b);});
+  var idx=sameCourse.findIndex(function(d){return d.id===id;});
+  var swapIdx=idx+dir;
+  if(swapIdx<0||swapIdx>=sameCourse.length) return;
+  // Swap in S.menu
+  var idxA=S.menu.indexOf(sameCourse[idx]);
+  var idxB=S.menu.indexOf(sameCourse[swapIdx]);
+  var tmp=S.menu[idxA];S.menu[idxA]=S.menu[idxB];S.menu[idxB]=tmp;
+  save();saveAndSyncMenu();renderDishList();
+}
 function toggleActive(id){
   var d=S.menu.find(function(m){return m.id===id;});
   if(d){d.active=!d.active;save();renderDishList();}
