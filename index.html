@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)file:///Users/magerstrom/Downloads/cucina-v2_98.html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_100.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -4823,7 +4823,8 @@ function renderSeasonal(){
     });
   });
 
-  var sortedDishes=Object.keys(dishTotals).map(function(n){return{name:dishNames[n]||n,qty:dishTotals[n],course:dishCourse[n]||''};}).sort(function(a,b){return b.qty-a.qty;}).slice(0,10);
+  var allSortedDishes=Object.keys(dishTotals).map(function(n){return{name:dishNames[n]||n,qty:dishTotals[n],course:dishCourse[n]||''};}).sort(function(a,b){return b.qty-a.qty;});
+  var sortedDishes=allSortedDishes.slice(0,10);
   var totalDishPlates8w=Object.values(dishTotals).reduce(function(s,v){return s+v;},0);
   if(totalDishPlates8w>0) dSub.textContent=T('dishes_8w')+' · '+totalDishPlates8w+' '+T('plates');
   if(!sortedDishes.length){
@@ -5098,20 +5099,24 @@ function renderYearly(){
     dayTotals[dow]+=covers;dayCounts[dow]++;
   });
   var dayAvgs=dayTotals.map(function(t,i){return dayCounts[i]>0?Math.round(t/dayCounts[i]):0;});
-  var maxAvg=Math.max.apply(null,dayAvgs)||1;
+  var maxTotal=Math.max.apply(null,dayTotals)||1;
   var buList=document.createElement('div');
   var dowOrder=[1,2,3,4,5,6,0];
   dowOrder.forEach(function(dow){
-    var avg=dayAvgs[dow];
-    var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:10px;margin-bottom:8px';
+    var total=dayTotals[dow];var avg=dayAvgs[dow];
+    var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:10px;margin-bottom:10px';
     var lbl=document.createElement('div');lbl.style.cssText='width:32px;font-size:11px;color:var(--ink-muted);flex-shrink:0;font-weight:500;text-transform:uppercase;letter-spacing:.5px';
     lbl.textContent=yDayNames[dow];
-    var track=document.createElement('div');track.style.cssText='flex:1;height:8px;background:var(--paper-warm);border-radius:4px;overflow:hidden';
-    var fill=document.createElement('div');fill.style.cssText='height:100%;border-radius:4px;background:var(--basil);width:'+Math.round((avg/maxAvg)*100)+'%;transition:width .4s ease';
+    var col=document.createElement('div');col.style.cssText='flex:1;display:flex;flex-direction:column;gap:3px';
+    var track=document.createElement('div');track.style.cssText='height:8px;background:var(--paper-warm);border-radius:4px;overflow:hidden';
+    var fill=document.createElement('div');fill.style.cssText='height:100%;border-radius:4px;background:var(--basil);width:'+Math.round((total/maxTotal)*100)+'%;transition:width .4s ease';
     track.appendChild(fill);
-    var num=document.createElement('div');num.style.cssText='width:28px;font-size:12px;font-weight:600;color:var(--ink);text-align:right;flex-shrink:0';
-    num.textContent=avg||'';
-    row.appendChild(lbl);row.appendChild(track);row.appendChild(num);buList.appendChild(row);
+    var avgLbl=document.createElement('div');avgLbl.style.cssText='font-size:10px;color:var(--ink-muted)';
+    avgLbl.textContent=avg>0?T('avg_covers_day')+': '+avg:'';
+    col.appendChild(track);col.appendChild(avgLbl);
+    var num=document.createElement('div');num.style.cssText='width:34px;font-size:12px;font-weight:600;color:var(--ink);text-align:right;flex-shrink:0';
+    num.textContent=total||'';
+    row.appendChild(lbl);row.appendChild(col);row.appendChild(num);buList.appendChild(row);
   });
   buSec.appendChild(buList);el.appendChild(buSec);
 
@@ -5171,25 +5176,43 @@ function renderYearly(){
       if(!dTotals[dish.name]) dTotals[dish.name]=0;dTotals[dish.name]+=(dish.qty||0);dCourse[dish.name]=capT(dish.course||'');
     });
   });
-  var sortedD=Object.keys(dTotals).map(function(n){return{name:n,qty:dTotals[n],course:dCourse[n]||''};}).sort(function(a,b){return b.qty-a.qty;}).slice(0,10);
+  var allSortedD=Object.keys(dTotals).map(function(n){return{name:n,qty:dTotals[n],course:dCourse[n]||''};}).sort(function(a,b){return b.qty-a.qty;});
+  var sortedD=allSortedD.slice(0,10);
   var totalDishPlatesY=Object.values(dTotals).reduce(function(s,v){return s+v;},0);
   if(totalDishPlatesY>0) dSub.textContent=T('most_ordered')+' · '+totalDishPlatesY+' '+T('plates');
   if(!sortedD.length){var noD=document.createElement('p');noD.style.cssText='font-size:13px;color:var(--ink-muted)';noD.textContent=T('no_dish_data');dSec.appendChild(noD);}
   else{
-    var maxDQ=sortedD[0].qty||1;
-    sortedD.forEach(function(dish){
-      var cIdx=cEntries.findIndex(function(e){return e.name===capT(dish.course||'');});
-      var col=courseColors[cIdx>=0?cIdx%courseColors.length:0];
-      var pct=Math.round((dish.qty/maxDQ)*100);
-      var row=document.createElement('div');row.style.cssText='margin-bottom:10px';
-      var hdr=document.createElement('div');hdr.style.cssText='display:flex;justify-content:space-between;margin-bottom:4px';
-      var nm=document.createElement('span');nm.className='course-bar-name';nm.textContent=dish.name;
-      var meta=document.createElement('div');meta.innerHTML='<strong>'+dish.qty+'</strong>'+(dish.course?' <span style="font-size:10px;color:var(--ink-muted)">'+dish.course+'</span>':'');meta.style.cssText='font-size:12px;color:var(--ink-muted)';
-      hdr.appendChild(nm);hdr.appendChild(meta);
-      var track=document.createElement('div');track.className='course-track';
-      var fill=document.createElement('div');fill.className='course-fill';fill.style.width=pct+'%';fill.style.background=col;
-      track.appendChild(fill);row.appendChild(hdr);row.appendChild(track);dSec.appendChild(row);
-    });
+    var maxDQ=allSortedD[0].qty||1;
+    var renderDishRows=function(dishes,container){
+      dishes.forEach(function(dish){
+        var cIdx=cEntries.findIndex(function(e){return e.name===capT(dish.course||'');});
+        var col=courseColors[cIdx>=0?cIdx%courseColors.length:0];
+        var pct=Math.round((dish.qty/maxDQ)*100);
+        var row=document.createElement('div');row.style.cssText='margin-bottom:10px';
+        var hdr=document.createElement('div');hdr.style.cssText='display:flex;justify-content:space-between;margin-bottom:4px';
+        var nm=document.createElement('span');nm.className='course-bar-name';nm.textContent=dish.name;
+        var meta=document.createElement('div');meta.innerHTML='<strong>'+dish.qty+'</strong>'+(dish.course?' <span style="font-size:10px;color:var(--ink-muted)">'+dish.course+'</span>':'');meta.style.cssText='font-size:12px;color:var(--ink-muted)';
+        hdr.appendChild(nm);hdr.appendChild(meta);
+        var track=document.createElement('div');track.className='course-track';
+        var fill=document.createElement('div');fill.className='course-fill';fill.style.width=pct+'%';fill.style.background=col;
+        track.appendChild(fill);row.appendChild(hdr);row.appendChild(track);container.appendChild(row);
+      });
+    };
+    renderDishRows(sortedD,dSec);
+    if(allSortedD.length>10){
+      var extraWrap=document.createElement('div');extraWrap.style.display='none';
+      renderDishRows(allSortedD.slice(10),extraWrap);
+      dSec.appendChild(extraWrap);
+      var showAllBtn=document.createElement('button');
+      showAllBtn.className='btn btn-outline btn-sm';
+      showAllBtn.style.cssText='width:100%;margin-top:6px;font-size:12px';
+      showAllBtn.textContent='Mostra tutti ('+allSortedD.length+')';
+      showAllBtn.addEventListener('click',function(){
+        extraWrap.style.display=extraWrap.style.display==='none'?'block':'none';
+        showAllBtn.textContent=extraWrap.style.display==='none'?'Mostra tutti ('+allSortedD.length+')':'Mostra meno';
+      });
+      dSec.appendChild(showAllBtn);
+    }
   }
   el.appendChild(dSec);
 
