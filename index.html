@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_100.html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_102.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -1103,7 +1103,7 @@ var STRINGS={
     days_short:'Sun,Mon,Tue,Wed,Thu,Fri,Sat',week_abbr:'Wk',
     months_short:'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec',
     seasonal:'Seasonal',yearly:'Yearly',history_tab:'History',
-    busiest_day:'Busiest Day of Week',avg_covers_day:'avg covers',
+    busiest_day:'Busiest Day of Week',avg_covers_day:'avg covers',show_all:'View all',show_less:'Show less',
     month_covers:'Monthly Covers',last_year:'Last year',
     svc_comparison:'Service Comparison',services:'services',
     per_service:'per service',load_more:'Load more',date_tab:'Date',no_service_day:'No service on this day.',select_day:'Tap a highlighted day to view services.',notif_role:'Notification Role',notif_foh:'FOH',notif_kitchen:'Kitchen',notif_allow:'Allow Notifications',notif_granted:'Notifications enabled',notif_denied:'Notifications blocked — check iPhone Settings → Safari',notif_setup:'This device receives',new_order_notif:'New order',wave_ready_notif:'Ready at pass',
@@ -4843,23 +4843,40 @@ function renderSeasonal(){
     });
     var note2=document.createElement('p');note2.style.cssText='font-size:11px;color:var(--ink-muted);text-align:center;margin-top:8px';note2.textContent=T('end_service_to_record');dishSec.appendChild(note2);
   } else {
-    var maxDQ=sortedDishes[0].qty||1;
-    sortedDishes.forEach(function(dish,ci){
-      var courseIdx=courseEntries.findIndex(function(e){return e.name===capT(dish.course||'');});
-      var col=courseColors[courseIdx>=0?courseIdx%courseColors.length:0];
-      var pct=Math.round((dish.qty/maxDQ)*100);
-      var row=document.createElement('div');row.style.cssText='margin-bottom:10px';
-      var hdr=document.createElement('div');hdr.style.cssText='display:flex;justify-content:space-between;margin-bottom:4px';
-      var nm=document.createElement('span');nm.className='course-bar-name';nm.textContent=dish.name;
-      var meta=document.createElement('div');
-      meta.innerHTML='<strong>'+dish.qty+'</strong>'+(dish.course?' <span style="font-size:10px;color:var(--ink-muted)">'+dish.course+'</span>':'');
-      meta.style.cssText='font-size:12px;color:var(--ink-muted)';
-      hdr.appendChild(nm);hdr.appendChild(meta);
-      var track=document.createElement('div');track.className='course-track';
-      var fill=document.createElement('div');fill.className='course-fill';
-      fill.style.width=pct+'%';fill.style.background=col;
-      track.appendChild(fill);row.appendChild(hdr);row.appendChild(track);dishSec.appendChild(row);
-    });
+    var maxDQ=allSortedDishes[0].qty||1;
+    var renderSDish=function(dishes,container){
+      dishes.forEach(function(dish,ci){
+        var courseIdx=courseEntries.findIndex(function(e){return e.name===capT(dish.course||'');});
+        var col=courseColors[courseIdx>=0?courseIdx%courseColors.length:0];
+        var pct=Math.round((dish.qty/maxDQ)*100);
+        var row=document.createElement('div');row.style.cssText='margin-bottom:10px';
+        var hdr=document.createElement('div');hdr.style.cssText='display:flex;justify-content:space-between;margin-bottom:4px';
+        var nm=document.createElement('span');nm.className='course-bar-name';nm.textContent=dish.name;
+        var meta=document.createElement('div');
+        meta.innerHTML='<strong>'+dish.qty+'</strong>'+(dish.course?' <span style="font-size:10px;color:var(--ink-muted)">'+dish.course+'</span>':'');
+        meta.style.cssText='font-size:12px;color:var(--ink-muted)';
+        hdr.appendChild(nm);hdr.appendChild(meta);
+        var track=document.createElement('div');track.className='course-track';
+        var fill=document.createElement('div');fill.className='course-fill';
+        fill.style.width=pct+'%';fill.style.background=col;
+        track.appendChild(fill);row.appendChild(hdr);row.appendChild(track);container.appendChild(row);
+      });
+    };
+    renderSDish(sortedDishes,dishSec);
+    if(allSortedDishes.length>10){
+      var sExtra=document.createElement('div');sExtra.style.display='none';
+      renderSDish(allSortedDishes.slice(10),sExtra);
+      dishSec.appendChild(sExtra);
+      var sBtn=document.createElement('button');
+      sBtn.className='btn btn-outline btn-sm';
+      sBtn.style.cssText='width:100%;margin-top:6px;font-size:12px';
+      sBtn.textContent=T('show_all')+' ('+allSortedDishes.length+')';
+      sBtn.addEventListener('click',function(){
+        sExtra.style.display=sExtra.style.display==='none'?'block':'none';
+        sBtn.textContent=sExtra.style.display==='none'?T('show_all')+' ('+allSortedDishes.length+')':T('show_less');
+      });
+      dishSec.appendChild(sBtn);
+    }
   }
   el.appendChild(dishSec);
 
@@ -5206,10 +5223,10 @@ function renderYearly(){
       var showAllBtn=document.createElement('button');
       showAllBtn.className='btn btn-outline btn-sm';
       showAllBtn.style.cssText='width:100%;margin-top:6px;font-size:12px';
-      showAllBtn.textContent='Mostra tutti ('+allSortedD.length+')';
+      showAllBtn.textContent=T('show_all')+' ('+allSortedD.length+')';
       showAllBtn.addEventListener('click',function(){
         extraWrap.style.display=extraWrap.style.display==='none'?'block':'none';
-        showAllBtn.textContent=extraWrap.style.display==='none'?'Mostra tutti ('+allSortedD.length+')':'Mostra meno';
+        showAllBtn.textContent=extraWrap.style.display==='none'?T('show_all')+' ('+allSortedD.length+')':T('show_less');
       });
       dSec.appendChild(showAllBtn);
     }
