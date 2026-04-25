@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_104.html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_105.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -1721,6 +1721,11 @@ function initFirebase(){
                   S.tables=normTables;
                   changed=true;
                 }
+              }
+              if(val.historicalData){
+                S.historicalData=val.historicalData;
+                LS.set('historicalData',val.historicalData);
+                changed=true;
               }
               if(val.history&&val.history.length){
                 var fbHistory=val.history;
