@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0054)file:///Users/francesca/Downloads/cucina-v2%20(4).html -->
+<!-- saved from url=(0054)file:///Users/francesca/Downloads/cucina-v2%20(5).html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -1682,10 +1682,12 @@ function initFirebase(){
               save();
               try{onFbUpdate(prev);}catch(e){
                 console.error('onFbUpdate error:',e);
-                // Render anyway even if onFbUpdate crashed
+              }
+              // Always render after orders update regardless of screen
+              try{
                 if(currentScreen==='s-kitchen') renderKitchen();
                 if(currentScreen==='s-foh'){renderOrdersList();renderCollectList();updateFOHBadges();}
-              }
+              }catch(e){console.warn('render after orders error:',e);}
             }catch(e){
               console.error('orders listener error:',e);
             }
@@ -1937,7 +1939,7 @@ function updateTopbarRoles(){
 
 function showView(view){
   if(view==='kitchen'){show('s-kitchen');updateLangToggle();renderKitchen();}
-  else if(view==='foh'){show('s-foh');updateLangToggle();fTab('new');renderOrdersList();renderCollectList();updateFOHBadges();}
+  else if(view==='foh'){show('s-foh');updateLangToggle();fTab('new');renderOrdersList();renderCollectList();updateFOHBadges();setTimeout(function(){renderOrdersList();renderCollectList();updateFOHBadges();},3000);}
   else if(view==='admin'){pEntry='';updateDots();if(document.getElementById('pin-err'))document.getElementById('pin-err').textContent='';renderPinScreen();show('s-pin');}
 }
 
@@ -1945,7 +1947,7 @@ function goRole(role){
   updateTopbarRoles();
   if(role==='admin'){pEntry='';updateDots();document.getElementById('pin-err').textContent='';renderPinScreen();show('s-pin');}
   else if(role==='kitchen'){show('s-kitchen');updateLangToggle();renderKitchen();}
-  else if(role==='foh'){show('s-foh');updateLangToggle();fTab('new');renderOrdersList();renderCollectList();updateFOHBadges();}
+  else if(role==='foh'){show('s-foh');updateLangToggle();fTab('new');renderOrdersList();renderCollectList();updateFOHBadges();setTimeout(function(){renderOrdersList();renderCollectList();updateFOHBadges();},3000);}
 }
 
 // ════════════════════════════════════════════
