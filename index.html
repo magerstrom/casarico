@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0054)file:///Users/francesca/Downloads/cucina-v2%20(6).html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_104.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -3993,16 +3993,19 @@ function endService(){
       if(!stOrders.length){byType[st]=null;return;}
       var stTables=[...new Set(stOrders.map(function(e){return e[1].table;}))];
       var stGuests=stOrders.reduce(function(s,e){return s+(e[1].guests||0);},0);
+      // Use dish.svcType to correctly attribute plates regardless of order primarySvc
       var stPlates=stOrders.reduce(function(s,e){
-        return s+Object.values(e[1].waves||{}).reduce(function(ss,w){
-          return ss+(w.dishes||[]).reduce(function(sss,d){return sss+(d.qty||0);},0);
+        return s+Object.values(e[1].waves||{}).filter(function(w){return w!=null;}).reduce(function(ss,w){
+          return ss+(w.dishes||[]).filter(function(d){return (d.svcType||st)===st;}).reduce(function(sss,d){return sss+(d.qty||0);},0);
         },0);
       },0);
       var stDishMap={};
       stOrders.forEach(function(e){
-        Object.values(e[1].waves||{}).forEach(function(w){
+        Object.values(e[1].waves||{}).filter(function(w){return w!=null;}).forEach(function(w){
           (w.dishes||[]).forEach(function(d){
             if(d.id==='aper')return; // skip auto aperitivo placeholder
+            // Only count dish under its own svcType
+            if((d.svcType||st)!==st) return;
             var dk=d.name.toLowerCase();
             if(!stDishMap[dk])stDishMap[dk]={name:d.name,course:d.course||'',qty:0};
             stDishMap[dk].qty+=(d.qty||0);
