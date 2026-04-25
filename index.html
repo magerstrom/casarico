@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_106.html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_108.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -4608,7 +4608,7 @@ function renderSeasonal(){
     dateCovers[ds]+=dayCovers;
   });
 
-  var maxCovers=Math.max.apply(null,days.map(function(d){return Math.max(dateCovers[d.toDateString()]||0,hasHistorical?getHistCovers(d,year):0);}));
+  var maxCovers=Math.max.apply(null,days.map(function(d){var hc=hasHistorical?getHistCovers(d,year):null;return Math.max(dateCovers[d.toDateString()]||0,hc?hc.total:0);}));
   if(maxCovers===0) maxCovers=1;
 
   var chartEl=document.createElement('div');chartEl.className='week-chart';
@@ -4617,17 +4617,18 @@ function renderSeasonal(){
   days.forEach(function(d){
     var ds=d.toDateString();
     var covers=dateCovers[ds]||0;
-    var histCovers=hasHistorical?getHistCovers(d,year):0;
+    var histCovers=hasHistorical?getHistCovers(d,year):null;
+    var histTotal=histCovers?histCovers.total:0;
     var isToday=d.toDateString()===today.toDateString();
     var barPct=Math.round((covers/maxCovers)*100);
-    var histPct=Math.round((histCovers/maxCovers)*100);
+    var histPct=Math.round((histTotal/maxCovers)*100);
 
     var wrap=document.createElement('div');wrap.className='week-bar-wrap';
     var col=document.createElement('div');col.className='week-bar-col';
     col.style.position='relative';
 
     // Ghost bar (last year) — behind current
-    if(hasHistorical&&histCovers>0){
+    if(histTotal>0){
       var ghost=document.createElement('div');
       ghost.style.cssText='position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60%;height:'+histPct+'%;background:var(--border-soft);border-radius:4px 4px 0 0;z-index:0';
       col.appendChild(ghost);
@@ -4660,7 +4661,7 @@ function renderSeasonal(){
         ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
           if((dayBreak[st]||0)>0) parts.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+dayBreak[st]+' '+T('covers_label'));
         });
-        var histLine=dayHistCovers?'<div style="font-size:11px;color:var(--ink-muted);margin-top:4px">'+formatHistLine(dayHistCovers)+'</div>':'';
+        var histLine=histCovers?'<div style="font-size:11px;color:var(--ink-muted);margin-top:4px">'+formatHistLine(histCovers)+'</div>':'';
         // Per-service-type plates breakdown
         var ppcLines=[];
         ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
@@ -4677,7 +4678,7 @@ function renderSeasonal(){
           +ppcLine+histLine;
         dd.classList.add('open');
       });
-    })(ds,covers,brk,histCovers);
+    })(ds,covers,brk,histCovers,histTotal);
 
     var cov=document.createElement('div');cov.className='week-covers';cov.textContent=covers||'';
     var lbl=document.createElement('div');lbl.className='week-label';
@@ -4720,8 +4721,8 @@ function renderSeasonal(){
   });
 
   var maxWCovers=Math.max.apply(null,weeks.map(function(w){
-    var hw=hasHistorical?getHistWeekCovers(isoWeekNum(w.start),year):0;
-    return Math.max(w.covers,hw);
+    var hw=hasHistorical?getHistWeekCovers(isoWeekNum(w.start),year):null;
+    return Math.max(w.covers,hw?hw.total:0);
   }));
   if(maxWCovers===0) maxWCovers=1;
 
@@ -4732,8 +4733,9 @@ function renderSeasonal(){
     var isCurrent=wi===weeks.length-1;
     var pct=Math.round((w.covers/maxWCovers)*100);
     var wn=isoWeekNum(w.start);
-    var histCovers=hasHistorical?getHistWeekCovers(wn,year):0;
-    var histPct=Math.round((histCovers/maxWCovers)*100);
+    var histCovers=hasHistorical?getHistWeekCovers(wn,year):null;
+    var histTotal=histCovers?histCovers.total:0;
+    var histPct=Math.round((histTotal/maxWCovers)*100);
 
     var wrap=document.createElement('div');wrap.className='trend-bar-wrap';
     var col=document.createElement('div');col.className='trend-bar-col';
@@ -4788,7 +4790,7 @@ function renderSeasonal(){
           +(parts.length?parts.join('<br>'):'<div style="color:var(--ink-muted)">-</div>')+wPpcLine+histLine;
         td.classList.add('open');
       });
-    })(w,w.covers,brk,wn,histCovers,w.sessions||0);
+    })(w,w.covers,brk,wn,histCovers,histTotal,w.sessions||0);
     col.appendChild(bar);
     var lbl=document.createElement('div');lbl.className='trend-label';
     lbl.textContent=T('week_abbr')+' '+wn;
@@ -5130,7 +5132,30 @@ function renderYearly(){
     } else {monthTotals[mo]+=h.guests||0;monthPlates[mo]+=h.plates||0;monthSessions[mo]++;monthSvcBreak[mo].lunch+=h.guests||0;monthSvcBreak[mo].lunchP+=h.plates||0;}
   });
 
-  var maxMonth=Math.max.apply(null,monthTotals)||1;
+  // Build historical monthly totals from historicalData (previous year)
+  var histMonthTotals=new Array(12).fill(0);
+  var histMonthBreak=[];for(var hmi=0;hmi<12;hmi++) histMonthBreak.push({lunch:0,aperitivo:0,breakfast:0,dinner:0});
+  var hasHistorical=S.historicalData&&Object.keys(S.historicalData).length>0;
+  if(hasHistorical){
+    var prevYearData=S.historicalData[year-1];
+    if(prevYearData){
+      Object.keys(prevYearData).forEach(function(ds){
+        var mo=new Date(ds).getMonth();
+        var entry=prevYearData[ds];
+        if(typeof entry==='object'){
+          histMonthTotals[mo]+=(entry.total||0);
+          ['lunch','aperitivo','breakfast','dinner'].forEach(function(st){
+            if(entry[st]) histMonthBreak[mo][st]+=(entry[st]||0);
+          });
+        } else {
+          histMonthTotals[mo]+=entry;
+          histMonthBreak[mo].lunch+=entry;
+        }
+      });
+    }
+  }
+
+  var maxMonth=Math.max.apply(null,monthTotals.concat(histMonthTotals))||1;
   var mChart=document.createElement('div');
   mChart.style.cssText='display:grid;grid-template-columns:repeat(12,1fr);gap:3px;height:80px;align-items:flex-end;margin-bottom:4px';
   var mLbls=document.createElement('div');
@@ -5138,9 +5163,19 @@ function renderYearly(){
   var mDetailEl=document.createElement('div');mDetailEl.className='day-detail';mDetailEl.id='month-detail';
   monthNames.forEach(function(mn,mi){
     var covers=monthTotals[mi];
+    var histCovers=histMonthTotals[mi]||0;
     var pct=Math.round((covers/maxMonth)*100);
+    var histPct=Math.round((histCovers/maxMonth)*100);
+    var wrap=document.createElement('div');
+    wrap.style.cssText='position:relative;height:80px;display:flex;align-items:flex-end;cursor:pointer';
+    // Ghost bar (last year)
+    if(histCovers>0){
+      var ghost=document.createElement('div');
+      ghost.style.cssText='position:absolute;bottom:0;left:10%;width:80%;height:'+histPct+'%;background:var(--border-soft);border-radius:3px 3px 0 0;z-index:0';
+      wrap.appendChild(ghost);
+    }
     var col=document.createElement('div');
-    col.style.cssText='display:flex;flex-direction:column-reverse;height:80px;border-radius:3px 3px 0 0;overflow:hidden;cursor:pointer';
+    col.style.cssText='position:relative;z-index:1;width:100%;display:flex;flex-direction:column-reverse;border-radius:3px 3px 0 0;overflow:hidden';
     var brk=monthSvcBreak[mi];
     if(covers>0){
       ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
@@ -5151,11 +5186,12 @@ function renderYearly(){
       });
       col.style.height=pct+'%';
     } else {
-      col.style.cssText='height:3px;background:var(--border-soft);border-radius:2px;align-self:flex-end';
+      col.style.cssText='position:relative;z-index:1;height:3px;width:100%;background:var(--border-soft);border-radius:2px;align-self:flex-end';
     }
+    wrap.appendChild(col);
     // Tap to show breakdown
-    (function(month,monthCovers,monthPlatesVal,monthSessionsVal,monthBreak,monthName){
-      col.addEventListener('click',function(){
+    (function(month,monthCovers,monthPlatesVal,monthSessionsVal,monthBreak,monthName,hCovers,hBreak){
+      wrap.addEventListener('click',function(){
         var md=document.getElementById('month-detail');
         if(md.dataset.month===monthName&&md.classList.contains('open')){md.classList.remove('open');md.dataset.month='';return;}
         md.dataset.month=monthName;
@@ -5164,16 +5200,26 @@ function renderYearly(){
           if((monthBreak[st]||0)>0) parts.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+monthBreak[st]+' '+T('covers_label'));
         });
         var mAvg=monthSessionsVal>0?Math.round(monthCovers/monthSessionsVal):0;
-        var mExtra=[];if(monthPlatesVal>0)mExtra.push(T('total_plates')+': '+monthPlatesVal);if(monthCovers>0&&monthPlatesVal>0)mExtra.push(T('plates_per_cover')+': '+(monthPlatesVal/monthCovers).toFixed(1));if(monthSessionsVal>0)mExtra.push(T('covers')+' '+T('per_service')+': '+mAvg);var mPpc=mExtra.length?'<div style="font-size:11px;color:var(--ink-muted);margin-top:6px;line-height:1.9">'+mExtra.join('<br>')+'</div>':'';
+        var mExtra=[];if(monthPlatesVal>0)mExtra.push(T('total_plates')+': '+monthPlatesVal);if(monthCovers>0&&monthPlatesVal>0)mExtra.push(T('plates_per_cover')+': '+(monthPlatesVal/monthCovers).toFixed(1));if(monthSessionsVal>0)mExtra.push(T('covers')+' '+T('per_service')+': '+mAvg);
+        var mPpc=mExtra.length?'<div style="font-size:11px;color:var(--ink-muted);margin-top:6px;line-height:1.9">'+mExtra.join('<br>')+'</div>':'';
+        // Last year line
+        var histParts=[];
+        if(hCovers>0){
+          ['lunch','aperitivo','breakfast','dinner'].forEach(function(st){
+            if((hBreak[st]||0)>0) histParts.push(T('svc_'+st)+' '+(hBreak[st]));
+          });
+          var histDetail=histParts.length>1?'('+histParts.join(' · ')+')':'';
+          var histLine='<div style="font-size:11px;color:var(--ink-muted);margin-top:4px">'+T('last_year')+': '+hCovers+' '+T('covers_label')+(histDetail?' '+histDetail:'')+'</div>';
+        } else { var histLine=''; }
         md.innerHTML='<div style="font-size:12px;font-weight:600;margin-bottom:4px;color:var(--ink)">'+monthName+(monthCovers?' — '+monthCovers+' '+T('covers_label'):'')+'</div>'
-          +(parts.length?'<div style="font-size:12px;line-height:1.8">'+parts.join('<br>')+'</div>':'<div style="font-size:12px;color:var(--ink-muted)">-</div>')+mPpc;
+          +(parts.length?'<div style="font-size:12px;line-height:1.8">'+parts.join('<br>')+'</div>':'<div style="font-size:12px;color:var(--ink-muted)">-</div>')+mPpc+histLine;
         md.classList.add('open');
       });
-    })(mi,covers,monthPlates[mi]||0,monthSessions[mi]||0,brk,mn);
+    })(mi,covers,monthPlates[mi]||0,monthSessions[mi]||0,brk,mn,histCovers,histMonthBreak[mi]);
     var lbl=document.createElement('div');
     lbl.style.cssText='font-size:8px;color:var(--ink-muted);text-align:center;letter-spacing:.3px;margin-top:3px';
     lbl.textContent=mn.toUpperCase();
-    mChart.appendChild(col);mLbls.appendChild(lbl);
+    mChart.appendChild(wrap);mLbls.appendChild(lbl);
   });
   monthSec.appendChild(mChart);monthSec.appendChild(mLbls);monthSec.appendChild(mDetailEl);
   el.appendChild(monthSec);
@@ -5489,6 +5535,7 @@ function buildKpiSection(label,svcRecords,showPlates){
 }
 
 function renderHistory(){
+  var hasHistorical=S.historicalData&&Object.keys(S.historicalData).length>0;
   var el=document.getElementById('stats-history');
   el.innerHTML='';
 
@@ -5631,8 +5678,12 @@ function renderHistory(){
 
         var hdr=document.createElement('div');
         hdr.style.cssText='margin-bottom:12px';
+        var selectedD=new Date(cs.selectedDate);
+        var histForDate=hasHistorical?getHistCovers(selectedD,selectedD.getFullYear()+1):null;
+        var histLineDate=histForDate?'<div style="font-size:11px;color:var(--ink-muted);margin-top:3px">'+formatHistLine(histForDate)+'</div>':'';
         hdr.innerHTML='<div style="font-size:13px;font-weight:700;color:var(--ink)">'+h.date+(sessionLabel?' <span style="font-size:10px;font-weight:400;color:var(--ink-muted)">'+sessionLabel+'</span>':'')+'</div>'
-          +'<div style="font-size:12px;color:var(--ink-muted);margin-top:3px">'+svcSummary.join(' · ')+'</div>';
+          +'<div style="font-size:12px;color:var(--ink-muted);margin-top:3px">'+svcSummary.join(' · ')+'</div>'
+          +histLineDate;
         row.appendChild(hdr);
 
         // ── Drinks summary for this session ───────────────
