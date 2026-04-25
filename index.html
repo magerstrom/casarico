@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0054)file:///Users/francesca/Downloads/cucina-v2%20(1).html -->
+<!-- saved from url=(0054)file:///Users/francesca/Downloads/cucina-v2%20(2).html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -1767,7 +1767,7 @@ function _wavePlates(waves,waveNum){
 }
 function _orderPlates(waves){
   try{
-    return Object.values(waves||{}).reduce(function(s,wv){
+    return Object.values(waves||{}).filter(function(wv){return wv!=null;}).reduce(function(s,wv){
       return s+(wv.dishes||[]).reduce(function(ss,d){return ss+(d.qty||0);},0);
     },0);
   }catch(e){return 0;}
@@ -2387,7 +2387,7 @@ function sendOrder(){
     if(!o.primarySvc&&selPrimarySvc){
       o.primarySvc=selPrimarySvc;
     }
-    var existingNums=Object.keys(o.waves||{}).map(Number);
+    var existingNums=Object.keys(o.waves||{}).map(Number).filter(function(w){return o.waves[w]!=null;});
     var maxExisting=existingNums.length?Math.max.apply(null,existingNums):0;
     // Block sending if any waves are in-flight (sent/ready) OR any held waves exist
     // A new wave must always queue behind existing held waves
@@ -2710,7 +2710,7 @@ function renderOrdersList(){
 }
 
 function fohOrderCard(key,o,isClosedView){
-  var waveNums=Object.keys(o.waves||{}).map(Number).sort();
+  var waveNums=Object.keys(o.waves||{}).map(Number).filter(function(w){return o.waves[w]!=null;}).sort();
   var hasReady=waveNums.some(function(w){return o.waves[w].status==='ready';});
 
   var card=document.createElement('div');
@@ -3087,7 +3087,7 @@ function showOrderSummary(key){
   el.style.display='';
 
   // Build a mini read-only order card showing current state
-  var waveNums=Object.keys(o.waves||{}).map(Number).sort();
+  var waveNums=Object.keys(o.waves||{}).map(Number).filter(function(w){return o.waves[w]!=null;}).sort();
   var waveColors=['#266533','#B87A2A','#F16838','#7B5EA7'];
 
   waveNums.forEach(function(w){
@@ -3209,7 +3209,7 @@ function openAddToOrder(key){
   if(!o) return;
 
   // Determine next available wave (skip sent/ready/collected)
-  var waveNums=Object.keys(o.waves||{}).map(Number).sort();
+  var waveNums=Object.keys(o.waves||{}).map(Number).filter(function(w){return o.waves[w]!=null;}).sort();
   var nextWave=1;
   if(waveNums.length){
     // Find first held wave that hasn't been sent yet
@@ -3252,7 +3252,7 @@ function openAddToOrder(key){
 
 function confirmAperitivoRound(key){
   var o=S.orders[key];if(!o) return;
-  var existingNums=Object.keys(o.waves||{}).map(Number);
+  var existingNums=Object.keys(o.waves||{}).map(Number).filter(function(w){return o.waves[w]!=null;});
   var newWaveNum=existingNums.length?Math.max.apply(null,existingNums)+1:1;
   var now=Date.now();
   // Create aperitivo placeholder dish for the wave
@@ -3535,7 +3535,7 @@ function renderKitchen(){
 
 function nextInLine(o){
   // Lowest wave number that is not yet collected
-  var nums=Object.keys(o.waves||{}).map(Number).sort();
+  var nums=Object.keys(o.waves||{}).map(Number).filter(function(w){return o.waves[w]!=null;}).sort();
   for(var i=0;i<nums.length;i++){
     if(o.waves[nums[i]].status!=='collected') return nums[i];
   }
@@ -3559,7 +3559,7 @@ function toggleWave(waveEl){
 
 function kitchenCard(key,o){
   var mins=Math.floor((Date.now()-o.ts)/60000);
-  var waveNums=Object.keys(o.waves||{}).map(Number).sort();
+  var waveNums=Object.keys(o.waves||{}).map(Number).filter(function(w){return o.waves[w]!=null;}).sort();
   var allCollected=waveNums.every(function(w){return o.waves[w].status==='collected';});
   if(allCollected) return null;
 
