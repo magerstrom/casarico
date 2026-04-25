@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0054)file:///Users/francesca/Downloads/cucina-v2%20(5).html -->
+<!-- saved from url=(0054)file:///Users/francesca/Downloads/cucina-v2%20(6).html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -2931,7 +2931,8 @@ function waveStatusTag(st){
 }
 
 function overallStatusPill(o){
-  var statuses=Object.values(o.waves).map(function(w){return w.status;});
+  var statuses=Object.values(o.waves||{}).filter(function(w){return w!=null;}).map(function(w){return w.status;});
+  if(!statuses.length) return 'sp-open';
   if(statuses.every(function(s){return s==='collected';})) return 'sp-served';
   if(statuses.some(function(s){return s==='ready';})) return 'sp-ready';
   if(statuses.some(function(s){return s==='sent';})) return 'sp-cooking';
@@ -2940,8 +2941,8 @@ function overallStatusPill(o){
 }
 
 function overallStatusLabel(o){
-  if(Object.values(o.waves||{}).every(function(w){return w.status==='collected';})) return T('sp_served');
-  if(Object.values(o.waves||{}).some(function(w){return w.status==='ready';})) return T('sp_ready');
+  if(Object.values(o.waves||{}).filter(function(w){return w!=null;}).every(function(w){return w.status==='collected';})) return T('sp_served');
+  if(Object.values(o.waves||{}).filter(function(w){return w!=null;}).some(function(w){return w.status==='ready';})) return T('sp_ready');
   if(Object.values(o.waves||{}).some(function(w){return w.status==='sent'||w.status==='cooking';})) return T('sp_cooking');
   if(Object.values(o.waves||{}).every(function(w){return w.status==='held';})) return T('sp_held');
   return T('sp_open');
