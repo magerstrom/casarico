@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_105.html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_106.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -4506,6 +4506,17 @@ function statsTab(t){
 }
 
 // ── Stats helpers — top-level (no nested fns for iOS) ──────────
+
+function formatHistLine(hist){
+  if(!hist||!hist.total) return '';
+  var parts=[];
+  if(hist.lunch) parts.push(T('svc_lunch')+' '+hist.lunch);
+  if(hist.aperitivo) parts.push(T('svc_aperitivo')+' '+hist.aperitivo);
+  if(hist.breakfast) parts.push(T('svc_breakfast')+' '+hist.breakfast);
+  if(hist.dinner) parts.push(T('svc_dinner')+' '+hist.dinner);
+  var detail=parts.length>1?'('+parts.join(' · ')+')':(parts.length===1&&parts[0]!==T('svc_lunch')+' '+hist.total?'('+parts[0]+')':'');
+  return T('last_year')+': '+hist.total+' '+T('covers_label')+(detail?' '+detail:'');
+}
 function isoWeekNum(date){
   var d=new Date(date);d.setHours(0,0,0,0);
   d.setDate(d.getDate()+4-(d.getDay()||7));
@@ -4514,24 +4525,46 @@ function isoWeekNum(date){
 }
 function getHistCovers(currentDate,year){
   var hy=S.historicalData&&S.historicalData[year-1];
-  if(!hy) return 0;
+  if(!hy) return null;
   var tw=isoWeekNum(currentDate);
   var tdow=new Date(currentDate).getDay();
-  var total=0;
+  var result={total:0,lunch:0,aperitivo:0,breakfast:0,dinner:0};
   Object.keys(hy).forEach(function(ds){
     var d=new Date(ds);
-    if(d.getDay()===tdow&&isoWeekNum(d)===tw) total+=hy[ds];
+    if(d.getDay()===tdow&&isoWeekNum(d)===tw){
+      var entry=hy[ds];
+      if(typeof entry==='object'){
+        result.total+=(entry.total||0);
+        result.lunch+=(entry.lunch||0);
+        result.aperitivo+=(entry.aperitivo||0);
+        result.breakfast+=(entry.breakfast||0);
+        result.dinner+=(entry.dinner||0);
+      } else {
+        result.total+=entry;result.lunch+=entry;
+      }
+    }
   });
-  return total;
+  return result.total>0?result:null;
 }
 function getHistWeekCovers(isoWeekN,year){
   var hy=S.historicalData&&S.historicalData[year-1];
-  if(!hy) return 0;
-  var total=0;
+  if(!hy) return null;
+  var result={total:0,lunch:0,aperitivo:0,breakfast:0,dinner:0};
   Object.keys(hy).forEach(function(ds){
-    if(isoWeekNum(new Date(ds))===isoWeekN) total+=hy[ds];
+    if(isoWeekNum(new Date(ds))===isoWeekN){
+      var entry=hy[ds];
+      if(typeof entry==='object'){
+        result.total+=(entry.total||0);
+        result.lunch+=(entry.lunch||0);
+        result.aperitivo+=(entry.aperitivo||0);
+        result.breakfast+=(entry.breakfast||0);
+        result.dinner+=(entry.dinner||0);
+      } else {
+        result.total+=entry;result.lunch+=entry;
+      }
+    }
   });
-  return total;
+  return result.total>0?result:null;
 }
 
 function renderSeasonal(){
@@ -4546,6 +4579,8 @@ function renderSeasonal(){
   var svcColors={lunch:'#266533',breakfast:'#B87A2A',aperitivo:'#F16838',dinner:'#1A4422'};
 
   var hasHistorical=S.historicalData&&Object.keys(S.historicalData).length>0;
+  var _hc=function(d){return hasHistorical?getHistCovers(d,year):null;};
+  var _hwc=function(w){return hasHistorical?getHistWeekCovers(isoWeekNum(w),year):null;};
 
   // ── Section 1: This Week ────────────────────────────────────
   var weekSec=document.createElement('div');weekSec.className='dash-section';
@@ -4625,7 +4660,7 @@ function renderSeasonal(){
         ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
           if((dayBreak[st]||0)>0) parts.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+dayBreak[st]+' '+T('covers_label'));
         });
-        var histLine=hasHistorical&&dayHistCovers?'<div style="font-size:11px;color:var(--ink-muted);margin-top:4px">'+T('last_year')+': '+dayHistCovers+' '+T('covers_label')+'</div>':'';
+        var histLine=dayHistCovers?'<div style="font-size:11px;color:var(--ink-muted);margin-top:4px">'+formatHistLine(dayHistCovers)+'</div>':'';
         // Per-service-type plates breakdown
         var ppcLines=[];
         ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
@@ -4734,7 +4769,7 @@ function renderSeasonal(){
         ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
           if((weekBreak[st]||0)>0) parts.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+weekBreak[st]+' '+T('covers_label'));
         });
-        var histLine=hasHistorical&&weekHistCovers?'<div style="font-size:11px;color:var(--ink-muted);margin-top:4px">'+T('last_year')+': '+weekHistCovers+' '+T('covers_label')+'</div>':'';
+        var histLine=weekHistCovers?'<div style="font-size:11px;color:var(--ink-muted);margin-top:4px">'+formatHistLine(weekHistCovers)+'</div>':'';
         var wAvg=weekSessions>0?Math.round(weekCovers/weekSessions):0;
         // Per-service-type breakdown
         var svcLines=[];
