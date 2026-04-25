@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_110.html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_111.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -4630,7 +4630,7 @@ function renderSeasonal(){
     // Ghost bar (last year) — behind current
     if(histTotal>0){
       var ghost=document.createElement('div');
-      ghost.style.cssText='position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60%;height:'+histPct+'%;background:var(--border-soft);border-radius:4px 4px 0 0;z-index:0';
+      ghost.style.cssText='position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60%;height:'+histPct+'%;background:var(--border-soft);border-radius:4px 4px 0 0;z-index:0;pointer-events:none';
       col.appendChild(ghost);
     }
 
@@ -4742,9 +4742,9 @@ function renderSeasonal(){
     col.style.position='relative';
 
     // Ghost bar
-    if(hasHistorical&&histCovers>0){
+    if(histTotal>0){
       var tGhost=document.createElement('div');
-      tGhost.style.cssText='position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60%;height:'+histPct+'%;background:var(--border-soft);border-radius:3px 3px 0 0;z-index:0';
+      tGhost.style.cssText='position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60%;height:'+histPct+'%;background:var(--border-soft);border-radius:3px 3px 0 0;z-index:0;pointer-events:none';
       col.appendChild(tGhost);
     }
     var bar=document.createElement('div');
@@ -5679,7 +5679,7 @@ function renderHistory(){
         var hdr=document.createElement('div');
         hdr.style.cssText='margin-bottom:12px';
         var selectedD=new Date(cs.selectedDate);
-        var histForDate=hasHistorical?getHistCovers(selectedD,selectedD.getFullYear()+1):null;
+        var histForDate=hasHistorical?getHistCovers(selectedD,selectedD.getFullYear()):null;
         var histLineDate=histForDate?'<div style="font-size:11px;color:var(--ink-muted);margin-top:3px">'+formatHistLine(histForDate)+'</div>':'';
         hdr.innerHTML='<div style="font-size:13px;font-weight:700;color:var(--ink)">'+h.date+(sessionLabel?' <span style="font-size:10px;font-weight:400;color:var(--ink-muted)">'+sessionLabel+'</span>':'')+'</div>'
           +'<div style="font-size:12px;color:var(--ink-muted);margin-top:3px">'+svcSummary.join(' · ')+'</div>'
