@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_111.html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_112.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -4651,9 +4651,10 @@ function renderSeasonal(){
     }
     col.appendChild(bar);
 
-    // Tap detail
-    (function(dayStr,dayCovers,dayBreak,dayHistCovers){
-      bar.addEventListener('click',function(){
+    // Tap detail — on col so ghost-only bars are clickable
+    col.style.cursor='pointer';
+    (function(dayStr,dayCovers,dayBreak,dayHistCovers,dayHistTotal){
+      col.addEventListener('click',function(){
         var dd=document.getElementById('week-day-detail');
         if(dd.dataset.day===dayStr&&dd.classList.contains('open')){dd.classList.remove('open');dd.dataset.day='';return;}
         dd.dataset.day=dayStr;
@@ -4661,7 +4662,7 @@ function renderSeasonal(){
         ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
           if((dayBreak[st]||0)>0) parts.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+dayBreak[st]+' '+T('covers_label'));
         });
-        var histLine=histCovers?'<div style="font-size:11px;color:var(--ink-muted);margin-top:4px">'+formatHistLine(histCovers)+'</div>':'';
+        var histLine=dayHistCovers?'<div style="font-size:11px;color:var(--ink-muted);margin-top:4px">'+formatHistLine(dayHistCovers)+'</div>':'';
         // Per-service-type plates breakdown
         var ppcLines=[];
         ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
@@ -4674,8 +4675,9 @@ function renderSeasonal(){
           }
         });
         var ppcLine=ppcLines.length?'<div style="font-size:11px;color:var(--ink-muted);margin-top:6px;line-height:2">'+ppcLines.join('<br>')+'</div>':'';
+        var noData=!dayCovers&&!dayHistTotal?'<div style="font-size:12px;color:var(--ink-muted)">-</div>':'';
         dd.innerHTML='<div style="font-size:12px;font-weight:600;margin-bottom:4px;color:var(--ink)">'+dayStr+(dayCovers?' — '+dayCovers+' '+T('covers_label'):'')+'</div>'
-          +ppcLine+histLine;
+          +noData+ppcLine+histLine;
         dd.classList.add('open');
       });
     })(ds,covers,brk,histCovers,histTotal);
