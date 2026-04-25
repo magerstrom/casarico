@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_108.html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_110.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -727,7 +727,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
         <span class="lbl" id="lbl-wave-select">Wave for selected items</span>
         <div class="wave-row" id="wave-row-btns"></div>
         <!-- Course tabs — identical to v1 -->
-        <div class="course-tabs" id="course-tabs"></div>
+        <div class="course-tabs" id="course-tabs"><div class="ctab active" onclick="setCourseFn(&#39;antipasti&#39;)">Antipasti</div><div class="ctab" onclick="setCourseFn(&#39;primi&#39;)">Primi</div><div class="ctab" onclick="setCourseFn(&#39;secondi&#39;)">Secondi</div><div class="ctab" onclick="setCourseFn(&#39;insalata&#39;)">Insalata</div><div class="ctab" onclick="setCourseFn(&#39;dolci&#39;)">Dolci</div></div>
         <!-- Items grid — identical to v1 -->
         <div class="items-grid" id="items-grid"></div>
         <!-- Cart -->
@@ -2603,7 +2603,7 @@ function buildCourseTabs(){
   if(!selCourse||activeCourses.indexOf(selCourse)===-1) selCourse=activeCourses[0]||null;
   var el=document.getElementById('course-tabs');
   el.innerHTML=activeCourses.map(function(c){
-    var qty=cart.filter(function(i){return i.course===c;}).reduce(function(s,i){return s+i.qty;},0);
+    var qty=Object.values(cart||{}).reduce(function(s,w){return s+(Array.isArray(w)?w.filter(function(i){return i.course===c;}).reduce(function(ss,i){return ss+(i.qty||0);},0):0);},0);
     return '<div class="ctab'+(selCourse===c?' active':'')+'" onclick="setCourseFn(\''+c+'\')">'
       +capT(c)+(qty>0?'<span class="ctab-count">'+qty+'</span>':'')
       +'</div>';
