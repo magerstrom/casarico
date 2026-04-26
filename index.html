@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_116.html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_117.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -5632,9 +5632,13 @@ function renderHistory(){
       cell.style.background='rgb('+r+','+g+','+b+')';
       cell.style.color=t>0.5?'var(--cream)':'#1A4422';
     } else if(hasHist&&!hasSvc&&!isSelected){
-      // Ghost shading for days with last year data only
-      cell.style.background='var(--border-soft)';
-      cell.style.color='var(--ink-muted)';
+      // Amber intensity shading based on last year covers
+      var tHist=Math.max(0.15,histCell.total/Math.max(maxMonthCovers,1));
+      var rH=Math.round(220-60*tHist);   // 220→160 warm amber range
+      var gH=Math.round(180-80*tHist);   // 180→100
+      var bH=Math.round(120-80*tHist);   // 120→40
+      cell.style.background='rgb('+rH+','+gH+','+bH+')';
+      cell.style.color=tHist>0.5?'var(--cream)':'#5a3a0a';
     }
     if(isSelected){
       cell.style.background='';cell.style.color='';
