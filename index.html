@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_126.html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_127.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -663,7 +663,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
     <div id="ato-summary" style="display:none;margin-bottom:12px"></div>
     <!-- Step 1: Table selector -->
     <span class="lbl" id="lbl-order-table">Table</span>
-    <div class="table-grid" id="order-table-grid"></div>
+    <div class="table-grid" id="order-table-grid"><div class="table-chip">1 dentro</div><div class="table-chip">2 dentro</div><div class="table-chip">3 dentro</div><div class="table-chip">4 dentro</div><div class="table-chip">5 dentro</div><div class="table-chip">1</div><div class="table-chip">2</div><div class="table-chip">3</div><div class="table-chip">4</div><div class="table-chip">5</div><div class="table-chip">1 piazza</div><div class="table-chip">2 piazza</div><div class="table-chip">3 piazza</div><div class="table-chip">4 piazza</div><div class="table-chip">5 piazza</div><div class="table-chip">6 piazza</div><div class="table-chip">7 piazza</div></div>
 
     <!-- Step 2: Covers + order builder (appears after table selected) -->
     <div id="covers-section" style="display:none">
@@ -729,7 +729,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
         <!-- Course tabs — identical to v1 -->
         <div class="course-tabs" id="course-tabs"><div class="ctab active" onclick="setCourseFn(&#39;antipasti&#39;)">Antipasti</div><div class="ctab" onclick="setCourseFn(&#39;primi&#39;)">Primi</div><div class="ctab" onclick="setCourseFn(&#39;secondi&#39;)">Secondi</div><div class="ctab" onclick="setCourseFn(&#39;insalata&#39;)">Insalata</div><div class="ctab" onclick="setCourseFn(&#39;dolci&#39;)">Dolci</div></div>
         <!-- Items grid — identical to v1 -->
-        <div class="items-grid" id="items-grid"></div>
+        <div class="items-grid" id="items-grid"><div class="item-card" onclick="tapItem(&#39;m1&#39;,&#39;Vitello tonnato&#39;,&#39;antipasti&#39;)"><span class="item-name">Vitello tonnato</span></div><div class="item-card" onclick="tapItem(&#39;m2&#39;,&#39;Battuta&#39;,&#39;antipasti&#39;)"><span class="item-name">Battuta</span></div><div class="item-card" onclick="tapItem(&#39;m3&#39;,&#39;Insalata russa&#39;,&#39;antipasti&#39;)"><span class="item-name">Insalata russa</span></div><div class="item-card" onclick="tapItem(&#39;m4&#39;,&#39;Flan&#39;,&#39;antipasti&#39;)"><span class="item-name">Flan</span></div><div class="item-card" onclick="tapItem(&#39;m5&#39;,&#39;Misto&#39;,&#39;antipasti&#39;)"><span class="item-name">Misto</span></div><div class="item-card" onclick="tapItem(&#39;1774956189723&#39;,&#39;Asparagi uova Onsen&#39;,&#39;antipasti&#39;)"><span class="item-name">Asparagi uova Onsen</span></div><div class="item-card" onclick="tapItem(&#39;1775827521392&#39;,&#39;Verdure al vapore&#39;,&#39;antipasti&#39;)"><span class="item-name">Verdure al vapore</span></div></div>
         <!-- Cart -->
         <div id="cart-area"></div>
         <!-- Dietary note at bottom -->
@@ -778,7 +778,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
   </div>
 
   <!-- MENU PANE -->
-  <div id="adm-p-menu" class="content">
+  <div id="adm-p-menu" class="content" style="display: block;">
 
     <!-- Service type selector -->
     <span class="lbl" id="adm-lbl-svc-menu">Service Menu</span>
@@ -795,7 +795,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
       <span class="lbl" id="adm-lbl-add-dish">+ Add Dish</span>
       <input class="inp" id="a-dname" placeholder="Dish name" type="text">
       <span class="lbl" id="adm-lbl-course-type">Course Type</span>
-      <div class="type-chips" id="course-type-picker"></div>
+      <div class="type-chips" id="course-type-picker"><div class="type-chip" data-val="colazione">Colazione</div></div>
       <!-- Serving style — only shown for Drinks -->
       <div id="adm-bottle-row" style="display:none;margin-bottom:10px">
         <span class="lbl" id="adm-lbl-serving-style" style="font-size:10px;margin-bottom:6px">Serving Style</span>
@@ -813,11 +813,11 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
       <span class="lbl" id="adm-lbl-manage-ct" style="margin-bottom:0">Manage Course Types</span>
       <button class="btn btn-outline btn-xs btn-auto" id="adm-btn-add-type" onclick="showAddCourseType()">+ Add Type</button>
     </div>
-    <div class="type-chips" id="course-type-list" style="margin-bottom:14px"></div>
+    <div class="type-chips" id="course-type-list" style="margin-bottom:14px"><div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; background: var(--paper-card); border: 1px solid var(--border-soft); border-radius: var(--r); padding: 8px 10px;"><span style="flex: 1 1 0%; font-size: 14px; font-weight: 500;">Colazione</span><button type="button" class="icon-btn" style="opacity: 0.3;">↑</button><button type="button" class="icon-btn" style="opacity: 0.3;">↓</button><button type="button" class="icon-btn danger">×</button></div></div>
 
     <hr class="sep">
     <span class="lbl" id="adm-lbl-all-dishes">All Dishes</span>
-    <div id="admin-dish-list"></div>
+    <div id="admin-dish-list"><div style="margin-bottom: 16px;"><div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 18px; font-weight: 600; margin-bottom: 7px; color: var(--ink);">Colazione</div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Torta di mele</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button><button type="button" class="icon-btn" style="opacity: 0.3;">↑</button><button type="button" class="icon-btn" style="opacity: 1;">↓</button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Torta all’arancia</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button><button type="button" class="icon-btn" style="opacity: 1;">↑</button><button type="button" class="icon-btn" style="opacity: 1;">↓</button></div></div></div><div class="swipe-wrap"><div class="swipe-delete-bg"><span class="swipe-delete-lbl">Delete</span></div><div class="swipe-inner"><div class="dish-admin dish-admin-active"><div class="da-check on"></div><div class="da-info"><div class="da-name">Nuvola</div><div class="da-tags"><span class="da-tag" style="background: var(--ready-pale); color: var(--ready); border-color: rgba(61, 122, 86, 0.2);">Active</span></div></div><button type="button" class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button><button type="button" class="icon-btn" style="opacity: 1;">↑</button><button type="button" class="icon-btn" style="opacity: 0.3;">↓</button></div></div></div></div></div>
 
     <button class="btn btn-sage btn-sm" id="adm-btn-save-menu" style="width:100%;margin-top:14px" onclick="saveAndSyncMenu()">Save &amp; Sync Menu →</button>
   </div>
@@ -870,11 +870,11 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
       <span class="lbl" id="setup-notif-lbl">Notification Role</span>
       <p style="font-size:12px;color:var(--ink-muted);margin-bottom:10px;line-height:1.5" id="notif-desc">Install the free <strong>ntfy</strong> app, subscribe to the channel below. Kitchen gets urgent alerts, Sala gets standard.</p>
       <div style="display:flex;gap:8px;margin-bottom:10px">
-        <button class="btn btn-sm" id="notif-btn-foh" onclick="setNotifRole(&#39;foh&#39;)" style="flex:1">FOH</button>
-        <button class="btn btn-sm" id="notif-btn-kitchen" onclick="setNotifRole(&#39;kitchen&#39;)" style="flex:1">Kitchen</button>
+        <button class="btn btn-sm" id="notif-btn-foh" onclick="setNotifRole(&#39;foh&#39;)" style="flex: 1 1 0%; background: var(--paper-warm); color: var(--ink);">FOH</button>
+        <button class="btn btn-sm" id="notif-btn-kitchen" onclick="setNotifRole(&#39;kitchen&#39;)" style="flex: 1 1 0%; background: var(--basil); color: var(--cream);">Kitchen</button>
       </div>
-      <button class="btn btn-outline btn-sm" id="notif-allow-btn" onclick="enableNotifications()">Allow Notifications</button>
-      <p style="font-size:11px;color:var(--ink-muted);margin-top:6px" id="notif-status-lbl"></p>
+      <button class="btn btn-outline btn-sm" id="notif-allow-btn" onclick="enableNotifications()" style="display: none;">Allow Notifications</button>
+      <p style="font-size:11px;color:var(--ink-muted);margin-top:6px" id="notif-status-lbl">Install <strong>ntfy</strong> app → subscribe to: <strong>Notify-Casarico-Cucina</strong></p>
     </div>
     <hr class="sep">
     <div class="add-form">
@@ -2606,7 +2606,7 @@ function buildCourseTabs(){
   if(!selCourse||activeCourses.indexOf(selCourse)===-1) selCourse=activeCourses[0]||null;
   var el=document.getElementById('course-tabs');
   el.innerHTML=activeCourses.map(function(c){
-    var qty=Object.values(cart||{}).reduce(function(s,w){return s+(Array.isArray(w)?w.filter(function(i){return i.course===c;}).reduce(function(ss,i){return ss+(i.qty||0);},0):0);},0);
+    var qty=(Array.isArray(cart)?cart:[]).filter(function(i){return i.course===c;}).reduce(function(s,i){return s+(i.qty||0);},0);
     return '<div class="ctab'+(selCourse===c?' active':'')+'" onclick="setCourseFn(\''+c+'\')">'
       +capT(c)+(qty>0?'<span class="ctab-count">'+qty+'</span>':'')
       +'</div>';
@@ -2632,7 +2632,7 @@ function renderItems(){
   var items=S.menu.filter(function(m){return m.active&&m.course===selCourse;});
   if(!items.length){document.getElementById('items-grid').innerHTML='<div style="grid-column:span 2;text-align:center;padding:20px;color:var(--ink-muted);font-size:13px">'+T('no_items_course')+'</div>';renderCart();return;}
   document.getElementById('items-grid').innerHTML=items.map(function(item){
-    var inCart=cart.filter(function(i){return i.id===item.id;}).reduce(function(s,i){return s+i.qty;},0);
+    var inCart=Object.values(cart||{}).reduce(function(s,w){return s+(Array.isArray(w)?w.filter(function(i){return i.id===item.id;}).reduce(function(ss,i){return ss+(i.qty||0);},0):0);},0);
     return '<div class="item-card'+(inCart>0?' sel':'')+'" onclick="tapItem(\''+item.id+'\',\''+esc(item.name)+'\',\''+item.course+'\')">'
       +(inCart>0?'<div class="item-qty-badge">'+inCart+'</div>':'')
       +'<span class="item-name">'+esc(item.name)+'</span></div>';
@@ -2642,9 +2642,9 @@ function renderItems(){
 
 function tapItem(id,name,course){
   // Find if already in cart at current wave
-  var existing=cart.find(function(i){return i.id===id&&i.wave===selWave;});
+  var existing=cart[selWave]&&cart[selWave].find(function(i){return i.id===id;});
   if(existing){existing.qty++;}
-  else{cart.push({id:id,name:name,course:course,qty:1,wave:selWave});}
+  else{if(!cart[selWave])cart[selWave]=[];cart[selWave].push({id:id,name:name,course:course,qty:1,wave:selWave});}
   renderItems();
 }
 
@@ -2657,7 +2657,7 @@ function changeQty(id,wave,delta){
 }
 
 function removeCartItem(id,wave){
-  cart=cart.filter(function(i){return !(i.id===id&&i.wave===wave);});
+  if(cart[wave]) cart[wave]=cart[wave].filter(function(i){return i.id!==id;});
   renderItems();
 }
 
