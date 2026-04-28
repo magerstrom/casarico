@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_127.html -->
+<!-- saved from url=(0054)file:///Users/francesca/Downloads/cucina-v2%20(7).html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -663,7 +663,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
     <div id="ato-summary" style="display:none;margin-bottom:12px"></div>
     <!-- Step 1: Table selector -->
     <span class="lbl" id="lbl-order-table">Table</span>
-    <div class="table-grid" id="order-table-grid"><div class="table-chip">1 dentro</div><div class="table-chip">2 dentro</div><div class="table-chip">3 dentro</div><div class="table-chip">4 dentro</div><div class="table-chip">5 dentro</div><div class="table-chip">1</div><div class="table-chip">2</div><div class="table-chip">3</div><div class="table-chip">4</div><div class="table-chip">5</div><div class="table-chip">1 piazza</div><div class="table-chip">2 piazza</div><div class="table-chip">3 piazza</div><div class="table-chip">4 piazza</div><div class="table-chip">5 piazza</div><div class="table-chip">6 piazza</div><div class="table-chip">7 piazza</div></div>
+    <div class="table-grid" id="order-table-grid"><div class="table-chip has-order">1 dentro<span class="chip-dot"></span></div><div class="table-chip">2 dentro</div><div class="table-chip">3 dentro</div><div class="table-chip">4 dentro</div><div class="table-chip">5 dentro</div><div class="table-chip">1</div><div class="table-chip">2</div><div class="table-chip has-order">3<span class="chip-dot"></span></div><div class="table-chip">4</div><div class="table-chip has-order">5<span class="chip-dot"></span></div><div class="table-chip">1 piazza</div><div class="table-chip">2 piazza</div><div class="table-chip">3 piazza</div><div class="table-chip">4 piazza</div><div class="table-chip">5 piazza</div><div class="table-chip">6 piazza</div><div class="table-chip">7 piazza</div></div>
 
     <!-- Step 2: Covers + order builder (appears after table selected) -->
     <div id="covers-section" style="display:none">
@@ -870,11 +870,11 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
       <span class="lbl" id="setup-notif-lbl">Notification Role</span>
       <p style="font-size:12px;color:var(--ink-muted);margin-bottom:10px;line-height:1.5" id="notif-desc">Install the free <strong>ntfy</strong> app, subscribe to the channel below. Kitchen gets urgent alerts, Sala gets standard.</p>
       <div style="display:flex;gap:8px;margin-bottom:10px">
-        <button class="btn btn-sm" id="notif-btn-foh" onclick="setNotifRole(&#39;foh&#39;)" style="flex: 1 1 0%; background: var(--paper-warm); color: var(--ink);">FOH</button>
-        <button class="btn btn-sm" id="notif-btn-kitchen" onclick="setNotifRole(&#39;kitchen&#39;)" style="flex: 1 1 0%; background: var(--basil); color: var(--cream);">Kitchen</button>
+        <button class="btn btn-sm" id="notif-btn-foh" onclick="setNotifRole(&#39;foh&#39;)" style="flex: 1 1 0%; background: var(--basil); color: var(--cream);">FOH</button>
+        <button class="btn btn-sm" id="notif-btn-kitchen" onclick="setNotifRole(&#39;kitchen&#39;)" style="flex: 1 1 0%; background: var(--paper-warm); color: var(--ink);">Kitchen</button>
       </div>
       <button class="btn btn-outline btn-sm" id="notif-allow-btn" onclick="enableNotifications()" style="display: none;">Allow Notifications</button>
-      <p style="font-size:11px;color:var(--ink-muted);margin-top:6px" id="notif-status-lbl">Install <strong>ntfy</strong> app → subscribe to: <strong>Notify-Casarico-Cucina</strong></p>
+      <p style="font-size:11px;color:var(--ink-muted);margin-top:6px" id="notif-status-lbl">Install <strong>ntfy</strong> app → subscribe to: <strong>Notify-Casarico-Sala</strong></p>
     </div>
     <hr class="sep">
     <div class="add-form">
@@ -1103,7 +1103,7 @@ var STRINGS={
     days_short:'Sun,Mon,Tue,Wed,Thu,Fri,Sat',week_abbr:'Wk',
     months_short:'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec',
     seasonal:'Seasonal',yearly:'Yearly',history_tab:'History',
-    busiest_day:'Busiest Day of Week',avg_covers_day:'avg covers',show_all:'View all',show_less:'Show less',
+    busiest_day:'Busiest Day of Week',avg_covers_day:'avg covers',show_all:'View all',show_less:'Show less',drinks_only:'Drinks Only',
     month_covers:'Monthly Covers',last_year:'Last year',
     svc_comparison:'Service Comparison',services:'services',
     per_service:'per service',load_more:'Load more',date_tab:'Date',no_service_day:'No service on this day.',select_day:'Tap a highlighted day to view services.',notif_role:'Notification Role',notif_foh:'FOH',notif_kitchen:'Kitchen',notif_allow:'Allow Notifications',notif_granted:'Notifications enabled',notif_denied:'Notifications blocked — check iPhone Settings → Safari',notif_setup:'This device receives',new_order_notif:'New order',wave_ready_notif:'Ready at pass',
@@ -2737,8 +2737,9 @@ function fohOrderCard(key,o,isClosedView){
   var head=document.createElement('div');
   head.className='oc-head';
   var ocSvcLabels={lunch:T('lunch'),breakfast:T('breakfast'),aperitivo:T('aperitivo'),dinner:T('dinner'),drinks:'Drinks'};
-  var ocSType=o.primarySvc||o.serviceType||'lunch';
-  var ocSvcLabel=ocSvcLabels[ocSType]||'';
+  var ocHasFood=Object.values(o.waves||{}).filter(function(w){return w!=null;}).some(function(w){return (w.dishes||[]).length>0;});
+  var ocSType=ocHasFood?(o.primarySvc||o.serviceType||'lunch'):'';
+  var ocSvcLabel=ocSType?(ocSvcLabels[ocSType]||''):'';
   var ocSvcBadge=ocSvcLabel?'<span style="font-size:9px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;background:rgba(38,101,51,.08);color:var(--ink-muted);padding:2px 6px;border-radius:6px;margin-left:6px">'+ocSvcLabel+'</span>':'';
   var ocWaiter=o.waiter?'<span style="font-size:11px;color:var(--ink-muted);font-weight:400"> · '+esc(o.waiter)+'</span>':'';
   head.innerHTML='<div style="flex:1;min-width:0">'
@@ -3032,8 +3033,9 @@ function renderCollectList(){
     // Header
     var head=document.createElement('div');head.className='oc-head';
     var ocSvcLabelsP={lunch:T('lunch'),breakfast:T('breakfast'),aperitivo:T('aperitivo'),dinner:T('dinner')};
-    var ocSTypeP=o.primarySvc||o.serviceType||'lunch';
-    var ocBadgeP='<span style="font-size:9px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;background:rgba(38,101,51,.08);color:var(--ink-muted);padding:2px 6px;border-radius:6px;margin-right:4px">'+(ocSvcLabelsP[ocSTypeP]||'Lunch')+'</span>';
+    var ocHasFoodP=Object.values(o.waves||{}).filter(function(w){return w!=null;}).some(function(w){return (w.dishes||[]).length>0;});
+    var ocSTypeP=ocHasFoodP?(o.primarySvc||o.serviceType||'lunch'):'';
+    var ocBadgeP=ocSTypeP?'<span style="font-size:9px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;background:rgba(38,101,51,.08);color:var(--ink-muted);padding:2px 6px;border-radius:6px;margin-right:4px">'+(ocSvcLabelsP[ocSTypeP]||'Lunch')+'</span>':'';
     head.innerHTML='<div style="flex:1;min-width:0">'
       +'<div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">'
       +'<div class="oc-table">'+T('table_label')+' '+esc(o.table)+'</div>'
@@ -3590,7 +3592,8 @@ function kitchenCard(key,o){
   var tableDiv=document.createElement('div');tableDiv.className='kc-table';
   var svcLabels={lunch:T('lunch'),breakfast:T('breakfast'),aperitivo:T('aperitivo'),dinner:T('dinner')};
   var svcColors={lunch:'var(--basil)',breakfast:'var(--wave2)',aperitivo:'var(--wave3)',dinner:'var(--ink-muted)'};
-  var sType=o.primarySvc||o.serviceType||'lunch';
+  var kcHasFood=Object.values(o.waves||{}).filter(function(w){return w!=null;}).some(function(w){return (w.dishes||[]).length>0;});
+  var sType=kcHasFood?(o.primarySvc||o.serviceType||'lunch'):'';
   var kcSvcLabel=svcLabels[sType]||'';
   var kcSvcSpan=kcSvcLabel?' <span style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:rgba(38,101,51,.08);color:'+(svcColors[sType]||'var(--ink-muted)')+';padding:2px 7px;border-radius:8px;margin-left:4px">'+kcSvcLabel+'</span>':'';
   var kcWaiter=o.waiter?' <span style="font-size:12px;font-family:sans-serif;font-weight:400;color:var(--ink-muted)">· '+esc(o.waiter)+'</span>':'';
@@ -3926,7 +3929,7 @@ function endService(){
   if(btn.dataset.confirming==='1'){
     // Second tap — execute save
     var tables=[...new Set(orders.map(function(e){return e[1].table;}))];
-    var guests=orders.filter(function(e){return e[1].primarySvc||e[1].serviceType;}).reduce(function(sum,e){return sum+(e[1].guests||0);},0);
+    var guests=orders.reduce(function(sum,e){return sum+(e[1].guests||0);},0);
     var plates=orders.reduce(function(s,e){
       return s+Object.values(e[1].waves||{}).reduce(function(ss,w){
         return ss+(w.dishes||[]).reduce(function(sss,d){return sss+(d.qty||0);},0);
@@ -3975,6 +3978,16 @@ function endService(){
     // Split orders by service type
     var svcTypes=['lunch','breakfast','aperitivo','dinner'];
     var byType={};
+    // Drinks-only orders: no primarySvc and no food waves
+    var drinksOnlyOrders=orders.filter(function(e){
+      var o=e[1];
+      var hasFood=Object.values(o.waves||{}).filter(function(w){return w!=null;}).some(function(w){return (w.dishes||[]).length>0;});
+      return !hasFood&&!(o.primarySvc||o.serviceType);
+    });
+    if(drinksOnlyOrders.length){
+      var drinksOnlyGuests=drinksOnlyOrders.reduce(function(s,e){return s+(e[1].guests||0);},0);
+      byType['drinksOnly']={guests:drinksOnlyGuests,orders:drinksOnlyOrders.length,plates:0,dishTotals:[],orderSnapshots:[]};
+    }
     // Calculate drinks totals separately (drinks don't have waves/plates)
     var drinksTotals={};
     var drinksCovers=0;
@@ -3996,7 +4009,13 @@ function endService(){
     });
     var drinksList=Object.values(drinksTotals).sort(function(a,b){return b.qty-a.qty;});
     svcTypes.forEach(function(st){
-      var stOrders=orders.filter(function(e){var ps=e[1].primarySvc||e[1].serviceType;return ps&&ps===st;});
+      var stOrders=orders.filter(function(e){
+        var o=e[1];var ps=o.primarySvc||o.serviceType;
+        if(ps!==st) return false;
+        // Exclude orders with no food waves from food service cover counts
+        var hasFood=Object.values(o.waves||{}).filter(function(w){return w!=null;}).some(function(w){return (w.dishes||[]).length>0;});
+        return hasFood;
+      });
       if(!stOrders.length){byType[st]=null;return;}
       var stTables=[...new Set(stOrders.map(function(e){return e[1].table;}))];
       var stGuests=stOrders.reduce(function(s,e){return s+(e[1].guests||0);},0);
@@ -4578,7 +4597,7 @@ function renderSeasonal(){
   var scope=yearHistory.length?yearHistory:S.history;
   var today=new Date();
   var dayNames=T('days_short').split(',');
-  var svcColors={lunch:'#266533',breakfast:'#B87A2A',aperitivo:'#F16838',dinner:'#1A4422'};
+  var svcColors={lunch:'#266533',breakfast:'#B87A2A',aperitivo:'#F16838',dinner:'#1A4422',drinksOnly:'#4A7C59'};
 
   var hasHistorical=S.historicalData&&Object.keys(S.historicalData).length>0;
   var _hc=function(d){return hasHistorical?getHistCovers(d,year):null;};
@@ -4598,7 +4617,7 @@ function renderSeasonal(){
     if(!h.endedAt) return;
     var ds=new Date(h.endedAt).toDateString();
     if(!dateCovers[ds]) dateCovers[ds]=0;
-    if(!dateSvcBreak[ds]) dateSvcBreak[ds]={lunch:0,breakfast:0,aperitivo:0,dinner:0,lunchP:0,breakfastP:0,aperitivoP:0,dinnerP:0};
+    if(!dateSvcBreak[ds]) dateSvcBreak[ds]={lunch:0,breakfast:0,aperitivo:0,dinner:0,drinksOnly:0,lunchP:0,breakfastP:0,aperitivoP:0,dinnerP:0};
     var dayCovers=0;
     if(h.byType){
       ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
@@ -4606,6 +4625,8 @@ function renderSeasonal(){
         dayCovers+=(bt.guests||0);dateSvcBreak[ds][st]+=(bt.guests||0);
         dateSvcBreak[ds][st+'P']+=(bt.plates||0);
       });
+    } else if(h.byType&&h.byType.drinksOnly){
+      dayCovers+=(h.byType.drinksOnly.guests||0);dateSvcBreak[ds].drinksOnly+=(h.byType.drinksOnly.guests||0);
     } else {dayCovers+=h.guests||0;dateSvcBreak[ds].lunch+=h.guests||0;dateSvcBreak[ds].lunchP+=h.plates||0;}
     dateCovers[ds]+=dayCovers;
   });
@@ -4667,7 +4688,7 @@ function renderSeasonal(){
         var histLine=dayHistCovers?'<div style="font-size:11px;color:var(--ink-muted);margin-top:4px">'+formatHistLine(dayHistCovers)+'</div>':'';
         // Per-service-type plates breakdown
         var ppcLines=[];
-        ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
+        ['lunch','breakfast','aperitivo','dinner','drinksOnly'].forEach(function(st){
           var stC=dayBreak[st]||0;var stP=dayBreak[st+'P']||0;if(!stC) return;
           if(st==='aperitivo'){
             ppcLines.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+stC+' cop · '+stP+' snack');
@@ -4705,7 +4726,7 @@ function renderSeasonal(){
   for(var wi=7;wi>=0;wi--){
     var wStart=new Date(today);wStart.setDate(today.getDate()-(wi*7)-(today.getDay()||7)+1);
     var wEnd=new Date(wStart);wEnd.setDate(wStart.getDate()+6);
-    weeks.push({start:wStart,end:wEnd,covers:0,plates:0,sessions:0,svcBreak:{lunch:0,breakfast:0,aperitivo:0,dinner:0,lunchP:0,breakfastP:0,aperitivoP:0,dinnerP:0}});
+    weeks.push({start:wStart,end:wEnd,covers:0,plates:0,sessions:0,svcBreak:{lunch:0,breakfast:0,aperitivo:0,dinner:0,drinksOnly:0,lunchP:0,breakfastP:0,aperitivoP:0,dinnerP:0}});
   }
   scope.forEach(function(h){
     if(!h.endedAt) return;
@@ -4719,6 +4740,8 @@ function renderSeasonal(){
             w.plates+=(bt.plates||0);w.svcBreak[st+'P']+=(bt.plates||0);
           });
           w.sessions++;
+        } else if(h.byType&&h.byType.drinksOnly){
+          w.covers+=(h.byType.drinksOnly.guests||0);w.sessions++;w.svcBreak.drinksOnly+=(h.byType.drinksOnly.guests||0);
         } else {w.covers+=h.guests||0;w.plates+=h.plates||0;w.sessions++;w.svcBreak.lunch+=h.guests||0;w.svcBreak.lunchP+=h.plates||0;}
       }
     });
@@ -4779,7 +4802,7 @@ function renderSeasonal(){
         var wAvg=weekSessions>0?Math.round(weekCovers/weekSessions):0;
         // Per-service-type breakdown
         var svcLines=[];
-        ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
+        ['lunch','breakfast','aperitivo','dinner','drinksOnly'].forEach(function(st){
           var stC=weekBreak[st]||0;var stP=weekBreak[st+'P']||0;if(!stC) return;
           if(st==='aperitivo'){
             svcLines.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+stC+' cop · '+stP+' snack');
@@ -5073,7 +5096,7 @@ function renderYearly(){
   var yearHistory=S.history.filter(function(h){return h.endedAt&&h.endedAt.startsWith(year+'');});
   var usingAllTime=yearHistory.length===0;
   var scope=usingAllTime?S.history:yearHistory;
-  var svcColors={lunch:'#266533',breakfast:'#B87A2A',aperitivo:'#F16838',dinner:'#1A4422'};
+  var svcColors={lunch:'#266533',breakfast:'#B87A2A',aperitivo:'#F16838',dinner:'#1A4422',drinksOnly:'#4A7C59'};
   var svcDefs=[
     {key:'lunch',label:T('lunch'),color:'#266533'},
     {key:'breakfast',label:T('breakfast'),color:'#B87A2A'},
@@ -5181,7 +5204,7 @@ function renderYearly(){
   var monthTotals=new Array(12).fill(0);
   var monthPlates=new Array(12).fill(0);
   var monthSessions=new Array(12).fill(0);
-  var monthSvcBreak=[];for(var mi=0;mi<12;mi++) monthSvcBreak.push({lunch:0,breakfast:0,aperitivo:0,dinner:0,lunchP:0,breakfastP:0,aperitivoP:0,dinnerP:0});
+  var monthSvcBreak=[];for(var mi=0;mi<12;mi++) monthSvcBreak.push({lunch:0,breakfast:0,aperitivo:0,dinner:0,drinksOnly:0,lunchP:0,breakfastP:0,aperitivoP:0,dinnerP:0});
   scope.forEach(function(h){
     if(!h.endedAt) return;
     var mo=new Date(h.endedAt).getMonth();
@@ -5192,6 +5215,9 @@ function renderYearly(){
         monthPlates[mo]+=(bt.plates||0);monthSvcBreak[mo][st+'P']+=(bt.plates||0);
       });
       monthSessions[mo]++;
+    } else if(h.byType&&h.byType.drinksOnly){
+      monthTotals[mo]+=(h.byType.drinksOnly.guests||0);monthSessions[mo]++;
+      monthSvcBreak[mo].drinksOnly+=(h.byType.drinksOnly.guests||0);
     } else {monthTotals[mo]+=h.guests||0;monthPlates[mo]+=h.plates||0;monthSessions[mo]++;monthSvcBreak[mo].lunch+=h.guests||0;monthSvcBreak[mo].lunchP+=h.plates||0;}
   });
 
@@ -5241,7 +5267,7 @@ function renderYearly(){
     col.style.cssText='position:relative;z-index:1;width:100%;display:flex;flex-direction:column-reverse;border-radius:3px 3px 0 0;overflow:hidden';
     var brk=monthSvcBreak[mi];
     if(covers>0){
-      ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
+      ['lunch','breakfast','aperitivo','dinner','drinksOnly'].forEach(function(st){
         var stC=brk[st]||0;if(!stC) return;
         var seg=document.createElement('div');
         seg.style.cssText='width:100%;flex-shrink:0;background:'+svcColors[st]+';height:'+Math.round((stC/covers)*100)+'%';
@@ -5303,7 +5329,7 @@ function renderYearly(){
   });
   var dayAvgs=dayTotals.map(function(t,i){return dayCounts[i]>0?Math.round(t/dayCounts[i]):0;});
   // Per service type totals per weekday
-  var daySvcTotals={lunch:[0,0,0,0,0,0,0],breakfast:[0,0,0,0,0,0,0],aperitivo:[0,0,0,0,0,0,0],dinner:[0,0,0,0,0,0,0]};
+  var daySvcTotals={lunch:[0,0,0,0,0,0,0],breakfast:[0,0,0,0,0,0,0],aperitivo:[0,0,0,0,0,0,0],dinner:[0,0,0,0,0,0,0],drinksOnly:[0,0,0,0,0,0,0]};
   scope.forEach(function(h){
     if(!h.endedAt) return;
     var dow=new Date(h.endedAt).getDay();
@@ -5313,11 +5339,12 @@ function renderYearly(){
         daySvcTotals[st][dow]+=(bt.guests||0);
       });
     } else {
-      daySvcTotals.lunch[dow]+=(h.guests||0);
+      if(h.byType&&h.byType.drinksOnly) daySvcTotals.drinksOnly[dow]+=(h.byType.drinksOnly.guests||0);
+      else daySvcTotals.lunch[dow]+=(h.guests||0);
     }
   });
   var maxTotal=Math.max.apply(null,dayTotals)||1;
-  var buSvcColors={lunch:'var(--basil)',breakfast:'var(--wave2)',aperitivo:'var(--wave3)',dinner:'var(--ink-muted)'};
+  var buSvcColors={lunch:'var(--basil)',breakfast:'var(--wave2)',aperitivo:'var(--wave3)',dinner:'var(--ink-muted)',drinksOnly:'#4A7C59'};
   var buList=document.createElement('div');
   var dowOrder=[1,2,3,4,5,6,0];
   dowOrder.forEach(function(dow){
@@ -5328,10 +5355,10 @@ function renderYearly(){
     var col=document.createElement('div');col.style.cssText='flex:1;display:flex;flex-direction:column;gap:3px';
     // Stacked colour bar
     var track=document.createElement('div');track.style.cssText='height:8px;background:var(--paper-warm);border-radius:4px;overflow:hidden;display:flex;width:'+Math.round((total/maxTotal)*100)+'%';
-    ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
+    ['lunch','breakfast','aperitivo','dinner','drinksOnly'].forEach(function(st){
       var stTotal=daySvcTotals[st][dow];if(!stTotal) return;
       var seg=document.createElement('div');
-      seg.style.cssText='height:100%;background:'+buSvcColors[st]+';width:'+Math.round((stTotal/total)*100)+'%';
+      seg.style.cssText='height:100%;background:'+(buSvcColors[st]||svcColors[st])+';width:'+Math.round((stTotal/total)*100)+'%';
       track.appendChild(seg);
     });
     var avgLbl=document.createElement('div');avgLbl.style.cssText='font-size:10px;color:var(--ink-muted)';
@@ -5647,8 +5674,8 @@ function renderHistory(){
   if(!window._calState) window._calState={year:new Date().getFullYear(),month:new Date().getMonth(),selectedDate:null};
   var cs=window._calState;
 
-  var svcColors={lunch:'#266533',breakfast:'#B87A2A',aperitivo:'#F16838',dinner:'#1A4422'};
-  var svcDefsHist=[
+  var svcColors={lunch:'#266533',breakfast:'#B87A2A',aperitivo:'#F16838',dinner:'#1A4422',drinksOnly:'#4A7C59'};
+  var svcDefsHist=[{key:'drinksOnly',label:T('drinks_only'),color:'#4A7C59'},
     {key:'lunch',label:T('lunch')},
     {key:'breakfast',label:T('breakfast')},
     {key:'aperitivo',label:T('aperitivo')},
