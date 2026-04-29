@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0054)file:///Users/francesca/Downloads/cucina-v2%20(7).html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_128.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -663,7 +663,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
     <div id="ato-summary" style="display:none;margin-bottom:12px"></div>
     <!-- Step 1: Table selector -->
     <span class="lbl" id="lbl-order-table">Table</span>
-    <div class="table-grid" id="order-table-grid"><div class="table-chip has-order">1 dentro<span class="chip-dot"></span></div><div class="table-chip">2 dentro</div><div class="table-chip">3 dentro</div><div class="table-chip">4 dentro</div><div class="table-chip">5 dentro</div><div class="table-chip">1</div><div class="table-chip">2</div><div class="table-chip has-order">3<span class="chip-dot"></span></div><div class="table-chip">4</div><div class="table-chip has-order">5<span class="chip-dot"></span></div><div class="table-chip">1 piazza</div><div class="table-chip">2 piazza</div><div class="table-chip">3 piazza</div><div class="table-chip">4 piazza</div><div class="table-chip">5 piazza</div><div class="table-chip">6 piazza</div><div class="table-chip">7 piazza</div></div>
+    <div class="table-grid" id="order-table-grid"><div class="table-chip">1 dentro</div><div class="table-chip">2 dentro</div><div class="table-chip">3 dentro</div><div class="table-chip">4 dentro</div><div class="table-chip">5 dentro</div><div class="table-chip">1</div><div class="table-chip">2</div><div class="table-chip">3</div><div class="table-chip">4</div><div class="table-chip">5</div><div class="table-chip">1 piazza</div><div class="table-chip">2 piazza</div><div class="table-chip">3 piazza</div><div class="table-chip">4 piazza</div><div class="table-chip">5 piazza</div><div class="table-chip">6 piazza</div><div class="table-chip">7 piazza</div></div>
 
     <!-- Step 2: Covers + order builder (appears after table selected) -->
     <div id="covers-section" style="display:none">
@@ -870,11 +870,11 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
       <span class="lbl" id="setup-notif-lbl">Notification Role</span>
       <p style="font-size:12px;color:var(--ink-muted);margin-bottom:10px;line-height:1.5" id="notif-desc">Install the free <strong>ntfy</strong> app, subscribe to the channel below. Kitchen gets urgent alerts, Sala gets standard.</p>
       <div style="display:flex;gap:8px;margin-bottom:10px">
-        <button class="btn btn-sm" id="notif-btn-foh" onclick="setNotifRole(&#39;foh&#39;)" style="flex: 1 1 0%; background: var(--basil); color: var(--cream);">FOH</button>
-        <button class="btn btn-sm" id="notif-btn-kitchen" onclick="setNotifRole(&#39;kitchen&#39;)" style="flex: 1 1 0%; background: var(--paper-warm); color: var(--ink);">Kitchen</button>
+        <button class="btn btn-sm" id="notif-btn-foh" onclick="setNotifRole(&#39;foh&#39;)" style="flex: 1 1 0%; background: var(--paper-warm); color: var(--ink);">FOH</button>
+        <button class="btn btn-sm" id="notif-btn-kitchen" onclick="setNotifRole(&#39;kitchen&#39;)" style="flex: 1 1 0%; background: var(--basil); color: var(--cream);">Kitchen</button>
       </div>
       <button class="btn btn-outline btn-sm" id="notif-allow-btn" onclick="enableNotifications()" style="display: none;">Allow Notifications</button>
-      <p style="font-size:11px;color:var(--ink-muted);margin-top:6px" id="notif-status-lbl">Install <strong>ntfy</strong> app → subscribe to: <strong>Notify-Casarico-Sala</strong></p>
+      <p style="font-size:11px;color:var(--ink-muted);margin-top:6px" id="notif-status-lbl">Install <strong>ntfy</strong> app → subscribe to: <strong>Notify-Casarico-Cucina</strong></p>
     </div>
     <hr class="sep">
     <div class="add-form">
@@ -3982,7 +3982,7 @@ function endService(){
     var drinksOnlyOrders=orders.filter(function(e){
       var o=e[1];
       var hasFood=Object.values(o.waves||{}).filter(function(w){return w!=null;}).some(function(w){return (w.dishes||[]).length>0;});
-      return !hasFood&&!(o.primarySvc||o.serviceType);
+      return !hasFood;
     });
     if(drinksOnlyOrders.length){
       var drinksOnlyGuests=drinksOnlyOrders.reduce(function(s,e){return s+(e[1].guests||0);},0);
@@ -4052,7 +4052,10 @@ function endService(){
         // Snacks = number of waves × guests per order
         stOrders.forEach(function(e){
           var o=e[1],g=o.guests||0;
-          stSnacks+=Object.keys(o.waves||{}).length*g;
+          var aperWaves=Object.values(o.waves||{}).filter(function(w){
+            return w!=null&&(w.serviceTypes||[]).indexOf('aperitivo')>-1;
+          }).length;
+          stSnacks+=aperWaves*g;
         });
       }
       byType[st]={
@@ -4070,7 +4073,7 @@ function endService(){
               return {wave:w,notes:wv.notes||'',sentAt:wv.sentAt||null,readyAt:wv.readyAt||null,
                 collectedAt:wv.collectedAt||null,
                 dishes:(wv.dishes||[]).filter(function(d){return d.id!=='aper';})
-                  .map(function(d){return {name:d.name,qty:d.qty,course:d.course||''};})};
+                  .map(function(d){return {name:d.name,qty:d.qty,course:d.course||'',svcType:d.svcType||st};})};
             })
           };
         })
