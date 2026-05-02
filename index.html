@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_128.html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_129.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -4051,11 +4051,12 @@ function endService(){
         stAperCovers=Object.values(tableGuestsMap).reduce(function(s,g){return s+g;},0);
         // Snacks = number of waves × guests per order
         stOrders.forEach(function(e){
-          var o=e[1],g=o.guests||0;
-          var aperWaves=Object.values(o.waves||{}).filter(function(w){
+          var o=e[1];
+          Object.values(o.waves||{}).filter(function(w){
             return w!=null&&(w.serviceTypes||[]).indexOf('aperitivo')>-1;
-          }).length;
-          stSnacks+=aperWaves*g;
+          }).forEach(function(w){
+            stSnacks+=(w.dishes||[]).filter(function(d){return d.id==='aper'||d.svcType==='aperitivo'||d.course==='aperitivo';}).reduce(function(s,d){return s+(d.qty||0);},0);
+          });
         });
       }
       byType[st]={
@@ -4114,11 +4115,20 @@ function endService(){
   var svcLabelsEs={lunch:T('lunch'),breakfast:T('breakfast'),aperitivo:T('aperitivo'),dinner:T('dinner')};
   var summaryParts=[];
   ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
-    var stOrders=orders.filter(function(e){var ps=e[1].primarySvc||e[1].serviceType;return ps&&ps===st;});
+    var stOrders=orders.filter(function(e){
+      var o=e[1];var ps=o.primarySvc||o.serviceType;if(ps!==st) return false;
+      return Object.values(o.waves||{}).filter(function(w){return w!=null;}).some(function(w){return (w.dishes||[]).length>0;});
+    });
     if(!stOrders.length) return;
     var stGuests=stOrders.reduce(function(s,e){return s+(e[1].guests||0);},0);
     summaryParts.push(svcLabelsEs[st]+' '+stGuests);
   });
+  // Drinks only
+  var drinksOnlyCount=orders.filter(function(e){
+    var o=e[1];
+    return !Object.values(o.waves||{}).filter(function(w){return w!=null;}).some(function(w){return (w.dishes||[]).length>0;});
+  }).reduce(function(s,e){return s+(e[1].guests||0);},0);
+  if(drinksOnlyCount) summaryParts.push(T('drinks_only')+' '+drinksOnlyCount);
   var summaryText=summaryParts.join(' · ')+' '+T('covers_label');
   btn.dataset.confirming='1';
   btn.innerHTML=T('tap_confirm')+'<br><span style="font-size:11px;font-weight:400;opacity:.85">'+summaryText+'</span>';
@@ -4743,8 +4753,9 @@ function renderSeasonal(){
             w.plates+=(bt.plates||0);w.svcBreak[st+'P']+=(bt.plates||0);
           });
           w.sessions++;
-        } else if(h.byType&&h.byType.drinksOnly){
-          w.covers+=(h.byType.drinksOnly.guests||0);w.sessions++;w.svcBreak.drinksOnly+=(h.byType.drinksOnly.guests||0);
+        if(h.byType&&h.byType.drinksOnly){
+          w.covers+=(h.byType.drinksOnly.guests||0);w.svcBreak.drinksOnly+=(h.byType.drinksOnly.guests||0);
+        }
         } else {w.covers+=h.guests||0;w.plates+=h.plates||0;w.sessions++;w.svcBreak.lunch+=h.guests||0;w.svcBreak.lunchP+=h.plates||0;}
       }
     });
@@ -5218,9 +5229,10 @@ function renderYearly(){
         monthPlates[mo]+=(bt.plates||0);monthSvcBreak[mo][st+'P']+=(bt.plates||0);
       });
       monthSessions[mo]++;
-    } else if(h.byType&&h.byType.drinksOnly){
-      monthTotals[mo]+=(h.byType.drinksOnly.guests||0);monthSessions[mo]++;
+    if(h.byType&&h.byType.drinksOnly){
+      monthTotals[mo]+=(h.byType.drinksOnly.guests||0);
       monthSvcBreak[mo].drinksOnly+=(h.byType.drinksOnly.guests||0);
+    }
     } else {monthTotals[mo]+=h.guests||0;monthPlates[mo]+=h.plates||0;monthSessions[mo]++;monthSvcBreak[mo].lunch+=h.guests||0;monthSvcBreak[mo].lunchP+=h.plates||0;}
   });
 
@@ -5342,8 +5354,11 @@ function renderYearly(){
         daySvcTotals[st][dow]+=(bt.guests||0);
       });
     } else {
-      if(h.byType&&h.byType.drinksOnly) daySvcTotals.drinksOnly[dow]+=(h.byType.drinksOnly.guests||0);
-      else daySvcTotals.lunch[dow]+=(h.guests||0);
+      ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
+        var bt=h.byType[st];if(!bt) return;
+        daySvcTotals[st][dow]+=(bt.guests||0);
+      });
+      if(h.byType.drinksOnly) daySvcTotals.drinksOnly[dow]+=(h.byType.drinksOnly.guests||0);
     }
   });
   var maxTotal=Math.max.apply(null,dayTotals)||1;
@@ -5894,7 +5909,25 @@ function renderHistory(){
             if(d.plates){var sLines=[];if(def.key==='aperitivo')sLines.push(T('snacks_served')+': '+d.plates);else{sLines.push(T('total_plates')+': '+d.plates);if(d.guests>0)sLines.push(T('plates_per_cover')+': '+(d.plates/d.guests).toFixed(1));}var sp=document.createElement('div');sp.style.cssText='font-size:10px;color:var(--ink-muted);margin-top:4px;line-height:1.7';sp.textContent=sLines.join(' · ');secLbl.appendChild(sp);}
             secHdr.appendChild(secLbl);row.appendChild(secHdr);
 
-            // ── Dish bars for this service type ───────────
+            // ── Course mix % for food service types ───────
+            if(def.key!=='aperitivo'&&def.key!=='drinksOnly'&&d.dishTotals&&d.dishTotals.length){
+              var courseMixMap={};var courseMixTotal=0;
+              d.dishTotals.forEach(function(dish){
+                if(dish.name.toLowerCase()==='aperitivo') return;
+                var cn=dish.course?capFirst(dish.course):'Other';
+                courseMixMap[cn]=(courseMixMap[cn]||0)+(dish.qty||0);
+                courseMixTotal+=(dish.qty||0);
+              });
+              if(courseMixTotal>0){
+                var mixParts=Object.keys(courseMixMap).sort(function(a,b){return courseMixMap[b]-courseMixMap[a];}).map(function(cn){
+                  return '<span style="color:var(--ink-muted)">'+cn+' '+Math.round(courseMixMap[cn]/courseMixTotal*100)+'%</span>';
+                });
+                var mixEl=document.createElement('div');
+                mixEl.style.cssText='font-size:10px;color:var(--ink-muted);margin-bottom:8px;line-height:1.8';
+                mixEl.innerHTML=mixParts.join(' · ');
+                row.appendChild(mixEl);
+              }
+            }
             if(d.dishTotals&&d.dishTotals.length){
               var maxQ=d.dishTotals[0].qty||1;
               d.dishTotals.forEach(function(dish){
