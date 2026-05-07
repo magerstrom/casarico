@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_133.html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_135.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -729,7 +729,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
         <!-- Course tabs — identical to v1 -->
         <div class="course-tabs" id="course-tabs"><div class="ctab active" onclick="setCourseFn(&#39;antipasti&#39;)">Antipasti</div><div class="ctab" onclick="setCourseFn(&#39;primi&#39;)">Primi</div><div class="ctab" onclick="setCourseFn(&#39;secondi&#39;)">Secondi</div><div class="ctab" onclick="setCourseFn(&#39;insalata&#39;)">Insalata</div><div class="ctab" onclick="setCourseFn(&#39;dolci&#39;)">Dolci</div></div>
         <!-- Items grid — identical to v1 -->
-        <div class="items-grid" id="items-grid"><div class="item-card" onclick="tapItem(&#39;m1&#39;,&#39;Vitello tonnato&#39;,&#39;antipasti&#39;)"><span class="item-name">Vitello tonnato</span></div><div class="item-card" onclick="tapItem(&#39;m2&#39;,&#39;Battuta&#39;,&#39;antipasti&#39;)"><span class="item-name">Battuta</span></div><div class="item-card" onclick="tapItem(&#39;m3&#39;,&#39;Insalata russa&#39;,&#39;antipasti&#39;)"><span class="item-name">Insalata russa</span></div><div class="item-card" onclick="tapItem(&#39;m4&#39;,&#39;Flan&#39;,&#39;antipasti&#39;)"><span class="item-name">Flan</span></div><div class="item-card" onclick="tapItem(&#39;m5&#39;,&#39;Misto&#39;,&#39;antipasti&#39;)"><span class="item-name">Misto</span></div><div class="item-card" onclick="tapItem(&#39;1774956189723&#39;,&#39;Asparagi uova Onsen&#39;,&#39;antipasti&#39;)"><span class="item-name">Asparagi uova Onsen</span></div><div class="item-card" onclick="tapItem(&#39;1775827521392&#39;,&#39;Verdure al vapore&#39;,&#39;antipasti&#39;)"><span class="item-name">Verdure al vapore</span></div></div>
+        <div class="items-grid" id="items-grid"><div style="grid-column:span 2;text-align:center;padding:20px;color:var(--ink-muted);font-size:13px">No active items</div></div>
         <!-- Cart -->
         <div id="cart-area"></div>
         <!-- Dietary note at bottom -->
@@ -1734,6 +1734,13 @@ function initFirebase(){
                 fbHistory.forEach(function(h){
                   var k=h.date+'|'+(h.sessionNum||1);
                   if(!localKeys.has(k)){S.history.push(h);merged=true;}
+                  else{
+                    // Update existing entry with Firebase version (covers manual Firebase edits)
+                    var localIdx=S.history.findIndex(function(lh){return lh.date+'|'+(lh.sessionNum||1)===k;});
+                    if(localIdx>-1&&JSON.stringify(S.history[localIdx])!==JSON.stringify(h)){
+                      S.history[localIdx]=h;merged=true;
+                    }
+                  }
                 });
                 if(merged){
                   S.history.sort(function(a,b){return new Date(b.endedAt||0)-new Date(a.endedAt||0);});
@@ -1742,7 +1749,11 @@ function initFirebase(){
                 }
               }
               if(changed){
-                try{buildCourseTabs();renderItems();buildTableGrid();buildAperTableGrid();reRenderAdmin();}catch(e){console.warn('render error:',e);}
+                try{
+                  buildCourseTabs();buildCourseTabsV2();
+                  renderItems();renderItemsV2();
+                  buildTableGrid();buildAperTableGrid();reRenderAdmin();
+                }catch(e){console.warn('render error:',e);}
               }
             }catch(e){
               console.error('config listener error:',e);
