@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_138.html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_139.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -4865,13 +4865,14 @@ function renderSeasonal(){
             svcLines.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+stC+' cop · '+stP+' snack');
           } else {
             var ppc=stC>0&&stP>0?(stP/stC).toFixed(1):'';
-            svcLines.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+stC+' cop · '+stP+' piatti'+(ppc?' · '+ppc+'/cop':''));
+            var stLabel=st==='drinksOnly'?T('drinks_only'):T(st);
+            svcLines.push('<span style="color:'+svcColors[st]+';font-weight:600">'+stLabel+'</span> '+stC+' '+T('covers_label')+(stP?' · '+stP+' piatti':'')+(ppc?' · '+ppc+'/cop':''));
           }
         });
         var avgLine=weekSessions>0?'<div style="font-size:11px;color:var(--ink-muted);margin-top:4px">'+T('covers')+' '+T('per_service')+': '+wAvg+'</div>':'';
         var wPpcLine=(svcLines.length?'<div style="font-size:11px;color:var(--ink-muted);margin-top:6px;line-height:2">'+svcLines.join('<br>')+'</div>':'')+avgLine;
         td.innerHTML='<div style="font-weight:600;margin-bottom:4px;color:var(--ink)">'+wLabel+(weekCovers?' — '+weekCovers+' '+T('covers_label'):'')+'</div>'
-          +(parts.length?parts.join('<br>'):'<div style="color:var(--ink-muted)">-</div>')+wPpcLine+histLine;
+          +wPpcLine+histLine;
         td.classList.add('open');
       });
     })(w,w.covers,brk,wn,histCovers,histTotal,w.sessions||0);
@@ -5992,6 +5993,7 @@ function renderHistory(){
           });
         }
 
+        if(dkSecH) row.appendChild(dkSecH);
         cardsEl.appendChild(row);
       });
     }
