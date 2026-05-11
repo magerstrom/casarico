@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_135.html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_136.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -4735,13 +4735,13 @@ function renderSeasonal(){
         if(dd.dataset.day===dayStr&&dd.classList.contains('open')){dd.classList.remove('open');dd.dataset.day='';return;}
         dd.dataset.day=dayStr;
         var parts=[];
-        ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
-          if((dayBreak[st]||0)>0) parts.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+dayBreak[st]+' '+T('covers_label'));
+        ['breakfast','aperitivo','lunch','dinner','drinksOnly'].forEach(function(st){
+          if((dayBreak[st]||0)>0) parts.push('<span style="color:'+svcColors[st]+';font-weight:600">'+(st==='drinksOnly'?T('drinks_only'):T(st))+'</span> '+dayBreak[st]+' '+T('covers_label'));
         });
         var histLine=dayHistCovers?'<div style="font-size:11px;color:var(--ink-muted);margin-top:4px">'+formatHistLine(dayHistCovers)+'</div>':'';
         // Per-service-type plates breakdown
         var ppcLines=[];
-        ['lunch','breakfast','aperitivo','dinner','drinksOnly'].forEach(function(st){
+        ['breakfast','aperitivo','lunch','dinner','drinksOnly'].forEach(function(st){
           var stC=dayBreak[st]||0;var stP=dayBreak[st+'P']||0;var stT=dayBreak[st+'T']||0;if(!stC) return;
           var tStr=stT>0?' · '+stT+' '+(T('tables')||'tables'):'';
           if(st==='aperitivo'){
@@ -4852,14 +4852,14 @@ function renderSeasonal(){
         if(td.dataset.week===wLabel&&td.classList.contains('open')){td.classList.remove('open');td.dataset.week='';return;}
         td.dataset.week=wLabel;
         var parts=[];
-        ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
-          if((weekBreak[st]||0)>0) parts.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+weekBreak[st]+' '+T('covers_label'));
+        ['breakfast','aperitivo','lunch','dinner','drinksOnly'].forEach(function(st){
+          if((weekBreak[st]||0)>0) parts.push('<span style="color:'+svcColors[st]+';font-weight:600">'+(st==='drinksOnly'?T('drinks_only'):T(st))+'</span> '+weekBreak[st]+' '+T('covers_label'));
         });
         var histLine=weekHistCovers?'<div style="font-size:11px;color:var(--ink-muted);margin-top:4px">'+formatHistLine(weekHistCovers)+'</div>':'';
         var wAvg=weekSessions>0?Math.round(weekCovers/weekSessions):0;
         // Per-service-type breakdown
         var svcLines=[];
-        ['lunch','breakfast','aperitivo','dinner','drinksOnly'].forEach(function(st){
+        ['breakfast','aperitivo','lunch','dinner','drinksOnly'].forEach(function(st){
           var stC=weekBreak[st]||0;var stP=weekBreak[st+'P']||0;if(!stC) return;
           if(st==='aperitivo'){
             svcLines.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+stC+' cop · '+stP+' snack');
@@ -5343,8 +5343,8 @@ function renderYearly(){
         if(md.dataset.month===monthName&&md.classList.contains('open')){md.classList.remove('open');md.dataset.month='';return;}
         md.dataset.month=monthName;
         var parts=[];
-        ['lunch','breakfast','aperitivo','dinner'].forEach(function(st){
-          if((monthBreak[st]||0)>0) parts.push('<span style="color:'+svcColors[st]+';font-weight:600">'+T(st)+'</span> '+monthBreak[st]+' '+T('covers_label'));
+        ['breakfast','aperitivo','lunch','dinner','drinksOnly'].forEach(function(st){
+          if((monthBreak[st]||0)>0) parts.push('<span style="color:'+svcColors[st]+';font-weight:600">'+(st==='drinksOnly'?T('drinks_only'):T(st))+'</span> '+monthBreak[st]+' '+T('covers_label'));
         });
         var mAvg=monthSessionsVal>0?Math.round(monthCovers/monthSessionsVal):0;
         var mExtra=[];if(monthPlatesVal>0)mExtra.push(T('total_plates')+': '+monthPlatesVal);if(monthCovers>0&&monthPlatesVal>0)mExtra.push(T('plates_per_cover')+': '+(monthPlatesVal/monthCovers).toFixed(1));if(monthSessionsVal>0)mExtra.push(T('covers')+' '+T('per_service')+': '+mAvg);
@@ -5736,12 +5736,7 @@ function renderHistory(){
   var cs=window._calState;
 
   var svcColors={lunch:'#266533',breakfast:'#B87A2A',aperitivo:'#F16838',dinner:'#1A4422',drinksOnly:'#4A7C59'};
-  var svcDefsHist=[{key:'drinksOnly',label:T('drinks_only'),color:'#4A7C59'},
-    {key:'lunch',label:T('lunch')},
-    {key:'breakfast',label:T('breakfast')},
-    {key:'aperitivo',label:T('aperitivo')},
-    {key:'dinner',label:T('dinner')}
-  ];
+  var svcDefsHist=[{key:'breakfast',label:T('breakfast'),color:'#B87A2A'},{key:'aperitivo',label:T('aperitivo'),color:'#F16838'},{key:'lunch',label:T('lunch'),color:'#266533'},{key:'dinner',label:T('dinner'),color:'#1A4422'},{key:'drinksOnly',label:T('drinks_only'),color:'#4A7C59'}];
 
   // Build set of dates that have services: "YYYY-M-D" → [sessions]
   var serviceDates={};
