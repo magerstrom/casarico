@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_139.html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_141.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -4678,8 +4678,10 @@ function renderSeasonal(){
         dateSvcBreak[ds][st+'P']+=(bt.plates||0);
         dateSvcBreak[ds][st+'T']+=(bt.tables||0);
       });
-    } else if(h.byType&&h.byType.drinksOnly){
-      dayCovers+=(h.byType.drinksOnly.guests||0);dateSvcBreak[ds].drinksOnly+=(h.byType.drinksOnly.guests||0);
+      if(h.byType.drinksOnly&&h.byType.drinksOnly.guests){
+        dayCovers+=(h.byType.drinksOnly.guests||0);
+        dateSvcBreak[ds].drinksOnly+=(h.byType.drinksOnly.guests||0);
+      }
     } else {dayCovers+=h.guests||0;dateSvcBreak[ds].lunch+=h.guests||0;dateSvcBreak[ds].lunchP+=h.plates||0;}
     dateCovers[ds]+=dayCovers;
   });
