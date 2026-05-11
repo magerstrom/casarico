@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_136.html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_137.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -5903,9 +5903,10 @@ function renderHistory(){
           +histLineDate;
         row.appendChild(hdr);
 
-        // ── Drinks summary for this session ───────────────
+        // ── Build drinks section (rendered after service types) ──
+        var dkSecH=null;
         if(h.drinks&&h.drinks.totalServings>0){
-          var dkSecH=document.createElement('div');
+          dkSecH=document.createElement('div');
           dkSecH.style.cssText='padding:8px 0;border-bottom:1px solid var(--border-soft);margin-bottom:8px';
           var dkHdr=document.createElement('div');
           dkHdr.style.cssText='font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--wave2);margin-bottom:6px';
@@ -5932,7 +5933,6 @@ function renderHistory(){
             iRow.innerHTML='<span>'+item.name+'</span><span style="font-weight:600">'+qStr+'</span>';
             dkSecH.appendChild(iRow);
           });
-          row.appendChild(dkSecH);
         }
 
         // ── Cover breakdown per service type ──────────────
