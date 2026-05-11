@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_141.html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_143.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -5942,13 +5942,15 @@ function renderHistory(){
         if(h.byType){
           svcDefsHist.forEach(function(def){
             var d=h.byType[def.key];if(!d||!d.orders) return;
+            var secWrap=document.createElement('div');
+            secWrap.style.cssText='border-bottom:1px solid var(--border-soft);margin-bottom:10px;padding-bottom:10px;margin-top:10px';
             var secHdr=document.createElement('div');
-            secHdr.style.cssText='padding-bottom:6px;border-bottom:1px solid var(--border-soft);margin-bottom:8px;margin-top:10px';
+            secHdr.style.cssText='margin-bottom:6px';
             var secLbl=document.createElement('span');
             secLbl.style.cssText='font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:'+svcColors[def.key];
             var tableStr=d.tables>0?' · '+d.tables+' '+T('tables')||'tables':'';secLbl.textContent=def.label+' — '+d.guests+' '+T('covers_label')+tableStr;
             if(d.plates){var sLines=[];if(def.key==='aperitivo')sLines.push(T('snacks_served')+': '+d.plates);else{sLines.push(T('total_plates')+': '+d.plates);if(d.guests>0)sLines.push(T('plates_per_cover')+': '+(d.plates/d.guests).toFixed(1));}var sp=document.createElement('div');sp.style.cssText='font-size:10px;color:var(--ink-muted);margin-top:4px;line-height:1.7';sp.textContent=sLines.join(' · ');secLbl.appendChild(sp);}
-            secHdr.appendChild(secLbl);row.appendChild(secHdr);
+            secHdr.appendChild(secLbl);secWrap.appendChild(secHdr);row.appendChild(secWrap);
 
             // ── Course mix % for food service types ───────
             if(def.key!=='aperitivo'&&def.key!=='drinksOnly'&&d.dishTotals&&d.dishTotals.length){
