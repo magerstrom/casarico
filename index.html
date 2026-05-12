@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_148.html -->
+<!-- saved from url=(0055)file:///Users/magerstrom/Downloads/cucina-v2%20(6).html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -1702,6 +1702,7 @@ function initFirebase(){
           fbDB.ref('config').on('value',function(snap){
             try{
               var val=snap.val();if(!val) return;
+              var localTs=LS.get('configTs')||0;
               var localTablesTs=LS.get('tablesTs')||0;
               var fbMenuTs=val.menuTs||0;
               var fbTablesTs=val.tablesTs||0;
@@ -1709,10 +1710,11 @@ function initFirebase(){
               var menuOrTablesChanged=false;
               var rawMenu=val.menu;
               var normMenu=rawMenu?(Array.isArray(rawMenu)?rawMenu:Object.values(rawMenu)):null;
-              if(normMenu&&normMenu.length&&fbMenuTs&&fbMenuTs!==_pendingMenuTs){
+              if(normMenu&&normMenu.length&&fbMenuTs>localTs){
                 S.menu=normMenu;LS.set('menu',normMenu);
                 if(val.courses&&val.courses.length){S.courses=val.courses;LS.set('courses',val.courses);}
                 if(val.menuCourses){S.menuCourses=Object.assign({breakfast:[],aperitivo:[],lunch:[],dinner:[],drinks:[]},val.menuCourses);LS.set('menuCourses',S.menuCourses);}
+                LS.set('configTs',fbMenuTs);
                 changed=true;menuOrTablesChanged=true;
               }
               var rawTables=val.tables;
@@ -6186,15 +6188,20 @@ function updateNotifUI(){
 }
 
 function saveAndSyncMenu(){
-  if(!fbDB){toast(T('not_connected')||'Not connected to Firebase','tr');return;}
-  var ts=Date.now();
-  _pendingMenuTs=ts;
-  LS.set('menu',S.menu);LS.set('courses',S.courses);LS.set('menuCourses',S.menuCourses);
+  if(!fbDB){toast('Not connected','tr');return;}
+  var ts=Date.now()+1;
+  // Clean menuCourses — remove empty/invalid keys before Firebase write
+  var cleanMC={};
+  var validKeys=['breakfast','aperitivo','lunch','dinner','drinks'];
+  validKeys.forEach(function(k){
+    if(S.menuCourses&&S.menuCourses[k]) cleanMC[k]=S.menuCourses[k];
+  });
+  LS.set('menu',S.menu);LS.set('courses',S.courses);LS.set('menuCourses',S.menuCourses);LS.set('configTs',ts);
   fbDB.ref('config/menu').set(S.menu);
   fbDB.ref('config/courses').set(S.courses);
-  fbDB.ref('config/menuCourses').set(S.menuCourses);
+  fbDB.ref('config/menuCourses').set(cleanMC);
   fbDB.ref('config/menuTs').set(ts);
-  toast('Menu synced ✓','tg');
+  toast('Menu synced to all devices ✓','tg');
 }
 
 function saveAndSyncTables(){
