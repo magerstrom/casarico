@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_149.html -->
+<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_150.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -663,7 +663,7 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
     <div id="ato-summary" style="display:none;margin-bottom:12px"></div>
     <!-- Step 1: Table selector -->
     <span class="lbl" id="lbl-order-table">Table</span>
-    <div class="table-grid" id="order-table-grid"><div class="table-chip">1 dentro</div><div class="table-chip">2 dentro</div><div class="table-chip">3 dentro</div><div class="table-chip">4 dentro</div><div class="table-chip">5 dentro</div><div class="table-chip">1</div><div class="table-chip">2</div><div class="table-chip">3</div><div class="table-chip">4</div><div class="table-chip">5</div><div class="table-chip">1 piazza</div><div class="table-chip">2 piazza</div><div class="table-chip">3 piazza</div><div class="table-chip">4 piazza</div><div class="table-chip">5 piazza</div><div class="table-chip">6 piazza</div><div class="table-chip">7 piazza</div><div class="table-chip">8 piazza</div></div>
+    <div class="table-grid" id="order-table-grid"><div class="table-chip">1 piazza</div><div class="table-chip">2 piazza</div><div class="table-chip">3 piazza</div><div class="table-chip">4 piazza</div><div class="table-chip">5 piazza</div><div class="table-chip">6 piazza</div><div class="table-chip">7 piazza</div><div class="table-chip">8 piazza</div><div class="table-chip">9 piazza</div><div class="table-chip">10 piazza</div><div class="table-chip">11 piazza</div><div class="table-chip">12 piazza</div><div class="table-chip">13 piazza</div><div class="table-chip">14 piazza</div><div class="table-chip">1</div><div class="table-chip">2</div><div class="table-chip">3</div><div class="table-chip">4</div><div class="table-chip">5</div><div class="table-chip">6</div><div class="table-chip">7</div><div class="table-chip">1 dentro</div><div class="table-chip">2 dentro</div><div class="table-chip">3 dentro</div><div class="table-chip">4 dentro</div><div class="table-chip">5 dentro</div><div class="table-chip">Jessica</div></div>
 
     <!-- Step 2: Covers + order builder (appears after table selected) -->
     <div id="covers-section" style="display:none">
@@ -727,9 +727,9 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
         <span class="lbl" id="lbl-wave-select">Wave for selected items</span>
         <div class="wave-row" id="wave-row-btns"></div>
         <!-- Course tabs — identical to v1 -->
-        <div class="course-tabs" id="course-tabs"><div class="ctab active" onclick="setCourseFn(&#39;antipasti&#39;)">Antipasti</div><div class="ctab" onclick="setCourseFn(&#39;primi&#39;)">Primi</div><div class="ctab" onclick="setCourseFn(&#39;secondi&#39;)">Secondi</div><div class="ctab" onclick="setCourseFn(&#39;insalata&#39;)">Insalata</div><div class="ctab" onclick="setCourseFn(&#39;dolci&#39;)">Dolci</div></div>
+        <div class="course-tabs" id="course-tabs"></div>
         <!-- Items grid — identical to v1 -->
-        <div class="items-grid" id="items-grid"><div style="grid-column:span 2;text-align:center;padding:20px;color:var(--ink-muted);font-size:13px">No active items</div></div>
+        <div class="items-grid" id="items-grid"></div>
         <!-- Cart -->
         <div id="cart-area"></div>
         <!-- Dietary note at bottom -->
@@ -4087,22 +4087,8 @@ function endService(){
       var stAperCovers=stGuests;
       var stSnacks=0;
       if(st==='aperitivo'){
-        // Count max guests per table to avoid double-counting rounds
-        var tableGuestsMap={};
-        stOrders.forEach(function(e){
-          var tbl=e[1].table,g=e[1].guests||0;
-          tableGuestsMap[tbl]=Math.max(tableGuestsMap[tbl]||0,g);
-        });
-        stAperCovers=Object.values(tableGuestsMap).reduce(function(s,g){return s+g;},0);
-        // Snacks = number of waves × guests per order
-        stOrders.forEach(function(e){
-          var o=e[1];
-          Object.values(o.waves||{}).filter(function(w){
-            return w!=null&&(w.serviceTypes||[]).indexOf('aperitivo')>-1;
-          }).forEach(function(w){
-            stSnacks+=(w.dishes||[]).filter(function(d){return d.id==='aper'||d.svcType==='aperitivo'||d.course==='aperitivo';}).reduce(function(s,d){return s+(d.qty||0);},0);
-          });
-        });
+        // Snacks = sum of all actual dish quantities in aperitivo orders
+        stSnacks=stPlates;
       }
       var stDishTotals=Object.values(stDishMap).sort(function(a,b){return b.qty-a.qty;});
       var stPlatesOrSnacks=st==='aperitivo'?stSnacks:stPlates;
