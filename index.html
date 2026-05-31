@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///Users/magerstrom/Downloads/cucina-v2_150.html -->
+<!-- saved from url=(0055)file:///Users/magerstrom/Downloads/cucina-v2%20(7).html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="app-version" content="1.1">
@@ -727,9 +727,9 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
         <span class="lbl" id="lbl-wave-select">Wave for selected items</span>
         <div class="wave-row" id="wave-row-btns"></div>
         <!-- Course tabs — identical to v1 -->
-        <div class="course-tabs" id="course-tabs"></div>
+        <div class="course-tabs" id="course-tabs"><div class="ctab active" onclick="setCourseFn(&#39;antipasti&#39;)">Antipasti</div><div class="ctab" onclick="setCourseFn(&#39;primi&#39;)">Primi</div><div class="ctab" onclick="setCourseFn(&#39;secondi&#39;)">Secondi</div><div class="ctab" onclick="setCourseFn(&#39;insalata&#39;)">Insalata</div><div class="ctab" onclick="setCourseFn(&#39;dolci&#39;)">Dolci</div></div>
         <!-- Items grid — identical to v1 -->
-        <div class="items-grid" id="items-grid"></div>
+        <div class="items-grid" id="items-grid"><div style="grid-column:span 2;text-align:center;padding:20px;color:var(--ink-muted);font-size:13px">No active items</div></div>
         <!-- Cart -->
         <div id="cart-area"></div>
         <!-- Dietary note at bottom -->
@@ -2472,7 +2472,7 @@ function sendOrder(){
         var svcCount={};
         Object.values(cart).forEach(function(dishes){
           (dishes||[]).forEach(function(d){
-            var s=d.svcType||selSvcType||selPrimarySvc;
+            var s=d.svcType||selSvcType;
             if(s&&s!=='drinks') svcCount[s]=(svcCount[s]||0)+(d.qty||0);
           });
         });
@@ -4055,13 +4055,25 @@ function endService(){
       });
     });
     var drinksList=Object.values(drinksTotals).sort(function(a,b){return b.qty-a.qty;});
+    // Helper: get effective service type from dominant dish.svcType across all waves
+    var getEffectiveSvc=function(o){
+      var svcCount={};
+      Object.values(o.waves||{}).filter(function(w){return w!=null;}).forEach(function(w){
+        (w.dishes||[]).forEach(function(d){
+          var s=d.svcType||o.primarySvc||o.serviceType||'lunch';
+          if(s&&s!=='drinks') svcCount[s]=(svcCount[s]||0)+(d.qty||0);
+        });
+      });
+      var top=Object.keys(svcCount).sort(function(a,b){return svcCount[b]-svcCount[a];})[0];
+      return top||o.primarySvc||o.serviceType||'lunch';
+    };
     svcTypes.forEach(function(st){
       var stOrders=orders.filter(function(e){
-        var o=e[1];var ps=o.primarySvc||o.serviceType;
-        if(ps!==st) return false;
+        var o=e[1];
         // Exclude orders with no food waves from food service cover counts
         var hasFood=Object.values(o.waves||{}).filter(function(w){return w!=null;}).some(function(w){return (w.dishes||[]).length>0;});
-        return hasFood;
+        if(!hasFood) return false;
+        return getEffectiveSvc(o)===st;
       });
       var stTables=stOrders.length; // count orders not unique names — same table reused = 2 tables served
       var stGuests=stOrders.reduce(function(s,e){return s+(e[1].guests||0);},0);
