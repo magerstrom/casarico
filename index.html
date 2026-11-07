@@ -899,6 +899,13 @@ hr.sep{border:none;border-top:1px solid var(--border-soft);margin:14px 0}
     </div>
     <hr class="sep">
     <div class="add-form">
+      <span class="lbl" id="setup-histsync-lbl">Sync History to Cloud</span>
+      <p style="font-size:12px;color:var(--ink-muted);margin-bottom:10px;line-height:1.5">If a service was closed while offline, tap here on the device that closed it. Only adds services missing in the cloud — never deletes or overwrites.</p>
+      <button class="btn btn-outline btn-sm" id="hist-sync-btn" onclick="syncLocalHistory()">Sync History to Cloud</button>
+      <p style="font-size:11px;color:var(--ink-muted);margin-top:6px" id="hist-sync-lbl"></p>
+    </div>
+    <hr class="sep">
+    <div class="add-form">
       <span class="lbl" id="setup-danger-lbl" style="color:var(--terra)">Danger Zone</span>
       <button class="btn btn-terra btn-sm" onclick="nukeAll()">Reset All Data</button>
     </div>
@@ -6208,6 +6215,28 @@ function updateNotifUI(){
   var channel=isKitchen?NTFY_KITCHEN:NTFY_FOH;
   if(allowBtn) allowBtn.style.display='none';
   if(statusLbl) statusLbl.innerHTML='Install <strong>ntfy</strong> app → subscribe to: <strong>'+channel+'</strong>';
+}
+
+function syncLocalHistory(){
+  var out=document.getElementById('hist-sync-lbl');
+  var it=(lang==='it');
+  function say(t,col){if(out)out.textContent=t;toast(t,col||'tg');}
+  if(!fbDB){say(it?'Non connesso a Firebase':'Not connected to Firebase','tr');return;}
+  say(it?'Controllo…':'Checking…','tg');
+  fbDB.ref('config/history').once('value').then(function(snap){
+    var fb=snap.val()||[];
+    if(!Array.isArray(fb)) fb=Object.values(fb);
+    fb=fb.filter(function(h){return h&&h.date;});
+    var key=function(h){return h.date+'|'+(h.sessionNum||1);};
+    var have={};fb.forEach(function(h){have[key(h)]=true;});
+    var missing=(S.history||[]).filter(function(h){return h&&h.date&&!have[key(h)];});
+    if(!missing.length){say(it?'Niente da sincronizzare — storico già nel cloud':'Nothing to sync — history already in the cloud');return;}
+    var merged=fb.concat(missing);
+    merged.sort(function(a,b){return new Date(b.endedAt||0)-new Date(a.endedAt||0);});
+    return fbDB.ref('config/history').set(merged).then(function(){
+      say((it?'Sincronizzati: ':'Synced: ')+missing.map(function(h){return h.date;}).join(', '));
+    });
+  }).catch(function(e){say((it?'Errore: ':'Error: ')+(e&&e.message||e),'tr');});
 }
 
 function saveAndSyncMenu(){
